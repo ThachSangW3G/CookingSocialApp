@@ -15,4 +15,9 @@ class AppColors {
   static const Color appPrimaryColor = Color(0xFF0A0E21);
   static const Color appCircleButtonColor = Colors.orangeAccent;
   static const Color appButtonColor = Color(0xFF4C4F5E);
+
+  //Sang
+
+  static const Color orangeCrusta = Color.fromRGBO(255, 133, 39, 1);
+  static const Color greyBombay = Color.fromRGBO(179, 180, 186, 1);
 }
