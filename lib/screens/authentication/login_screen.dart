@@ -354,6 +354,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       child: const Text(
                         "Content Policy",
+
                         style: TextStyle(
                           color: Colors.black,
                         ),
