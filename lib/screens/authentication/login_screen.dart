@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           Container(
 
-            margin: const EdgeInsets.only(top: 250),
+            margin: const EdgeInsets.only(top: 200),
             width: double.infinity,
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
@@ -123,6 +123,240 @@ class _LoginScreenState extends State<LoginScreen> {
                         indent: 10,
                         endIndent: 30,
                         thickness: 2,
+                      ),
+                    ),
+
+
+                  ],
+
+                ),
+                const SizedBox(height: 10.0,),
+                Container(
+                  width: double.infinity,
+                  height: 60,
+                  decoration:  BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                    border: Border.all(
+                      color: AppColors.greyBombay,
+                      width: 1
+                    )
+                  ),
+
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        height: 30,
+                        width: 30,
+                        decoration: const BoxDecoration(
+                          // image: DecorationImage(
+                          //   image: AssetImage('assets/icons/apple_icon.png'),
+                          //   fit: BoxFit.cover,
+                          // )
+                        ),
+                        child: const Image(
+
+                          image: AssetImage('assets/icons/apple_icon.png'),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: const Text('Continue with Apple',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                                letterSpacing: 1.0
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10.0,),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                      width: double.infinity,
+                      height: 60,
+                      decoration:  BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                          border: Border.all(
+                              color: AppColors.greyBombay,
+                              width: 1
+                          )
+                      ),
+
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(left: 20, right: 10),
+                            height: 30,
+                            width: 30,
+                            decoration: const BoxDecoration(
+                              // image: DecorationImage(
+                              //   image: AssetImage('assets/icons/apple_icon.png'),
+                              //   fit: BoxFit.cover,
+                              // )
+                            ),
+                            child: const Image(
+
+                              image: AssetImage('assets/icons/facebook_icon.png'),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: const Text('Facebook',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                    letterSpacing: 1.0
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    ),
+                    const SizedBox(width: 10,),
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        height: 60,
+                        decoration:  BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                            border: Border.all(
+                                color: AppColors.greyBombay,
+                                width: 1
+                            )
+                        ),
+
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(left: 20, right: 10),
+                              height: 40,
+                              width: 40,
+                              decoration: const BoxDecoration(
+                                // image: DecorationImage(
+                                //   image: AssetImage('assets/icons/apple_icon.png'),
+                                //   fit: BoxFit.cover,
+                                // )
+                              ),
+                              child: const Image(
+
+                                image: AssetImage('assets/icons/google_icon.png'),
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                                child: const Text('Google',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                      letterSpacing: 1.0
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 20.0,),
+                const Text(
+                  "By continuing, you agree to our",
+                  style: TextStyle(
+                    color: Colors.black
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            color: Colors.black,
+                            width: 2.0
+                          )
+                        )
+                      ),
+                      child: const Text(
+                        "Terms of Service",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      child: const Text(
+                        '·',
+                        style: TextStyle(
+                          color: Colors.black
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: Colors.black,
+                                  width: 2.0
+                              )
+                          )
+                      ),
+                      child: const Text(
+                        "Privacy Policy",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      child: const Text(
+                        '·',
+                        style: TextStyle(
+                            color: Colors.black
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                  color: Colors.black,
+                                  width: 2.0
+                              )
+                          )
+                      ),
+                      child: const Text(
+                        "Content Policy",
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
                       ),
                     )
                   ],
