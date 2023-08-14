@@ -69,28 +69,30 @@ class _LoginScreenState extends State<LoginScreen> {
                   //   print('Country changed to: ' + country.name);
                   // },
                 ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 60,
-                  decoration: const BoxDecoration(
-                    color: AppColors.orangeCrusta,
-                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+
+                const SizedBox(height: 10.0,),
+                GestureDetector(
+                  onTap: (){},
+                  child: Container(
+                    width: double.infinity,
+                    height: 60,
+                    decoration: const BoxDecoration(
+                      color: AppColors.orangeCrusta,
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+
+                    ),
+                    child: const Center(
+                        child: Text('Send OTP',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                          letterSpacing: 1.2
+                        ),
+                        )
+                    ),
                   ),
-                  child: const Center(
-                      child: Text(
-                    'Send OTP',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                        letterSpacing: 1.2),
-                  )),
-                ),
-                const SizedBox(
-                  height: 20.0,
+
                 ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
