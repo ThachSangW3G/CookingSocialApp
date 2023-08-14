@@ -85,7 +85,7 @@ flutter:
         - asset: assets/fonts/CeraPro.ttf
     - family: Bobbers
       fonts:
-        - asset: assets/fonts/TrajanPro.ttf
+        - asset: assets/fonts/Bobbers.ttf
     - family: Pacifico
       fonts:
         - asset: assets/fonts/Pacifico-Regular.ttf
