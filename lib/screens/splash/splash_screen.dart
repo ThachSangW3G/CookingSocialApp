@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   SmoothPageIndicator(
                       controller: _pageController,
                       count: 3,
-                      effect: SwapEffect(
+                      effect: const SwapEffect(
                         activeDotColor: AppColors.orangeCrusta
                       ),
                   ),
