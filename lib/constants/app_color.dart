@@ -18,4 +18,6 @@ class AppColors {
 
   static const Color orangeCrusta = Color.fromRGBO(255, 133, 39, 1);
   static const Color greyBombay = Color.fromRGBO(179, 180, 186, 1);
+  static const Color whitePorcelain = Color.fromRGBO(242, 243, 244, 1);
+  static const Color whiteAlabaster = Color.fromRGBO(251, 251, 251, 1);
 }
