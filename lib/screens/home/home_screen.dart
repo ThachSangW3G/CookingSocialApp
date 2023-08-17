@@ -1,4 +1,5 @@
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/models/category.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -187,7 +188,55 @@ class _HomeScreenState extends State<HomeScreen> {
                   FeaturedCard(featured: listFeatured[1],),
                   FeaturedCard(featured: listFeatured[2],),
 
-                  const SizedBox(height: 100,)
+                  const SizedBox(height: 50,),
+
+                  const Text(
+                    'Show All Recipe by Community',
+                    style: TextStyle(
+                      fontFamily: 'CeraPro',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: AppColors.orangeCrusta
+                    ),
+                  ),
+
+                  const SizedBox(height: 40.0,),
+
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Category',
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontFamily: 'Recoleta',
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 15.0,),
+
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        CategoryCard(category: listCategory[0],),
+                        CategoryCard(category: listCategory[1],),
+                        CategoryCard(category: listCategory[2],),
+                        CategoryCard(category: listCategory[3],),
+                        CategoryCard(category: listCategory[4],)
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 100,)
+
+
 
 
                 ],
@@ -195,6 +244,44 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         )
+      ),
+    );
+  }
+}
+
+class CategoryCard extends StatelessWidget {
+  final Category category;
+  const CategoryCard({
+    super.key, required this.category,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: Column(
+        children: [
+          Container(
+            width: 75,
+            height: 75,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(category.image),
+                fit: BoxFit.cover
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(16.0))
+            ),
+          ),
+          const SizedBox(height: 10.0,),
+          Text(
+            category.name,
+            style: const TextStyle(
+              fontFamily: 'CeraPro',
+              fontSize: 14,
+              fontWeight: FontWeight.w500
+            ),
+          )
+        ],
       ),
     );
   }

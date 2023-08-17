@@ -23,7 +23,7 @@ class FeaturedCard extends StatelessWidget {
                     image: AssetImage(featured.image),
                     fit: BoxFit.cover
                 ),
-                borderRadius: const BorderRadius.all(Radius.circular(15.0))
+                borderRadius: const BorderRadius.all(Radius.circular(16.0))
             ),
           ),
           const SizedBox(height: 10.0,),
