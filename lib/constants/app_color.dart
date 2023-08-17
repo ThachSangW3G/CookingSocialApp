@@ -11,6 +11,7 @@ class AppColors {
   static const Color red = Color(0xFFD5463C);
   static const Color navy = Color(0xFF0B0F26);
   static const Color cetaceanBlue = Color(0xFF0F1538);
+  static const Color black = Color.fromRGBO(0, 0, 0, 1);
 
   static const Color appPrimaryColor = Color(0xFF0A0E21);
   static const Color appCircleButtonColor = Colors.orangeAccent;
@@ -20,4 +21,12 @@ class AppColors {
   static const Color greyBombay = Color.fromRGBO(179, 180, 186, 1);
   static const Color whitePorcelain = Color.fromRGBO(242, 243, 244, 1);
   static const Color whiteAlabaster = Color.fromRGBO(251, 251, 251, 1);
+
+  static const Color white = Color.fromRGBO(255, 255, 255, 1);
+  static const Color greyIron = Color.fromRGBO(225, 226, 227, 1);
+  static const Color greyShuttle = Color.fromRGBO(99, 103, 115, 1);
+  static const Color yellowOrange = Color.fromRGBO(255, 185, 69, 1);
+  static const Color bluePrussian = Color.fromRGBO(0, 48, 70, 1);
+  static const Color blueBondi = Color.fromRGBO(0, 159, 179, 1);
+  static const Color blueCornflower = Color.fromRGBO(133, 202, 228, 1);
 }
