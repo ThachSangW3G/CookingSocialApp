@@ -9,9 +9,9 @@ const kBottomContainerColour = Color(0xFFEB1555);
 const kLabelTextStyle =
     TextStyle(color: Colors.grey, fontFamily: "CeraPro", fontSize: 15);
 const kReviewLabelTextStyle = TextStyle(
-    color: AppColors.greyDark,
+    color: Colors.black,
     fontFamily: "CeraPro",
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: FontWeight.w500);
 
 const kNumberTextStyle = TextStyle(
