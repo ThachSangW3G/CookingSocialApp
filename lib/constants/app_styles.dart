@@ -1,3 +1,4 @@
+import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
 const kBottomContainerHeight = 80.0;
@@ -7,6 +8,11 @@ const kBottomContainerColour = Color(0xFFEB1555);
 
 const kLabelTextStyle =
     TextStyle(color: Colors.grey, fontFamily: "CeraPro", fontSize: 15);
+const kReviewLabelTextStyle = TextStyle(
+    color: Colors.black,
+    fontFamily: "CeraPro",
+    fontSize: 17,
+    fontWeight: FontWeight.w500);
 
 const kNumberTextStyle = TextStyle(
   fontSize: 50.0,

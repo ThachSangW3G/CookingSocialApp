@@ -26,7 +26,7 @@ class RowContent extends StatelessWidget {
                 ),
               ),
               const Icon(
-                Icons.keyboard_arrow_right,
+                Icons.arrow_forward_ios_outlined,
                 color: Colors.grey,
                 size: 30,
               )
