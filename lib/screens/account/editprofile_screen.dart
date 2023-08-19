@@ -71,7 +71,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       onTap: () {},
                       child: const Text(
                         'Edit Photo',
-                        style: TextStyle(color: AppColors.orangeCrusta),
+                        style: TextStyle(
+                            color: AppColors.orangeCrusta,
+                            fontFamily: 'CeraPro'),
                       ))
                 ],
               ),

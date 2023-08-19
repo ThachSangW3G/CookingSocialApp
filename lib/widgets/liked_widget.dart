@@ -27,56 +27,57 @@ class LikedWidget extends StatelessWidget {
                         image: AssetImage('assets/images/avatar.jpg'),
                         fit: BoxFit.contain)),
               ),
-              Container(
-                padding: const EdgeInsets.only(left: 10),
-                width: 230,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      name,
-                      overflow: TextOverflow.visible,
-                      style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontFamily: "CeraPro"),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 50, top: 10),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Icon(
-                            Icons.access_time_outlined,
-                            color: AppColors.greyBombay,
-                            size: 22,
-                          ),
-                          Text(
-                            time,
-                            style: kReviewLabelTextStyle,
-                          ),
-                          const Text(
-                            'min',
-                            style: kReviewLabelTextStyle,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Image(
-                            image: AssetImage('assets/icons/tray.png'),
-                            width: 21,
-                            height: 21,
-                            color: AppColors.greyBombay,
-                          ),
-                          const Text(
-                            'Easy',
-                            style: kReviewLabelTextStyle,
-                          ),
-                        ],
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        name,
+                        overflow: TextOverflow.visible,
+                        style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontFamily: "CeraPro"),
                       ),
-                    )
-                  ],
+                      Padding(
+                        padding: const EdgeInsets.only(right: 50, top: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Icon(
+                              Icons.access_time_outlined,
+                              color: AppColors.greyBombay,
+                              size: 22,
+                            ),
+                            Text(
+                              time,
+                              style: kReviewLabelTextStyle,
+                            ),
+                            const Text(
+                              'min',
+                              style: kReviewLabelTextStyle,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const Image(
+                              image: AssetImage('assets/icons/tray.png'),
+                              width: 21,
+                              height: 21,
+                              color: AppColors.greyBombay,
+                            ),
+                            const Text(
+                              'Easy',
+                              style: kReviewLabelTextStyle,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               PopupMenuButton(
