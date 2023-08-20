@@ -1,14 +1,15 @@
 
+import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../constants/app_color.dart';
 import '../models/recipe_item_published.dart';
 
-class RecipeItemPublishedWidget extends StatelessWidget {
-  final RecipeItemPublished recipeItemPublished;
-  const RecipeItemPublishedWidget({
-    super.key, required this.recipeItemPublished,
+class RecipeItemUnPublishedWidget extends StatelessWidget {
+  final RecipeItemUnPublished recipeItemUnPublished;
+  const RecipeItemUnPublishedWidget({
+    super.key, required this.recipeItemUnPublished,
   });
 
   @override
@@ -29,7 +30,7 @@ class RecipeItemPublishedWidget extends StatelessWidget {
               width: 60,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(recipeItemPublished.image),
+                      image: AssetImage(recipeItemUnPublished.image),
                       fit: BoxFit.cover
                   ),
                   borderRadius: const BorderRadius.all(Radius.circular(16.0))
@@ -41,14 +42,14 @@ class RecipeItemPublishedWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    recipeItemPublished.title,
+                    recipeItemUnPublished.title,
                     style: const TextStyle(
                         fontFamily: 'CeraPro',
                         fontSize: 16,
                         fontWeight: FontWeight.w600
                     ),
                   ),
-                  const SizedBox(height: 0.0,),
+                  const SizedBox(height: 10.0,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -56,68 +57,51 @@ class RecipeItemPublishedWidget extends StatelessWidget {
                         child: Row(
                           children: [
                             SvgPicture.asset(
-                              'assets/icon_svg/heart_orange.svg',
+                              'assets/icon_svg/clock.svg',
                               height: 16,
                               width: 16,
+                              color: AppColors.greyBombay,
+                            ),
+                            const SizedBox(width: 10.0,),
+                            Text(
+                              recipeItemUnPublished.time.toString(),
+                              style: const TextStyle(
+                                fontFamily: 'CeraPro',
+                                fontSize: 14,
+                                color: AppColors.greyShuttle,
+                              ),
+                            ),
+                            const SizedBox(width: 8.0,),
+                            const Text(
+                              'mins',
+                              style: TextStyle(
+                                fontFamily: 'CeraPro',
+                                fontSize: 14,
+                                color: AppColors.greyShuttle,
+                              ),
+                            ),
+                            const SizedBox(width: 12.0,),
+                            SvgPicture.asset(
+                              'assets/icon_svg/dinner.svg',
+                              height: 16,
+                              width: 16,
+                              color: AppColors.greyBombay,
+                            ),
+                            const SizedBox(width: 8.0,),
+                            Text(
+                              recipeItemUnPublished.level,
+                              style: const TextStyle(
+                                fontFamily: 'CeraPro',
+                                fontSize: 14,
+                                color: AppColors.greyShuttle,
+                              ),
+                            ),
 
-                            ),
-                            const SizedBox(width: 5.0,),
-                            Text(
-                              recipeItemPublished.like.toString(),
-                              style: const TextStyle(
-                                fontFamily: 'CeraPro',
-                                fontSize: 14,
-                                color: AppColors.greyShuttle,
-                              ),
-                            ),
-                            const SizedBox(width: 5.0,),
-                            const Text(
-                              '|',
-                              style: TextStyle(
-                                fontFamily: 'CeraPro',
-                                fontSize: 14,
-                                color: AppColors.greyShuttle,
-                              ),
-                            ),
-                            const SizedBox(width: 5.0,),
-                            Text(
-                              recipeItemPublished.review.toString(),
-                              style: const TextStyle(
-                                fontFamily: 'CeraPro',
-                                fontSize: 14,
-                                color: AppColors.greyShuttle,
-                              ),
-                            ),
-                            const SizedBox(width: 5.0,),
-                            const Text(
-                              'Reviews',
-                              style: TextStyle(
-                                fontFamily: 'CeraPro',
-                                fontSize: 14,
-                                color: AppColors.greyShuttle,
-                              ),
-                            ),
                           ],
                         ),
                       ),
 
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        decoration: const BoxDecoration(
-                            color: AppColors.bluePrussian,
-                            borderRadius: BorderRadius.all(Radius.circular(30))
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Published',
-                            style: TextStyle(
-                                fontFamily: 'CeraPro',
-                                color: AppColors.white,
-                                fontSize: 12
-                            ),
-                          ),
-                        ),
-                      )
+
                     ],
                   )
                 ],
