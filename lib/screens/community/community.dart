@@ -1,6 +1,9 @@
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/models/featured.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../widgets/featured_card_small_widget.dart';
 
 class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
@@ -143,7 +146,22 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 )
               ],
             ),
+          ),
+          const SizedBox(height: 20,),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: GridView.builder(
+
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 320),
+                itemCount: listFeatured.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return  FeaturedCardSmallWidget(featured: listFeatured[index],);
+                }),
+            ),
           )
+
         ],
       ),
 
