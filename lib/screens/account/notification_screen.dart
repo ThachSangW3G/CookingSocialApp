@@ -1,6 +1,7 @@
 import 'package:cooking_social_app/components/one_notification.dart';
 import 'package:flutter/material.dart';
 
+import '../../components/line_row.dart';
 import '../../constants/app_color.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         backgroundColor: AppColors.whitePorcelain,
         centerTitle: true,
         title: const Text(
-          'NotiFications',
+          'Notifications',
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -50,10 +51,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       body: const SingleChildScrollView(
         child: Column(
           children: [
-            Divider(
-              thickness: 0.7,
-              color: AppColors.greyBombay,
-            ),
+            LineRow(),
             OneNotification(
                 loaiTB: 'NewFollower',
                 time: '1 min ago',

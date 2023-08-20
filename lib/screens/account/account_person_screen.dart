@@ -1,3 +1,4 @@
+import 'package:cooking_social_app/components/line_row.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,20 @@ class AccountPerSonScreen extends StatefulWidget {
   State<AccountPerSonScreen> createState() => _AccountPerSonScreenState();
 }
 
-class _AccountPerSonScreenState extends State<AccountPerSonScreen> {
+class _AccountPerSonScreenState extends State<AccountPerSonScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  late PageController _pageController;
+  late PageController _favoritesPageController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    _pageController =
+        PageController(initialPage: 0, viewportFraction: 0.8, keepPage: true);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,73 +92,123 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: 200,
+                        height: 190,
                         width: MediaQuery.of(context).size.width - 40,
                         decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                           color: AppColors.white,
                         ),
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 25.0,
-                              ),
-                              Text(
-                                'Menu ayam spesial',
-                                style: TextStyle(
-                                  fontFamily: 'Recoleta',
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Text(
-                                  'Keep it easy with these simple but delicious recipes.',
-                                  textAlign: TextAlign.center,
-                                  softWrap: true,
-                                  overflow: TextOverflow.clip,
-                                  style: kLabelTextStyle),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                        child: const Column(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Column(
                                 children: [
-                                  Text('24', style: kLabelTextStyleBig),
                                   SizedBox(
-                                    width: 5.0,
-                                  ),
-                                  Text('Followers', style: kLabelTextStyleBig),
-                                  SizedBox(
-                                    width: 5.0,
+                                    height: 25.0,
                                   ),
                                   Text(
-                                    '|',
+                                    'Menu ayam spesial',
                                     style: TextStyle(
-                                        fontFamily: 'CeraPro',
-                                        fontSize: 30,
-                                        color: AppColors.greyIron),
+                                      fontFamily: 'Recoleta',
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
                                   SizedBox(
-                                    width: 5.0,
+                                    height: 10.0,
                                   ),
-                                  Text('8', style: kLabelTextStyleBig),
+                                  Text(
+                                      'Keep it easy with these simple but delicious recipes.',
+                                      textAlign: TextAlign.center,
+                                      softWrap: true,
+                                      overflow: TextOverflow.clip,
+                                      style: kLabelTextStyle),
                                   SizedBox(
-                                    width: 5.0,
+                                    height: 10.0,
                                   ),
-                                  Text('Following', style: kLabelTextStyle)
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text('24', style: kLabelTextStyle),
+                                      SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      Text('Followers', style: kLabelTextStyle),
+                                      SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      Text(
+                                        '|',
+                                        style: TextStyle(
+                                            fontFamily: 'CeraPro',
+                                            fontSize: 30,
+                                            color: AppColors.greyIron),
+                                      ),
+                                      SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      Text('8', style: kLabelTextStyle),
+                                      SizedBox(
+                                        width: 5.0,
+                                      ),
+                                      Text('Following', style: kLabelTextStyle)
+                                    ],
+                                  ),
                                 ],
-                              )
-                            ],
-                          ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 40,
+                        child: TabBar(
+                          controller: _tabController,
+                          indicator: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              25.0,
+                            ),
+                            color: AppColors.orangeCrusta,
+                          ),
+                          labelColor: Colors.white,
+                          unselectedLabelColor: AppColors.greyShuttle,
+                          dividerColor: Colors.white,
+                          tabs: [
+                            Tab(
+                              child: Container(
+                                width: 280,
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  'Posts',
+                                  style: TextStyle(
+                                      fontFamily: 'CeraPro', fontSize: 17),
+                                ),
+                              ),
+                            ),
+
+                            // second tab [you can add an icon using the icon property]
+                            Tab(
+                              child: Container(
+                                width: 280,
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  'Reviews',
+                                  style: TextStyle(
+                                      fontFamily: 'CeraPro', fontSize: 17),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const LineRow()
+                    ],
+                  )
                 ],
               ),
             ),
@@ -164,8 +228,8 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen> {
                         fit: BoxFit.contain),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.white, // Màu và độ mờ của đổ bóng
-                        spreadRadius: 5, // Bán kính mở rộng của đổ bóng
+                        color: Colors.white,
+                        spreadRadius: 5,
                         blurRadius: 0.1,
                         offset: Offset(0, 1),
                       )
