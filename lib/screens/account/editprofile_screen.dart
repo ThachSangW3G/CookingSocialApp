@@ -1,6 +1,7 @@
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 
+import '../../components/line_row.dart';
 import '../../constants/app_color.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -18,12 +19,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         backgroundColor: AppColors.whitePorcelain,
         centerTitle: true,
         title: const Text(
-          'Edit ProFile',
+          'Edit Profile',
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
-              fontSize: 24,
+              fontSize: 20,
               fontFamily: 'Recoleta'),
         ),
         leading: IconButton(
@@ -39,10 +40,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Divider(
-              thickness: 0.7,
-              color: AppColors.greyBombay,
-            ),
+            const LineRow(),
             Padding(
               padding: const EdgeInsets.only(left: 20),
               child: Row(
@@ -81,10 +79,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             const SizedBox(
               height: 10,
             ),
-            const Divider(
-              thickness: 0.7,
-              color: AppColors.greyBombay,
-            ),
+            const LineRow(),
             const SizedBox(
               height: 10,
             ),
@@ -110,10 +105,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             const SizedBox(
               height: 10,
             ),
-            const Divider(
-              thickness: 0.7,
-              color: AppColors.greyBombay,
-            ),
+            const LineRow(),
             const SizedBox(
               height: 10,
             ),
@@ -139,10 +131,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             const SizedBox(
               height: 10,
             ),
-            const Divider(
-              thickness: 0.7,
-              color: AppColors.greyBombay,
-            ),
+            const LineRow(),
             const SizedBox(
               height: 10,
             ),
@@ -168,10 +157,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             const SizedBox(
               height: 10,
             ),
-            const Divider(
-              thickness: 0.7,
-              color: AppColors.greyBombay,
-            ),
+            const LineRow(),
             const SizedBox(
               height: 10,
             ),
@@ -197,10 +183,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             const SizedBox(
               height: 10,
             ),
-            const Divider(
-              thickness: 0.7,
-              color: AppColors.greyBombay,
-            ),
+            const LineRow()
           ],
         ),
       ),

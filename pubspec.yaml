@@ -97,6 +97,6 @@ flutter:
         - asset: assets/fonts/SourceSansPro-Regular.ttf
     - family: Recoleta
       fonts:
-        - asset: assets/fonts/Recoleta-RegularDEMO.otf
+        - asset: assets/fonts/Recoleta-Regular.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -4,6 +4,7 @@ import 'package:cooking_social_app/components/row_content_not_icon.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 
+import '../../components/line_row.dart';
 import '../../constants/app_color.dart';
 
 class AccountScreen extends StatefulWidget {
@@ -39,10 +40,7 @@ class _AccountScreenState extends State<AccountScreen> {
       ),
       backgroundColor: AppColors.whitePorcelain,
       body: Column(children: [
-        const Divider(
-          thickness: 0.7,
-          color: AppColors.greyBombay,
-        ),
+        const LineRow(),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
           child: Column(
@@ -78,10 +76,7 @@ class _AccountScreenState extends State<AccountScreen> {
               const SizedBox(
                 height: 15,
               ),
-              const Divider(
-                thickness: 0.7,
-                color: AppColors.greyBombay,
-              ),
+              const LineRow()
             ],
           ),
         ),
@@ -108,10 +103,7 @@ class _AccountScreenState extends State<AccountScreen> {
             const SizedBox(
               height: 10,
             ),
-            const Divider(
-              thickness: 0.7,
-              color: AppColors.greyBombay,
-            ),
+            const LineRow()
           ]),
         ),
         Padding(

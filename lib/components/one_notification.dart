@@ -22,7 +22,7 @@ class OneNotification extends StatelessWidget {
     iconData = Icons.follow_the_signs_rounded;
     if (loaiTB == 'NewFollower') {
       title = 'New Follower';
-      iconData = Icons.follow_the_signs;
+      iconData = Icons.supervisor_account_outlined;
     }
     if (loaiTB == 'Bookmarked') {
       title = 'Bookmarked';
@@ -34,11 +34,11 @@ class OneNotification extends StatelessWidget {
     }
     if (loaiTB == 'NewReview') {
       title = 'New Review';
-      iconData = Icons.reviews_outlined;
+      iconData = Icons.comment_outlined;
     }
     if (loaiTB == 'ReviewLiked') {
       title = 'Review Liked';
-      iconData = Icons.library_add;
+      iconData = Icons.thumb_up_alt_outlined;
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
