@@ -1,6 +1,9 @@
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/models/recipe_item_published.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../widgets/recipe_item_published_widget.dart';
 
 class DetailCookBookScreen extends StatefulWidget {
   const DetailCookBookScreen({super.key});
@@ -359,7 +362,7 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'All Recipe (7)',
                           textAlign: TextAlign.start,
                           style: TextStyle(
@@ -381,7 +384,21 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                     ),
                   ),
 
-                  SizedBox(height: 100,)
+                  const SizedBox(height: 20,),
+
+                  Container(
+                    height: 400,
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        RecipeItemPublishedWidget(recipeItemPublished: RecipeItemPublished('Ayam Kecap Manis', 4.9, 109, 'assets/images/background_1.jpg'),),
+                        RecipeItemPublishedWidget(recipeItemPublished: RecipeItemPublished('Ayam Kecap Manis', 4.9, 109, 'assets/images/background_1.jpg'),),
+                        RecipeItemPublishedWidget(recipeItemPublished: RecipeItemPublished('Ayam Kecap Manis', 4.9, 109, 'assets/images/background_1.jpg'),),
+
+
+                      ],
+                    ),
+                  )
 
 
                 ],
