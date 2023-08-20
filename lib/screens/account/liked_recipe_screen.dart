@@ -35,12 +35,15 @@ class _LikedRecipeScreenState extends State<LikedRecipeScreen> {
               )),
         ),
         backgroundColor: AppColors.whitePorcelain,
-        body: Column(
+        body: const Column(
           children: [
-            const Divider(
+            Divider(
               thickness: 0.7,
               color: AppColors.greyBombay,
             ),
+            LikedWidget(
+                time: '40',
+                name: 'Nguyen Trung Tinh, Nguyen Trung Tinh, Nguyen Trung Tinh')
             // ListView.builder(
             //     itemCount: 2,
             //     itemBuilder: (BuildContext context, int index) {

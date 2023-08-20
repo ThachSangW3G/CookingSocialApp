@@ -100,7 +100,9 @@ class _AccountScreenState extends State<AccountScreen> {
                     iconData: Icons.notifications_on_outlined,
                     onTap: () {}),
                 IconContent(
-                    label: 'Settings', iconData: Icons.settings, onTap: () {}),
+                    label: 'Settings',
+                    iconData: Icons.settings_outlined,
+                    onTap: () {}),
               ],
             ),
             const SizedBox(
