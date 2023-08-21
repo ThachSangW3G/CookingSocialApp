@@ -1,6 +1,7 @@
-import 'package:cooking_social_app/widgets/liked_widget.dart';
+import 'package:cooking_social_app/components/recipe_item.dart';
 import 'package:flutter/material.dart';
 
+import '../../components/line_row.dart';
 import '../../constants/app_color.dart';
 
 class LikedRecipeScreen extends StatefulWidget {
@@ -37,11 +38,8 @@ class _LikedRecipeScreenState extends State<LikedRecipeScreen> {
         backgroundColor: AppColors.whitePorcelain,
         body: const Column(
           children: [
-            Divider(
-              thickness: 0.7,
-              color: AppColors.greyBombay,
-            ),
-            LikedWidget(
+            LineRow(),
+            RecipeItem(
                 time: '40',
                 name: 'Nguyen Trung Tinh, Nguyen Trung Tinh, Nguyen Trung Tinh')
             // ListView.builder(

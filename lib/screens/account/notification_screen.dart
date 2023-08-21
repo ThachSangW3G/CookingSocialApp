@@ -1,4 +1,4 @@
-import 'package:cooking_social_app/components/one_notification.dart';
+import 'package:cooking_social_app/components/notification_item.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/line_row.dart';
@@ -52,27 +52,27 @@ class _NotificationScreenState extends State<NotificationScreen> {
         child: Column(
           children: [
             LineRow(),
-            OneNotification(
+            NotificationItem(
                 loaiTB: 'NewFollower',
                 time: '1 min ago',
                 contextTitle: 'Yeay you got new follower',
                 contextDescription: 'Nararaya Susanti has follow you'),
-            OneNotification(
+            NotificationItem(
                 loaiTB: 'Bookmarked',
                 time: '1 min ago',
                 contextTitle: 'Yeay you got new follower',
                 contextDescription: 'Nararaya Susanti has follow you'),
-            OneNotification(
+            NotificationItem(
                 loaiTB: 'Liked',
                 time: '1 min ago',
                 contextTitle: 'Yeay you got new follower',
                 contextDescription: 'Nararaya Susanti has follow you'),
-            OneNotification(
+            NotificationItem(
                 loaiTB: 'NewReview',
                 time: '1 min ago',
                 contextTitle: 'Yeay you got new follower',
                 contextDescription: 'Nararaya Susanti has follow you'),
-            OneNotification(
+            NotificationItem(
                 loaiTB: 'ReviewLiked',
                 time: '1 min ago',
                 contextTitle: 'Yeay you got new follower',

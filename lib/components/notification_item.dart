@@ -2,12 +2,12 @@ import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 
-class OneNotification extends StatelessWidget {
+class NotificationItem extends StatelessWidget {
   final String loaiTB;
   final String time;
   final String contextTitle;
   final String contextDescription;
-  const OneNotification(
+  const NotificationItem(
       {super.key,
       required this.loaiTB,
       required this.time,

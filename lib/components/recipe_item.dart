@@ -1,12 +1,13 @@
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 
+import 'line_row.dart';
 import '../constants/app_color.dart';
 
-class LikedWidget extends StatelessWidget {
+class RecipeItem extends StatelessWidget {
   final String time;
   final String name;
-  const LikedWidget({super.key, required this.time, required this.name});
+  const RecipeItem({super.key, required this.time, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class LikedWidget extends StatelessWidget {
                 width: 60,
                 decoration: const BoxDecoration(
                     shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
                     image: DecorationImage(
                         image: AssetImage('assets/images/avatar.jpg'),
                         fit: BoxFit.contain)),
@@ -96,10 +98,7 @@ class LikedWidget extends StatelessWidget {
             ],
           ),
         ),
-        const Divider(
-          thickness: 0.7,
-          color: AppColors.greyBombay,
-        ),
+        const LineRow(),
       ],
     );
   }
