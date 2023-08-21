@@ -39,13 +39,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 const Text(
                   'Mallika',
                   style: TextStyle(
+                      fontFamily: 'Recoleta',
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 1.5),
                 ),
                 const Text(
                   'Everyone can be a chef',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, fontFamily: 'CeraPro'),
                 ),
                 const SizedBox(
                   height: 30.0,
@@ -87,13 +88,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
-                          letterSpacing: 1.2
+                          letterSpacing: 1.2,
+                          fontFamily: 'CeraPro'
                         ),
                         )
                     ),
                   ),
 
                 ),
+                const SizedBox(height: 20.0,),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -111,6 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontWeight: FontWeight.w500,
                           fontSize: 18,
                           letterSpacing: 1.3,
+                          fontFamily: 'CeraPro',
                           color: AppColors.greyBombay),
                     ),
                     Expanded(
@@ -162,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black,
+                                fontFamily: 'CeraPro',
                                 letterSpacing: 1.0),
                           ),
                         ),
@@ -207,13 +212,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             Expanded(
                               child: Container(
                                 margin: const EdgeInsets.symmetric(
-                                    horizontal: 10.0),
+                                    horizontal: 6.0),
                                 child: const Text(
                                   'Facebook',
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 17,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.black,
+                                      fontFamily: 'CeraPro',
                                       letterSpacing: 1.0),
                                 ),
                               ),
@@ -262,9 +268,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: const Text(
                                   'Google',
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: 17,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.black,
+                                      fontFamily: 'CeraPro',
                                       letterSpacing: 1.0),
                                 ),
                               ),
@@ -280,7 +287,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const Text(
                   "By continuing, you agree to our",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(
+                      color: Colors.black,
+                    fontSize: 12,
+                    fontFamily: 'CeraPro'
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -289,11 +300,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: const BoxDecoration(
                           border: Border(
                               bottom:
-                                  BorderSide(color: Colors.black, width: 2.0))),
+                                  BorderSide(color: Colors.black, width: 1.0))),
                       child: const Text(
                         "Terms of Service",
-                        style: TextStyle(
-                          color: Colors.black,
+                        style:  TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: 'CeraPro'
                         ),
                       ),
                     ),
@@ -308,11 +321,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: const BoxDecoration(
                           border: Border(
                               bottom:
-                                  BorderSide(color: Colors.black, width: 2.0))),
+                                  BorderSide(color: Colors.black, width: 1.0))),
                       child: const Text(
                         "Privacy Policy",
                         style: TextStyle(
-                          color: Colors.black,
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: 'CeraPro'
                         ),
                       ),
                     ),
@@ -327,11 +342,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: const BoxDecoration(
                           border: Border(
                               bottom:
-                                  BorderSide(color: Colors.black, width: 2.0))),
+                                  BorderSide(color: Colors.black, width: 1.0))),
                       child: const Text(
                         "Content Policy",
                         style: TextStyle(
-                          color: Colors.black,
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: 'CeraPro'
                         ),
                       ),
                     )
