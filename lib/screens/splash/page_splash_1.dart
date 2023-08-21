@@ -88,7 +88,7 @@ class _PageSplash1State extends State<PageSplash1> {
                   style: TextStyle(
                     fontFamily: 'CeraPro',
                     fontWeight: FontWeight.w600,
-                    fontSize: 25
+                    fontSize: 25,
                   ),
                 ),
                 const SizedBox(height: 20,),
