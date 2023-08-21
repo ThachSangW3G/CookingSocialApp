@@ -2,12 +2,12 @@ import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 
-class OneReView extends StatelessWidget {
+class CommentItem extends StatelessWidget {
   final String name;
   final String time;
   final String content;
   final bool check;
-  const OneReView(
+  const CommentItem(
       {super.key,
       required this.name,
       required this.time,
@@ -17,7 +17,7 @@ class OneReView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.only(left: 15, bottom: 15, right: 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,

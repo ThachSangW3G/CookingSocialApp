@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../models/featured.dart';
+import 'featured_card_widget.dart';
+
 class PostWidget extends StatefulWidget {
   const PostWidget({super.key});
 
@@ -10,6 +13,19 @@ class PostWidget extends StatefulWidget {
 class _PostWidgetState extends State<PostWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return ListView(
+      scrollDirection: Axis.vertical,
+      children: [
+        FeaturedCard(
+          featured: listFeatured[0],
+        ),
+        FeaturedCard(
+          featured: listFeatured[1],
+        ),
+        FeaturedCard(
+          featured: listFeatured[2],
+        ),
+      ],
+    );
   }
 }

@@ -1,8 +1,12 @@
 import 'package:cooking_social_app/components/line_row.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/widgets/post_widget.dart';
+import 'package:cooking_social_app/widgets/reviews_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/app_color.dart';
+import '../../models/featured.dart';
+import '../../widgets/featured_card_widget.dart';
 
 class AccountPerSonScreen extends StatefulWidget {
   const AccountPerSonScreen({super.key});
@@ -12,17 +16,18 @@ class AccountPerSonScreen extends StatefulWidget {
 }
 
 class _AccountPerSonScreenState extends State<AccountPerSonScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late TabController _tabController;
-  late PageController _pageController;
-  late PageController _favoritesPageController;
-
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
-    _pageController =
-        PageController(initialPage: 0, viewportFraction: 0.8, keepPage: true);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -167,6 +172,7 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                     children: [
                       SizedBox(
                         height: 40,
+                        width: double.infinity,
                         child: TabBar(
                           controller: _tabController,
                           indicator: BoxDecoration(
@@ -206,7 +212,14 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                           ],
                         ),
                       ),
-                      const LineRow()
+                      const LineRow(),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height,
+                        width: double.infinity,
+                        child: TabBarView(
+                            controller: _tabController,
+                            children: const [PostWidget(), ReviewWidget()]),
+                      )
                     ],
                   )
                 ],

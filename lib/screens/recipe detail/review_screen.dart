@@ -1,4 +1,4 @@
-import 'package:cooking_social_app/components/one_review.dart';
+import 'package:cooking_social_app/components/comment_item.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/app_color.dart';
@@ -38,7 +38,7 @@ class _ReViewScreenState extends State<ReViewScreen> {
       body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            const OneReView(
+            const CommentItem(
                 name: 'Nguyen Trung Tinh',
                 time: '4 day ago',
                 content: 'San Pham Rat Dep Luohhhhhhhhhhhhhhhhhhhhhhhhhhhhhn',
