@@ -1,5 +1,6 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/screens/home/home_screen.dart';
+import 'package:cooking_social_app/screens/search_recipe/search_recipe_screen.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -14,7 +15,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int currentTab = 0;
   final List<Widget> screens = [
     const HomeScreen(),
-    const HomeScreen(),
+    const SearchRecipeScreen(),
     const HomeScreen(),
     const HomeScreen(),
 
@@ -73,7 +74,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
                   onPressed: (){
                     setState(() {
-                      currentScreen = const HomeScreen();
+                      currentScreen = const SearchRecipeScreen();
                       currentTab = 1;
 
                     });
