@@ -1,3 +1,5 @@
+import 'package:cooking_social_app/components/comment_item.dart';
+import 'package:cooking_social_app/components/recipe_item.dart';
 import 'package:flutter/material.dart';
 
 import '../components/review_item.dart';
@@ -13,7 +15,9 @@ class _ReviewWidgetState extends State<ReviewWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      scrollDirection: Axis.vertical,
+      padding: const EdgeInsets.all(0),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       children: const [
         ReviewItem(
             name: 'Nguyen Trung Tinh',

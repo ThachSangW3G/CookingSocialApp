@@ -1,6 +1,7 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class CommentItem extends StatelessWidget {
   final String name;
@@ -72,8 +73,12 @@ class CommentItem extends StatelessWidget {
                       color: Colors.red,
                       size: 30,
                     )),
-          PopupMenuButton(
-            itemBuilder: (BuildContext context) => <PopupMenuEntry>[],
+          SvgPicture.asset(
+            'assets/icon_svg/options.svg',
+            colorFilter:
+                const ColorFilter.mode(AppColors.greyBombay, BlendMode.srcIn),
+            height: 24,
+            width: 24,
           )
         ],
       ),

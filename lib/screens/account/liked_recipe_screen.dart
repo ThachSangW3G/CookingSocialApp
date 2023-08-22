@@ -36,7 +36,7 @@ class _LikedRecipeScreenState extends State<LikedRecipeScreen> {
               )),
         ),
         backgroundColor: AppColors.whitePorcelain,
-        body: const Column(
+        body: ListView(
           children: [
             LineRow(),
             RecipeItem(

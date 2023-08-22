@@ -1,5 +1,6 @@
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'line_row.dart';
 import '../constants/app_color.dart';
@@ -14,17 +15,17 @@ class RecipeItem extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                height: 60,
-                width: 60,
+                height: 70,
+                width: 70,
                 decoration: const BoxDecoration(
                     shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
                     image: DecorationImage(
                         image: AssetImage('assets/images/avatar.jpg'),
                         fit: BoxFit.contain)),
@@ -35,45 +36,51 @@ class RecipeItem extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(
-                        name,
-                        overflow: TextOverflow.visible,
-                        style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontFamily: "CeraPro"),
-                      ),
+                      Text(name,
+                          overflow: TextOverflow.visible,
+                          style: kReviewLabelTextStyle),
                       Padding(
                         padding: const EdgeInsets.only(right: 50, top: 10),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Icon(
-                              Icons.access_time_outlined,
-                              color: AppColors.greyBombay,
-                              size: 22,
+                            SvgPicture.asset(
+                              'assets/icon_svg/clock.svg',
+                              height: 20,
+                              width: 20,
+                              colorFilter: const ColorFilter.mode(
+                                  AppColors.greyBombay, BlendMode.srcIn),
+                            ),
+                            const SizedBox(
+                              width: 12.0,
                             ),
                             Text(
                               time,
-                              style: kReviewLabelTextStyle,
+                              style: kLabelTextStyle,
+                            ),
+                            const SizedBox(
+                              width: 7.0,
                             ),
                             const Text(
                               'min',
-                              style: kReviewLabelTextStyle,
+                              style: kLabelTextStyle,
                             ),
                             const SizedBox(
-                              width: 10,
+                              width: 20,
                             ),
-                            const Image(
-                              image: AssetImage('assets/icons/tray.png'),
-                              width: 21,
-                              height: 21,
-                              color: AppColors.greyBombay,
+                            SvgPicture.asset(
+                              'assets/icon_svg/dinner.svg',
+                              height: 20,
+                              width: 20,
+                              colorFilter: const ColorFilter.mode(
+                                  AppColors.greyBombay, BlendMode.srcIn),
+                            ),
+                            const SizedBox(
+                              width: 10.0,
                             ),
                             const Text(
                               'Easy',
-                              style: kReviewLabelTextStyle,
+                              style: kLabelTextStyle,
                             ),
                           ],
                         ),
@@ -82,18 +89,12 @@ class RecipeItem extends StatelessWidget {
                   ),
                 ),
               ),
-              PopupMenuButton(
-                itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                  const PopupMenuItem(
-                    child: Text('Item 1'),
-                  ),
-                  const PopupMenuItem(
-                    child: Text('Item 2'),
-                  ),
-                  const PopupMenuItem(
-                    child: Text('Item 3'),
-                  ),
-                ],
+              SvgPicture.asset(
+                'assets/icon_svg/options.svg',
+                colorFilter: const ColorFilter.mode(
+                    AppColors.greyBombay, BlendMode.srcIn),
+                height: 24,
+                width: 24,
               )
             ],
           ),
