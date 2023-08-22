@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../constants/app_color.dart';
+import '../../widgets/grocery_item_uncheck.dart';
 
 class GroceryScreen extends StatefulWidget {
   const GroceryScreen({super.key});
@@ -261,126 +262,5 @@ class _GroceryScreenState extends State<GroceryScreen> {
   );
 }
 
-class GroceryItemUncheck extends StatelessWidget {
-  final IngredientItem ingredientItem;
-  const GroceryItemUncheck({
-    super.key, required this.ingredientItem,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 15.0),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            width: 1,
-            color: AppColors.greyIron
-          )
-        )
-      ),
-      child: Row(
-        children: [
-          Container(
-            height: 24,
-            width: 24,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: AppColors.greyIron
-            ),
-          ),
-          const SizedBox(width: 10.0,),
-          Expanded(
-            child: Text(
-              ingredientItem.title,
-              softWrap: true,
-
-
-              style: const TextStyle(
-                fontFamily: 'CeraPro',
-                fontWeight: FontWeight.w500,
-                fontSize: 16
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class DialogDelete extends StatefulWidget {
-  const DialogDelete({super.key});
-
-  @override
-  State<DialogDelete> createState() => _DialogDeleteState();
-}
-
-class _DialogDeleteState extends State<DialogDelete> {
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16.0)
-      ),
-      child:  Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SizedBox(
-          height: 165,
-          child: Column(
-            children: [
-              const Text(
-                'Are you sure you want to go remove all item?',
-                style: TextStyle(
-                  fontFamily: 'CeraPro',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700
-                ),
-              ),
-              const SizedBox(height: 10.0,),
-              const Text(
-                'Any changes you made will be lost.',
-                style: TextStyle(
-                  fontFamily: 'CeraPro',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500
-                ),
-              ),
-              const SizedBox(height: 20.0,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
-                        fontFamily: 'CeraPro',
-                        fontSize: 20,
-                        color: AppColors.orangeCrusta,
-                        fontWeight: FontWeight.w700
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 40.0,),
-                  const Text(
-                    'OK',
-                    style: TextStyle(
-                        fontFamily: 'CeraPro',
-                        fontSize: 20,
-                        color: AppColors.orangeCrusta,
-                        fontWeight: FontWeight.w700
-                    ),
-                  )
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
