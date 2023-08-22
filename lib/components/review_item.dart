@@ -38,51 +38,54 @@ class ReviewItem extends StatelessWidget {
                 width: 10,
               ),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          name,
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontFamily: "CeraPro",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15),
-                        ),
-                        SizedBox(
-                          child: Row(
-                            children: [
-                              IconButton(
-                                  onPressed: () {},
-                                  icon: check == false
-                                      ? const Icon(
-                                          Icons.favorite_border_outlined,
-                                          color: AppColors.greyBombay,
-                                          size: 30,
-                                        )
-                                      : const Icon(
-                                          Icons.favorite_sharp,
-                                          color: Colors.red,
-                                          size: 30,
-                                        )),
-                              PopupMenuButton(
-                                itemBuilder: (BuildContext context) =>
-                                    <PopupMenuEntry>[],
-                              )
-                            ],
+                child: Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            name,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontFamily: "CeraPro",
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
                           ),
-                        )
-                      ],
-                    ),
-                    Text(
-                      content,
-                      style: kReviewLabelTextStyle,
-                    )
-                  ],
+                          SizedBox(
+                            child: Row(
+                              children: [
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: check == false
+                                        ? const Icon(
+                                            Icons.favorite_border_outlined,
+                                            color: AppColors.greyBombay,
+                                            size: 30,
+                                          )
+                                        : const Icon(
+                                            Icons.favorite_sharp,
+                                            color: Colors.red,
+                                            size: 30,
+                                          )),
+                                PopupMenuButton(
+                                  itemBuilder: (BuildContext context) =>
+                                      <PopupMenuEntry>[],
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      Text(
+                        content,
+                        style: kReviewLabelTextStyle,
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],

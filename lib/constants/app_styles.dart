@@ -17,7 +17,11 @@ const kReviewLabelTextStyle = TextStyle(
     fontFamily: "CeraPro",
     fontSize: 17,
     fontWeight: FontWeight.w500);
-
+const kReviewLabelTextStyleBold = TextStyle(
+    color: Colors.black,
+    fontFamily: "CeraPro",
+    fontSize: 19,
+    fontWeight: FontWeight.w600);
 const kNumberTextStyle = TextStyle(
   fontSize: 50.0,
   fontWeight: FontWeight.w900,

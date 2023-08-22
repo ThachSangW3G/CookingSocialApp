@@ -13,7 +13,9 @@ class _ReviewWidgetState extends State<ReviewWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      scrollDirection: Axis.vertical,
+      padding: const EdgeInsets.all(0),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
       children: const [
         ReviewItem(
             name: 'Nguyen Trung Tinh',
