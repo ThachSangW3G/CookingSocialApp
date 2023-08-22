@@ -1,6 +1,8 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/screens/home/home_screen.dart';
+import 'package:cooking_social_app/screens/search_recipe/search_recipe_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -14,7 +16,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   int currentTab = 0;
   final List<Widget> screens = [
     const HomeScreen(),
-    const HomeScreen(),
+    const SearchRecipeScreen(),
     const HomeScreen(),
     const HomeScreen(),
 
@@ -61,8 +63,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
                     });
                   },
-                  child: Icon(
-                    Icons.home,
+                  child: SvgPicture.asset(
+                    'assets/icon_svg/home.svg',
                     color: currentTab == 0 ? AppColors.orangeCrusta : Colors.black,
                   ),
                 ),
@@ -73,13 +75,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
                   onPressed: (){
                     setState(() {
-                      currentScreen = const HomeScreen();
+                      currentScreen = const SearchRecipeScreen();
                       currentTab = 1;
 
                     });
                   },
-                  child: Icon(
-                    Icons.search,
+                  child: SvgPicture.asset(
+                    'assets/icon_svg/search.svg',
                     color: currentTab == 1 ? AppColors.orangeCrusta : Colors.black,
                   ),
                 ),
@@ -97,8 +99,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
                     });
                   },
-                  child: Icon(
-                    Icons.shopping_cart,
+                  child: SvgPicture.asset(
+                    'assets/icon_svg/cart.svg',
                     color: currentTab == 2 ? AppColors.orangeCrusta : Colors.black,
                   ),
                 ),
@@ -113,8 +115,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
                     });
                   },
-                  child: Icon(
-                    Icons.calendar_month,
+                  child: SvgPicture.asset(
+                    'assets/icon_svg/calendar.svg',
                     color: currentTab == 3 ? AppColors.orangeCrusta : Colors.black,
                   ),
                 ),

@@ -1,6 +1,11 @@
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/models/recipe_item_published.dart';
+import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
+import 'package:cooking_social_app/widgets/recipe_item_unpublished_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import '../../widgets/recipe_item_published_widget.dart';
 
 class DetailCookBookScreen extends StatefulWidget {
   const DetailCookBookScreen({super.key});
@@ -70,7 +75,7 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: 200),
+              margin: const EdgeInsets.only(top: 200),
               child: Column(
                 children: [
                   Row(
@@ -92,9 +97,9 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                             ]
                         ),
 
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: const Column(
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
                             children: [
                               SizedBox(height: 20.0,),
                               Text(
@@ -174,8 +179,8 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                   const SizedBox(height: 20.0,),
                   Container(
                     height: 48,
-                    margin: EdgeInsets.symmetric(horizontal: 20.0),
-                    decoration: BoxDecoration(
+                    margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                    decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(16.0)),
                       color: AppColors.greyIron
                     ),
@@ -184,7 +189,7 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Recipe Title, Ingredient',
-                          hintStyle: TextStyle(
+                          hintStyle: const TextStyle(
                             fontFamily: 'CeraPro',
                             fontSize: 17,
                             color: AppColors.greyShuttle
@@ -218,12 +223,12 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 10.0,),
+                  const SizedBox(height: 10.0,),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                        borderRadius: const BorderRadius.all(Radius.circular(16)),
                         border: Border.all(
                           color: AppColors.greyIron
                         )
@@ -236,7 +241,7 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   'Kari Daging Sapi',
                                   style: TextStyle(
                                     fontFamily: 'CeraPro',
@@ -244,7 +249,7 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                                     fontSize: 20,
                                   ),
                                 ),
-                                SizedBox(height: 8.0,),
+                                const SizedBox(height: 8.0,),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
@@ -254,32 +259,32 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                                       height: 15,
                                       width: 15,
                                     ),
-                                    SizedBox(width: 10.0,),
-                                    Text(
+                                    const SizedBox(width: 10.0,),
+                                    const Text(
                                       '4.9',
                                       style: TextStyle(
                                         fontFamily: 'CeraPro',
                                         color: AppColors.greyShuttle
                                       ),
                                     ),
-                                    SizedBox(width: 10.0,),
-                                    Text(
+                                    const SizedBox(width: 10.0,),
+                                    const Text(
                                       '|',
                                       style: TextStyle(
                                           fontFamily: 'CeraPro',
                                           color: AppColors.greyShuttle
                                       ),
                                     ),
-                                    SizedBox(width: 10.0,),
-                                    Text(
+                                    const SizedBox(width: 10.0,),
+                                    const Text(
                                       '103',
                                       style: TextStyle(
                                           fontFamily: 'CeraPro',
                                           color: AppColors.greyShuttle
                                       ),
                                     ),
-                                    SizedBox(width: 10.0,),
-                                    Text(
+                                    const SizedBox(width: 10.0,),
+                                    const Text(
                                       'Reviews',
                                       style: TextStyle(
                                           fontFamily: 'CeraPro',
@@ -289,7 +294,7 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
 
                                   ],
                                 ),
-                                SizedBox(height: 20,),
+                                const SizedBox(height: 20,),
                                 Row(
                                   children: [
                                     SvgPicture.asset(
@@ -298,8 +303,8 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                                       width: 16,
                                       color: AppColors.greyBombay,
                                     ),
-                                    SizedBox(width: 10.0,),
-                                    Text(
+                                    const SizedBox(width: 10.0,),
+                                    const Text(
                                       '40',
                                       style: TextStyle(
                                         fontFamily: 'CeraPro',
@@ -307,8 +312,8 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                                         color: AppColors.greyShuttle
                                       ),
                                     ),
-                                    SizedBox(width: 8.0,),
-                                    Text(
+                                    const SizedBox(width: 8.0,),
+                                    const Text(
                                       'mins',
                                       style: TextStyle(
                                         fontFamily: 'CeraPro',
@@ -316,15 +321,15 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
 
                                       ),
                                     ),
-                                    SizedBox(width: 10.0,),
+                                    const SizedBox(width: 10.0,),
                                     SvgPicture.asset(
                                       'assets/icon_svg/dinner.svg',
                                       height: 16,
                                       width: 16,
                                       color: AppColors.greyBombay,
                                     ),
-                                    SizedBox(width: 10.0,),
-                                    Text(
+                                    const SizedBox(width: 10.0,),
+                                    const Text(
                                       'Easy',
                                       style: TextStyle(
                                         fontFamily: 'CeraPro',
@@ -339,7 +344,7 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                             Container(
                               height: 100,
                               width: 100,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 image: DecorationImage(
                                   image: AssetImage('assets/images/background_1.jpg'),
                                   fit: BoxFit.cover
@@ -353,13 +358,13 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                     ),
                   ),
 
-                  SizedBox(height: 20.0,),
+                  const SizedBox(height: 20.0,),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'All Recipe (7)',
                           textAlign: TextAlign.start,
                           style: TextStyle(
@@ -381,7 +386,24 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                     ),
                   ),
 
-                  SizedBox(height: 100,)
+
+                  SizedBox(
+                    height: 500,
+                    child: ListView(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      children: [
+                        RecipeItemPublishedWidget(recipeItemPublished: RecipeItemPublished('Ayam Kecap Manis', 4.9, 109, 'assets/images/background_1.jpg'),),
+                        RecipeItemPublishedWidget(recipeItemPublished: RecipeItemPublished('Ayam Kecap Manis', 4.9, 109, 'assets/images/background_1.jpg'),),
+                        RecipeItemPublishedWidget(recipeItemPublished: RecipeItemPublished('Ayam Kecap Manis', 4.9, 109, 'assets/images/background_1.jpg'),),
+
+                        RecipeItemUnPublishedWidget(recipeItemUnPublished: RecipeItemUnPublished('Nasi Magelangan', 40, 'Easy', 'assets/images/background_splash_1.jpg')),
+                        RecipeItemUnPublishedWidget(recipeItemUnPublished: RecipeItemUnPublished('Nasi Magelangan', 40, 'Easy', 'assets/images/background_splash_1.jpg')),
+                        RecipeItemUnPublishedWidget(recipeItemUnPublished: RecipeItemUnPublished('Nasi Magelangan', 40, 'Easy', 'assets/images/background_splash_1.jpg')),
+
+                      ],
+                    ),
+                  )
 
 
                 ],
