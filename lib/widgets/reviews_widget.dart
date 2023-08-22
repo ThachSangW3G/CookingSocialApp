@@ -1,3 +1,5 @@
+import 'package:cooking_social_app/components/comment_item.dart';
+import 'package:cooking_social_app/components/recipe_item.dart';
 import 'package:flutter/material.dart';
 
 import '../components/review_item.dart';
