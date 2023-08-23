@@ -1,4 +1,6 @@
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/widgets/recipe_ingredients_edit_view.dart';
+import 'package:cooking_social_app/widgets/recipe_steps_edit_view.dart';
 import 'package:cooking_social_app/widgets/yes_no_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -44,7 +46,9 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            _showGobackPopup(context);
+          },
         ),
         actions: [
           TextButton(
@@ -62,19 +66,26 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         ],
         bottom: TabBar(
           controller: _tabController,
+          indicator: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              25.0,
+            ),
+            color: AppColors.orangeCrusta,
+          ),
           labelColor: AppColors.orangeCrusta,
           labelStyle: const TextStyle(
               fontFamily: 'CeraPro',
               fontSize: 18.0,
               fontWeight: FontWeight.w400,
               color: AppColors.greyBombay),
+          dividerColor: Colors.white,
           tabs: [
             buildTab(0, 'Intro'),
             buildTab(1, 'Ingredients'),
             buildTab(2, 'Steps'),
           ],
         ),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
+        // systemOverlayStyle: SystemUiOverlayStyle.light,
       ),
       body: TabBarView(
         controller: _tabController,
@@ -292,11 +303,13 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
               ],
             ),
           )),
-          const Center(
-            child: Text('Content of Tab 2'),
+          const Padding(
+            padding: EdgeInsets.only(top: 16),
+            child: RecipeIngredientsEdit(),
           ),
-          const Center(
-            child: Text('Content of Tab 3'),
+          const Padding(
+            padding: EdgeInsets.only(top: 16),
+            child: RecipeStepsEdit(),
           ),
         ],
       ),
@@ -312,17 +325,47 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         _tabController.animateTo(index);
       },
       child: Container(
-        color: _selectedTabIndex == index ? AppColors.orangeCrusta : null,
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: _selectedTabIndex == index
-                ? Colors.white
-                : AppColors.greyBombay,
+        height: 36,
+        width: 103,
+        // color: _selectedTabIndex == index ? AppColors.orangeCrusta : null,
+        // padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: _selectedTabIndex == index
+                  ? Colors.white
+                  : AppColors.greyBombay,
+            ),
           ),
         ),
       ),
+    );
+  }
+  
+  void _showGobackPopup(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Are you sure you want to go back?'),
+          content: const Text('Any changes you made will be lost.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancle'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
