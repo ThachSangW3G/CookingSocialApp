@@ -1,3 +1,4 @@
+import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
 const kBottomContainerHeight = 80.0;
@@ -6,10 +7,21 @@ const kInactiveCardColour = Color(0xFF111328);
 const kBottomContainerColour = Color(0xFFEB1555);
 
 const kLabelTextStyle = TextStyle(
-  fontSize: 18.0,
-  color: Color(0xFF8D8E98),
-);
-
+    color: AppColors.greyShuttle, fontFamily: "CeraPro", fontSize: 16);
+const kLabelTextStyleBig = TextStyle(
+    color: AppColors.greyShuttle, fontFamily: "CeraPro", fontSize: 17);
+const kLabelTextStyleBiggest = TextStyle(
+    color: AppColors.greyShuttle, fontFamily: "CeraPro", fontSize: 19);
+const kReviewLabelTextStyle = TextStyle(
+    color: Colors.black,
+    fontFamily: "CeraPro",
+    fontSize: 18,
+    fontWeight: FontWeight.w500);
+const kReviewLabelTextStyleBold = TextStyle(
+    color: Colors.black,
+    fontFamily: "CeraPro",
+    fontSize: 19,
+    fontWeight: FontWeight.w600);
 const kNumberTextStyle = TextStyle(
   fontSize: 50.0,
   fontWeight: FontWeight.w900,
