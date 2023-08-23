@@ -79,7 +79,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          Center(
+          SingleChildScrollView(
               child: Container(
             padding:
                 const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
