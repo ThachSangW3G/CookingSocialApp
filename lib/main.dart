@@ -1,4 +1,14 @@
+import 'package:cooking_social_app/screens/account/account_person_screen.dart';
+import 'package:cooking_social_app/screens/account/account_screen.dart';
+import 'package:cooking_social_app/screens/account/notification_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
+import 'package:cooking_social_app/screens/bottom_navigation/bottom_navigation.dart';
+import 'package:cooking_social_app/screens/community/community.dart';
+import 'package:cooking_social_app/screens/cookbook/detail_cookbook.dart';
+import 'package:cooking_social_app/screens/grocery/grocery_screen.dart';
+import 'package:cooking_social_app/screens/recipe%20detail/review_screen.dart';
+import 'package:cooking_social_app/screens/search_recipe/search_recipe_screen.dart';
+import 'package:cooking_social_app/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,7 +28,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      home: const CommunityScreen(),
     );
   }
 }
