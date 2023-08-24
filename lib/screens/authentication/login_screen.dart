@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     fit: BoxFit.cover)),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 200),
+            margin: const EdgeInsets.only(top: 100),
             width: double.infinity,
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
