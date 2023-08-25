@@ -16,7 +16,6 @@ class _LikedRecipeScreenState extends State<LikedRecipeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: AppColors.whitePorcelain,
           centerTitle: true,
           title: const Text(
             'Liked Recipe',
@@ -28,25 +27,25 @@ class _LikedRecipeScreenState extends State<LikedRecipeScreen> {
                 fontFamily: 'Recoleta'),
           ),
           leading: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               icon: const Icon(
                 Icons.arrow_back_ios_outlined,
                 color: Colors.black,
                 size: 20,
               )),
+          bottom: const PreferredSize(
+              preferredSize: Size.fromHeight(16.0), child: LineRow()),
         ),
-        backgroundColor: AppColors.whitePorcelain,
         body: ListView(
-          children: [
-            LineRow(),
+          children: const [
             RecipeItem(
                 time: '40',
-                name: 'Nguyen Trung Tinh, Nguyen Trung Tinh, Nguyen Trung Tinh')
-            // ListView.builder(
-            //     itemCount: 2,
-            //     itemBuilder: (BuildContext context, int index) {
-            //       return LikedWidget(time: '40', name: 'Nguyen Trung Tinh');
-            //     }),
+                name: 'Resep Masakan Udang Tahu dengan Bumbu Tauco'),
+            RecipeItem(
+                time: '40',
+                name: 'Resep Mie Sagu Khas Selat Panjang, Nikmatnya Menggoda')
           ],
         ));
   }

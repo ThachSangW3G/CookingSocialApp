@@ -37,51 +37,70 @@ class ReviewItem extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
+                  //decoration: BoxDecoration(color: Colors.black),
                   padding: const EdgeInsets.only(left: 10, top: 0),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              name,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontFamily: "CeraPro",
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15),
-                            ),
-                            SizedBox(
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: check == false
-                                          ? const Icon(
-                                              Icons.favorite_border_outlined,
-                                              color: AppColors.greyBombay,
-                                              size: 30,
-                                            )
-                                          : const Icon(
-                                              Icons.favorite_sharp,
-                                              color: Colors.red,
-                                              size: 30,
-                                            )),
-                                  SvgPicture.asset(
-                                    'assets/icon_svg/options.svg',
-                                    colorFilter: const ColorFilter.mode(
-                                        AppColors.greyBombay, BlendMode.srcIn),
-                                    height: 24,
-                                    width: 24,
-                                  )
-                                ],
+                            Expanded(
+                              child: Text(
+                                name,
+                                style: const TextStyle(
+                                    color: AppColors.greyShuttle,
+                                    fontFamily: "CeraPro",
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14),
                               ),
-                            )
+                            ),
+                            Container(
+                              padding: EdgeInsets.zero,
+                              child: Row(children: [
+                                check == false
+                                    ? GestureDetector(
+                                        onTap: () {},
+                                        child: SvgPicture.asset(
+                                          'assets/icon_svg/heart.svg',
+                                          colorFilter: const ColorFilter.mode(
+                                              AppColors.greyBombay,
+                                              BlendMode.srcIn),
+                                          height: 24,
+                                          width: 24,
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {},
+                                        child: SvgPicture.asset(
+                                          'assets/icon_svg/heart_orange.svg',
+                                          colorFilter: const ColorFilter.mode(
+                                              AppColors.orangeCrusta,
+                                              BlendMode.srcIn),
+                                          height: 24,
+                                          width: 24,
+                                        ),
+                                      ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                SvgPicture.asset(
+                                  'assets/icon_svg/options.svg',
+                                  colorFilter: const ColorFilter.mode(
+                                      AppColors.greyBombay, BlendMode.srcIn),
+                                  height: 24,
+                                  width: 24,
+                                ),
+                              ]),
+                            ),
                           ],
                         ),
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                       Text(
                         content,

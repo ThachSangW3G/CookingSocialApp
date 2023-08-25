@@ -23,14 +23,14 @@ class RowContent extends StatelessWidget {
                 label,
                 style: const TextStyle(
                     fontWeight: FontWeight.w400,
-                    fontSize: 16,
+                    fontSize: 17,
                     fontFamily: "CeraPro",
                     color: Colors.black),
               ),
               SvgPicture.asset(
                 'assets/icon_svg/chevron-circle-right.svg',
-                height: 15,
-                width: 8,
+                height: 19,
+                width: 11,
                 colorFilter: const ColorFilter.mode(
                     AppColors.greyBombay, BlendMode.srcIn),
               ),

@@ -43,60 +43,66 @@ class NotificationItem extends StatelessWidget {
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(0),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                      iconData,
-                      height: 16,
-                      width: 16,
-                      colorFilter: const ColorFilter.mode(
-                          AppColors.orangeCrusta, BlendMode.srcIn),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      title,
-                      style: kLabelTextStyle,
-                    ),
-                  ],
+          SizedBox(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        iconData,
+                        height: 16,
+                        width: 16,
+                        colorFilter: const ColorFilter.mode(
+                            AppColors.orangeCrusta, BlendMode.srcIn),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Text(
-                time,
-                style: kLabelTextStyle,
-              )
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 33),
-            child: Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    contextTitle,
-                    style: kLabelTextStyleBigDark,
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: kLabelTextStyle,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          contextTitle,
+                          style: kLabelTextStyleBigDark,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          contextDescription,
+                          style: kLabelTextStyleBig,
+                        )
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    contextDescription,
-                    style: kLabelTextStyleBig,
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
-          )
+          ),
+          Text(
+            time,
+            style: kLabelTextStyle,
+          ),
         ],
       ),
     );

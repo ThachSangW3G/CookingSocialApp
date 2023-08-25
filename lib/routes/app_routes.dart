@@ -8,23 +8,27 @@ import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/recipe_details_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/review_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class RouteGenerator {
   const RouteGenerator._();
 
   static Route<dynamic> generatorRoute(RouteSettings settings) {
-    //final args = settings.arguments;
+    final args = settings.arguments;
     switch (settings.name) {
-      // case home:
-      // return MaterialPageRoute<LoginScreen>(
-      //     builder: (_) => const LoginScreen());
-      //
+      case home:
+        return MaterialPageRoute<LoginScreen>(
+            builder: (_) => const LoginScreen());
+
       case accountScreen:
         return FadeRoute(
             builder: (_) => const AccountScreen(), settings: settings);
       case notificationScreen:
-        return FadeRoute(
-            builder: (_) => const NotificationScreen(), settings: settings);
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: NotificationScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
       case accountpersonScreen:
         return FadeRoute(
             builder: (_) => const AccountPerSonScreen(), settings: settings);
@@ -47,19 +51,19 @@ class RouteGenerator {
     }
   }
 
-  //static const home = '/';
+  static const home = '/';
 
   // ACCOUNT
-  static const accountScreen = '/account';
-  static const notificationScreen = '/notification';
-  static const accountpersonScreen = '/accountperson';
-  static const editprofileScreen = '/editprofile';
-  static const likedrecipeScreen = '/likedrecipe';
+  static const accountScreen = 'account';
+  static const notificationScreen = 'notification';
+  static const accountpersonScreen = 'accountperson';
+  static const editprofileScreen = 'editprofile';
+  static const likedrecipeScreen = 'likedrecipe';
   //
 
   // RECIPE DETAILS
-  static const recipedetailScreen = '/recipedetail';
-  static const reviewScreen = '/review';
+  static const recipedetailScreen = 'recipedetail';
+  static const reviewScreen = 'review';
   //
 }
 

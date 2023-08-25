@@ -2,6 +2,7 @@ import 'package:cooking_social_app/components/icon_content.dart';
 import 'package:cooking_social_app/components/row_content.dart';
 import 'package:cooking_social_app/components/row_content_not_icon.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/line_row.dart';
@@ -19,7 +20,6 @@ class _AccountScreenState extends State<AccountScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.whitePorcelain,
         centerTitle: true,
         title: const Text(
           'Account',
@@ -31,16 +31,18 @@ class _AccountScreenState extends State<AccountScreen> {
               fontFamily: 'Recoleta'),
         ),
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: const Icon(
               Icons.arrow_back_ios_outlined,
               color: Colors.black,
               size: 20,
             )),
+        bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(16.0), child: LineRow()),
       ),
-      backgroundColor: AppColors.whitePorcelain,
       body: Column(children: [
-        const LineRow(),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
           child: Column(
@@ -89,15 +91,24 @@ class _AccountScreenState extends State<AccountScreen> {
                 IconContent(
                     label: 'Liked Recipe',
                     iconData: 'assets/icon_svg/heart.svg',
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, RouteGenerator.likedrecipeScreen);
+                    }),
                 IconContent(
                     label: 'Notifications',
                     iconData: 'assets/icon_svg/bell.svg',
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, RouteGenerator.notificationScreen);
+                    }),
                 IconContent(
                     label: 'Settings',
                     iconData: 'assets/icon_svg/equalizer.svg',
-                    onTap: () {}),
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, RouteGenerator.accountpersonScreen);
+                    }),
               ],
             ),
             const SizedBox(
