@@ -1,5 +1,6 @@
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../components/line_row.dart';
 import '../../constants/app_color.dart';
@@ -57,10 +58,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   const SizedBox(
                     height: 20,
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.photo_camera_outlined),
-                    color: AppColors.orangeCrusta,
+                  GestureDetector(
+                    onTap: () {},
+                    child: SvgPicture.asset(
+                      'assets/icon_svg/camera.svg',
+                      height: 24,
+                      width: 24,
+                      colorFilter: const ColorFilter.mode(
+                          AppColors.orangeCrusta, BlendMode.srcIn),
+                    ),
                   ),
                   const SizedBox(
                     height: 20,

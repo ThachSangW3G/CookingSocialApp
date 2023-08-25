@@ -1,4 +1,6 @@
+import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class RowContent extends StatelessWidget {
   final String label;
@@ -20,16 +22,18 @@ class RowContent extends StatelessWidget {
               Text(
                 label,
                 style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                  fontFamily: "CeraPro",
-                ),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                    fontFamily: "CeraPro",
+                    color: Colors.black),
               ),
-              const Icon(
-                Icons.arrow_forward_ios_outlined,
-                color: Colors.grey,
-                size: 30,
-              )
+              SvgPicture.asset(
+                'assets/icon_svg/chevron-circle-right.svg',
+                height: 15,
+                width: 8,
+                colorFilter: const ColorFilter.mode(
+                    AppColors.greyBombay, BlendMode.srcIn),
+              ),
             ],
           ),
         ],

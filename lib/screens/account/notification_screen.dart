@@ -81,9 +81,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
         height: 40,
-        margin: const EdgeInsets.all(70),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: AppColors.appYellow),
           onPressed: () {},

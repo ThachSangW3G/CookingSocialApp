@@ -7,9 +7,15 @@ const kInactiveCardColour = Color(0xFF111328);
 const kBottomContainerColour = Color(0xFFEB1555);
 
 const kLabelTextStyle = TextStyle(
-    color: AppColors.greyShuttle, fontFamily: "CeraPro", fontSize: 16);
+    color: AppColors.greyShuttle, fontFamily: "CeraPro", fontSize: 14);
 const kLabelTextStyleBig = TextStyle(
-    color: AppColors.greyShuttle, fontFamily: "CeraPro", fontSize: 17);
+    color: AppColors.greyShuttle, fontFamily: "CeraPro", fontSize: 16);
+const kLabelTextStyleBigDark = TextStyle(
+    color: Colors.black,
+    fontWeight: FontWeight.w500,
+    fontFamily: "CeraPro",
+    fontSize: 16);
+
 const kLabelTextStyleBiggest = TextStyle(
     color: AppColors.greyShuttle, fontFamily: "CeraPro", fontSize: 19);
 const kReviewLabelTextStyle = TextStyle(

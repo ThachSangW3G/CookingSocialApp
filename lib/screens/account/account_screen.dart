@@ -88,15 +88,15 @@ class _AccountScreenState extends State<AccountScreen> {
               children: [
                 IconContent(
                     label: 'Liked Recipe',
-                    iconData: Icons.favorite_border_outlined,
+                    iconData: 'assets/icon_svg/heart.svg',
                     onTap: () {}),
                 IconContent(
                     label: 'Notifications',
-                    iconData: Icons.notifications_on_outlined,
+                    iconData: 'assets/icon_svg/bell.svg',
                     onTap: () {}),
                 IconContent(
                     label: 'Settings',
-                    iconData: Icons.settings_outlined,
+                    iconData: 'assets/icon_svg/equalizer.svg',
                     onTap: () {}),
               ],
             ),
@@ -116,7 +116,7 @@ class _AccountScreenState extends State<AccountScreen> {
                 style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 24,
+                    fontSize: 20,
                     fontFamily: 'Recoleta'),
               ),
               RowContent(label: 'Abount', onTap: () {}),
