@@ -3,6 +3,7 @@ import 'package:cooking_social_app/components/icon_content_orange.dart';
 import 'package:cooking_social_app/components/line_row.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class RecipeSummary extends StatefulWidget {
@@ -43,7 +44,9 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
                           child: Container(
                             height: 50,
                             width: 50,
@@ -347,7 +350,10 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                           ],
                                         ),
                                         GestureDetector(
-                                          onTap: () {},
+                                          onTap: () {
+                                            Navigator.pushNamed(context,
+                                                RouteGenerator.reviewScreen);
+                                          },
                                           child: const Text(
                                             'READ ALL',
                                             style: TextStyle(

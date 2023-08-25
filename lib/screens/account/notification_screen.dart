@@ -16,7 +16,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.whitePorcelain,
         centerTitle: true,
         title: const Text(
           'Notifications',
@@ -27,63 +26,67 @@ class _NotificationScreenState extends State<NotificationScreen> {
               fontFamily: 'Recoleta'),
         ),
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: const Icon(
               Icons.arrow_back_ios_outlined,
               color: Colors.black,
               size: 20,
             )),
         actions: <Widget>[
-          GestureDetector(
-            onTap: () {},
-            child: const Text(
-              'Clear',
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  color: AppColors.orangeCrusta,
-                  fontSize: 18,
-                  fontFamily: 'CeraPro'),
+          Container(
+            margin: const EdgeInsets.only(right: 15),
+            child: GestureDetector(
+              onTap: () {},
+              child: const Text(
+                'Clear',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    color: AppColors.orangeCrusta,
+                    fontSize: 18,
+                    fontFamily: 'CeraPro'),
+              ),
             ),
           )
         ],
+        bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(16.0), child: LineRow()),
       ),
-      backgroundColor: AppColors.whitePorcelain,
-      body: const SingleChildScrollView(
-        child: Column(
-          children: [
-            LineRow(),
-            NotificationItem(
-                loaiTB: 'NewFollower',
-                time: '1 min ago',
-                contextTitle: 'Yeay you got new follower',
-                contextDescription: 'Nararaya Susanti has follow you'),
-            NotificationItem(
-                loaiTB: 'Bookmarked',
-                time: '1 min ago',
-                contextTitle: 'Yeay you got new follower',
-                contextDescription: 'Nararaya Susanti has follow you'),
-            NotificationItem(
-                loaiTB: 'Liked',
-                time: '1 min ago',
-                contextTitle: 'Yeay you got new follower',
-                contextDescription: 'Nararaya Susanti has follow you'),
-            NotificationItem(
-                loaiTB: 'NewReview',
-                time: '1 min ago',
-                contextTitle: 'Yeay you got new follower',
-                contextDescription: 'Nararaya Susanti has follow you'),
-            NotificationItem(
-                loaiTB: 'ReviewLiked',
-                time: '1 min ago',
-                contextTitle: 'Yeay you got new follower',
-                contextDescription: 'Nararaya Susanti has follow you')
-          ],
-        ),
+      body: ListView(
+        shrinkWrap: true,
+        children: const [
+          NotificationItem(
+              loaiTB: 'NewFollower',
+              time: '1 min ago',
+              contextTitle: 'Yeay you got new follower',
+              contextDescription: 'Nararaya Susanti has follow you'),
+          NotificationItem(
+              loaiTB: 'Bookmarked',
+              time: '1 min ago',
+              contextTitle: 'Yeay you got new follower',
+              contextDescription: 'Nararaya Susanti has follow you'),
+          NotificationItem(
+              loaiTB: 'Liked',
+              time: '1 min ago',
+              contextTitle: 'Yeay you got new follower',
+              contextDescription: 'Nararaya Susanti has follow you'),
+          NotificationItem(
+              loaiTB: 'NewReview',
+              time: '1 min ago',
+              contextTitle: 'Yeay you got new follower',
+              contextDescription: 'Nararaya Susanti has follow you'),
+          NotificationItem(
+              loaiTB: 'ReviewLiked',
+              time: '1 min ago',
+              contextTitle: 'Yeay you got new follower',
+              contextDescription: 'Nararaya Susanti has follow you')
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
+      floatingActionButton: SizedBox(
+        width: 200,
         height: 40,
-        margin: const EdgeInsets.all(70),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: AppColors.appYellow),
           onPressed: () {},

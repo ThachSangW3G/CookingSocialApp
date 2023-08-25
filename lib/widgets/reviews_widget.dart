@@ -20,20 +20,44 @@ class _ReviewWidgetState extends State<ReviewWidget> {
       physics: const NeverScrollableScrollPhysics(),
       children: const [
         ReviewItem(
-            name: 'Nguyen Trung Tinh',
-            content: 'San Pham Rat Dep Luohhhhhhhhhhhhhhhhhhhhhhhhhhhhhn',
+            name: 'Resep Masakan Lemang Ikan Mas',
+            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            check: true),
+        ReviewItem(
+            name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
             check: false),
         ReviewItem(
-            name: 'Nguyen Trung Tinh',
-            content: 'San Pham Rat Dep Luohhhhhhhhhhhhhhhhhhhhhhhhhhhhhn',
+            name: 'Resep Masakan Lemang Ikan Mas',
+            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            check: true),
+        ReviewItem(
+            name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
             check: false),
         ReviewItem(
-            name: 'Nguyen Trung Tinh',
-            content: 'San Pham Rat Dep Luohhhhhhhhhhhhhhhhhhhhhhhhhhhhhn',
+            name: 'Resep Masakan Lemang Ikan Mas',
+            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            check: true),
+        ReviewItem(
+            name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
             check: false),
         ReviewItem(
-            name: 'Nguyen Trung Tinh',
-            content: 'San Pham Rat Dep Luohhhhhhhhhhhhhhhhhhhhhhhhhhhhhn',
+            name: 'Resep Masakan Lemang Ikan Mas',
+            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            check: true),
+        ReviewItem(
+            name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            check: false),
+        ReviewItem(
+            name: 'Resep Masakan Lemang Ikan Mas',
+            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            check: true),
+        ReviewItem(
+            name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
             check: false),
       ],
     );
