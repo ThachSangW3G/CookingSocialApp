@@ -5,6 +5,7 @@ import 'package:cooking_social_app/screens/account/account_screen.dart';
 import 'package:cooking_social_app/screens/account/editprofile_screen.dart';
 import 'package:cooking_social_app/screens/recipe/recipe_edit_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/review_screen.dart';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -24,8 +25,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
         useMaterial3: true,
       ),
+
       onGenerateRoute: RouteGenerator.generatorRoute,
       home: const ReViewScreen(),
+
     );
   }
 }
