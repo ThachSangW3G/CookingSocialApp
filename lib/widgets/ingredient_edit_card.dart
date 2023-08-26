@@ -43,7 +43,7 @@ class IngredientEditCard extends StatelessWidget {
           ),
         ],
       ),
-      child: ListTile(
+      child: ExpansionTile(
         leading: GestureDetector(
           onTap: () {
             // Hiển thị thông tin chi tiết của nguyên liệu
