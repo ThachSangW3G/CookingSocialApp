@@ -1,8 +1,8 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
-class RecipeAdd extends StatefulWidget {
-  const RecipeAdd({super.key});
+class RecipeAddScreen extends StatefulWidget {
+  const RecipeAddScreen({super.key});
 
   @override
   State<StatefulWidget> createState() => _RecipeAddState();
@@ -20,7 +20,7 @@ bool isURL(String value) {
   return urlPattern.hasMatch(value);
 }
 
-class _RecipeAddState extends State<RecipeAdd> {
+class _RecipeAddState extends State<RecipeAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,21 +39,10 @@ class _RecipeAddState extends State<RecipeAdd> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.grey, // Màu của đường gạch
-                    width: 0.5, // Độ dày của đường gạch
-                  ),
-                ),
-              ),
-            ),
+          children: [            
             const Divider(thickness: 1, color: AppColors.greyIron,),
             Padding(
-              padding: const EdgeInsets.all(16.0),
-              
+              padding: const EdgeInsets.all(16.0),              
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,                
