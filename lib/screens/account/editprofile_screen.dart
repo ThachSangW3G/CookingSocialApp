@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -200,7 +201,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           height: 50,
           margin: const EdgeInsets.all(20),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              // final firestore = FirebaseFirestore.instance;
+              // firestore.collection('users').add({
+              //   'name': 'John Doe',
+              //   'age': 25,
+              // });
+            },
             child: Container(
               width: MediaQuery.of(context).size.width - 40,
               decoration: BoxDecoration(
