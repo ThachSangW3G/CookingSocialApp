@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "230194979617",
+    "project_id": "cookingsocialapp",
+    "storage_bucket": "cookingsocialapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230194979617:android:d6618de25348565e0b1460",
+        "android_client_info": {
+          "package_name": "com.example.cooking_social_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "230194979617-nrackn94trhp5mi0s4bk5iqt35lb9tlf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCL0HFTv18sDqyGFPizpDzbc-6FB60z78o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "230194979617-nrackn94trhp5mi0s4bk5iqt35lb9tlf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "230194979617-4ao9g5kr75oc0gupn2jd5rvdk6jt6842.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cookingSocialApp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
