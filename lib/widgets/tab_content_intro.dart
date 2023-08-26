@@ -8,8 +8,10 @@ class TabContentIntro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Mendengar kata-kata Sup pastinya yang terbayang dibenak kita adalah sesuatu yang enak dan lezat. Bagaimana tidak menu makanan yang satu ini adalah salah satu menu yang digemari diseluruh pelosok Indosesia. Makanan yang membuat kita lebih bersemangat untuk makan lebih banyak dari poris biyasanya. Kali ini saya akan sedikti mberikan sedikit informasi bagi ibu-ibu rumah tangga yang hobi akan memasak tentang Sup Makaroni yang mungkin bisa dijadikan salah satu menu masakan spesial untuk keluarga tercinta anda dirumah. Agar pembahasan kita tidak melebar kemana-mana mari kita langsung saja masuk kepembahasan utama kita tentang Sup Makaroni. Silahkan disimak langkah-langkah dibawah ini',
@@ -24,7 +26,7 @@ class TabContentIntro extends StatelessWidget {
             style: TextStyle(
                 fontSize: 20,
                 fontFamily: 'CeraPro',
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
                 color: Colors.black),
           ),
           SizedBox(
