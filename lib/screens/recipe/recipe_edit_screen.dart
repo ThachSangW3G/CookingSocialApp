@@ -44,6 +44,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
               fontSize: 20,
               fontWeight: FontWeight.w600),
         ),
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -80,9 +81,9 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
               color: AppColors.greyBombay),
           dividerColor: Colors.white,
           tabs: [
-            buildTab(0, 'Intro'),
-            buildTab(1, 'Ingredients'),
-            buildTab(2, 'Steps'),
+            buildTab(0, 'Intro', 1),
+            buildTab(1, 'Ingredients', 2),
+            buildTab(2, 'Steps', 1),
           ],
         ),
         // systemOverlayStyle: SystemUiOverlayStyle.light,
@@ -316,7 +317,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
     );
   }
 
-  Widget buildTab(int index, String text) {
+  Widget buildTab(int index, String text, int type) {
     return InkWell(
       onTap: () {
         setState(() {
@@ -326,7 +327,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       },
       child: Container(
         height: 36,
-        width: 103,
+        width: (type == 1 ? 103 : 120),
         // color: _selectedTabIndex == index ? AppColors.orangeCrusta : null,
         // padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
         child: Center(
