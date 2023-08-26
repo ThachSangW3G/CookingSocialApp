@@ -6,7 +6,6 @@ import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/line_row.dart';
-import '../../constants/app_color.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
