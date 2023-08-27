@@ -6,13 +6,36 @@ class TabContentSteps extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      children: const [
-        IngredientItemComponents(ingredientItem: '1 buah wortel, potong-potong')
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Bahan',
+            style: TextStyle(
+                fontSize: 20,
+                fontFamily: 'CeraPro',
+                fontWeight: FontWeight.w600,
+                color: Colors.black),
+          ),
+          ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: const [
+              IngredientItemComponents(
+                  ingredientItem: '1 buah wortel, potong-potong'),
+              IngredientItemComponents(ingredientItem: '5 potong sayap ayam'),
+              IngredientItemComponents(
+                  ingredientItem: '1 buah wortel, potong-potong'),
+              IngredientItemComponents(
+                  ingredientItem: '1 buah wortel, potong-potong'),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

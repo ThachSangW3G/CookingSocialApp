@@ -1,5 +1,6 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../constants/app_styles.dart';
 
@@ -13,11 +14,12 @@ class IconContentOrange extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Image(
-          image: AssetImage(iconData),
-          color: AppColors.orangeCrusta,
+        SvgPicture.asset(
+          iconData,
           height: 20,
           width: 20,
+          colorFilter:
+              const ColorFilter.mode(AppColors.orangeCrusta, BlendMode.srcIn),
         ),
         const SizedBox(
           height: 10,

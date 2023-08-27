@@ -17,7 +17,6 @@ class _PostWidgetState extends State<PostWidget> {
       padding: const EdgeInsets.all(0),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      scrollDirection: Axis.vertical,
       children: [
         FeaturedCard(
           featured: listFeatured[0],
