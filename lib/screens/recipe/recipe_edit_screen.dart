@@ -1,9 +1,11 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/widgets/recipe_ingredients_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_steps_edit_view.dart';
-import 'package:cooking_social_app/widgets/yes_no_slider.dart';
+// import 'package:cooking_social_app/widgets/yes_no_slider.dart';
+import 'package:cooking_social_app/widgets/yes_no_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 enum Choice { A, B, C }
 
@@ -44,6 +46,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
               fontSize: 20,
               fontWeight: FontWeight.w600),
         ),
+        centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -80,9 +83,9 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
               color: AppColors.greyBombay),
           dividerColor: Colors.white,
           tabs: [
-            buildTab(0, 'Intro'),
-            buildTab(1, 'Ingredients'),
-            buildTab(2, 'Steps'),
+            buildTab(0, 'Intro', 1),
+            buildTab(1, 'Ingredients', 2),
+            buildTab(2, 'Steps', 1),
           ],
         ),
         // systemOverlayStyle: SystemUiOverlayStyle.light,
@@ -100,13 +103,14 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
               children: [
                 const TextField(
                   decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                      labelText: 'Title',
-                      labelStyle: TextStyle(
-                          fontFamily: 'CeraPro',
-                          // fontSize: 14,
-                          fontWeight: FontWeight.w400)),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                    labelText: 'Title',
+                    labelStyle: TextStyle(
+                        fontFamily: 'CeraPro',
+                        // fontSize: 14,
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),
 
                 // COOK TIME--------------------------------------------
@@ -193,49 +197,89 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
                 const SizedBox(
                   height: 24,
                 ),
+
                 Row(
                   children: [
                     Expanded(
-                        child: DropdownButton<Choice>(
-                      value: selectedChoice,
-                      onChanged: (Choice? value) {
-                        setState(() {
-                          selectedChoice = value!;
-                        });
-                      },
-                      items: const [
-                        DropdownMenuItem<Choice>(
-                          value: Choice.A,
-                          child: Align(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Difficulty'),
+                        Container(
+                          width: 160,
+                          child: DropdownButton<Choice>(
+                            value: selectedChoice,
+
+                            // style: const TextStyle(
+                            // fontFamily: 'CeraPro',
+                            // fontSize: 16,
+                            // fontWeight: FontWeight.w400
+                            // ),
+                            underline: const Divider(
+                              thickness: 1.5,
+                              color: AppColors.greyBombay,
+                            ),
+                            isExpanded: true,
+                            alignment: Alignment.bottomCenter,
+                            padding: EdgeInsets.only(top: 8),
+                            icon: Align(
                               alignment: Alignment.centerRight,
-                              child: Text('Easy',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.normal),
-                                  textAlign: TextAlign.right)),
-                        ),
-                        DropdownMenuItem<Choice>(
-                          value: Choice.B,
-                          child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Text('Medium',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.normal),
-                                  textAlign: TextAlign.right)),
-                        ),
-                        DropdownMenuItem<Choice>(
-                          value: Choice.C,
-                          child: Align(
-                              alignment: Alignment.centerRight,
-                              child: Text('Difficult',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.normal),
-                                  textAlign: TextAlign.right)),
+                              child: SvgPicture.asset(
+                                'assets/icon_svg/chevron-circle-down.svg',
+                                height: 15,
+                                width: 8,
+                              ),
+                            ),
+                            onChanged: (Choice? value) {
+                              setState(() {
+                                selectedChoice = value!;
+                              });
+                            },
+                            items: const [
+                              DropdownMenuItem<Choice>(
+                                value: Choice.A,
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text('Easy',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'CeraPro',
+                                          fontSize: 16,
+                                        ),
+                                        textAlign: TextAlign.right)),
+                              ),
+                              DropdownMenuItem<Choice>(
+                                value: Choice.B,
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text('Medium',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'CeraPro',
+                                          fontSize: 16,
+                                        ),
+                                        textAlign: TextAlign.right)),
+                              ),
+                              DropdownMenuItem<Choice>(
+                                value: Choice.C,
+                                child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text('Difficult',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'CeraPro',
+                                          fontSize: 16,
+                                        ),
+                                        textAlign: TextAlign.right)),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     )),
-                    const SizedBox(
-                      width: 16,
-                    ),
+                    // const SizedBox(
+                    //   width: 16,
+                    // ),
                     Expanded(
                       child: TextField(
                         decoration: const InputDecoration(
@@ -255,68 +299,115 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
                 const SizedBox(
                   height: 24,
                 ),
-                const Row(
+                Row(
                   children: [
                     Expanded(
                         child: Row(
                       children: [
-                        Text(
+                        const Text(
                           'Publish to Community?',
                           style: TextStyle(
                               fontFamily: 'CeraPro',
                               fontSize: 14,
                               fontWeight: FontWeight.w400),
                         ),
-                        SizedBox(width: 120,),
-                        Expanded(child: YesNoSlider()),
-                        
+                        const SizedBox(
+                          width: 200,
+                        ),
+                        Expanded(child: YesNoSwitch()),
                       ],
                     )),
                   ],
                 ),
 
                 //---------------
-                const SizedBox(height: 24,),
+                const SizedBox(
+                  height: 24,
+                ),
                 const TextField(
                   decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    labelText: 'Source',
-                    labelStyle: TextStyle(
-                        fontFamily: 'CeraPro',
-                        // fontSize: 14,
-                        fontWeight: FontWeight.w400)),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      labelText: 'Source',
+                      labelStyle: TextStyle(
+                          fontFamily: 'CeraPro',
+                          // fontSize: 14,
+                          fontWeight: FontWeight.w400)),
                 ),
 
                 //-----------------
-                const SizedBox(height: 24,),
+                const SizedBox(
+                  height: 24,
+                ),
                 const TextField(
                   decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    labelText: 'URL',
-                    labelStyle: TextStyle(
-                        fontFamily: 'CeraPro',
-                        // fontSize: 14,
-                        fontWeight: FontWeight.w400)),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      labelText: 'URL',
+                      labelStyle: TextStyle(
+                          fontFamily: 'CeraPro',
+                          // fontSize: 14,
+                          fontWeight: FontWeight.w400)),
                 ),
               ],
             ),
           )),
-          const Padding(
-            padding: EdgeInsets.only(top: 16),
-            child: RecipeIngredientsEdit(),
+          Padding(
+            padding: EdgeInsets.only(top: 16, bottom: 30),
+            child: Stack(
+              children: [
+                Column(
+                  children: [
+                    RecipeIngredientsEdit(),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        // Xử lý khi nút được nhấn
+                      },
+                      child: Icon(Icons.add),
+                      backgroundColor: AppColors.orangeCrusta,
+                      foregroundColor: AppColors.white,
+                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                    
+                    ),
+                  ),
+                ),
+            ]),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(top: 16),
-            child: RecipeStepsEdit(),
+            child: Stack(
+              children: [
+                RecipeStepsEdit(),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        // Xử lý khi nút được nhấn
+                      },
+                      child: Icon(Icons.add),                      
+                      backgroundColor: AppColors.orangeCrusta,
+                      foregroundColor: AppColors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                    ),
+                  ),
+                ),
+              ]
+              ),
           ),
         ],
       ),
     );
   }
 
-  Widget buildTab(int index, String text) {
+  Widget buildTab(int index, String text, int type) {
     return InkWell(
       onTap: () {
         setState(() {
@@ -326,7 +417,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       },
       child: Container(
         height: 36,
-        width: 103,
+        width: (type == 1 ? 103 : 120),
         // color: _selectedTabIndex == index ? AppColors.orangeCrusta : null,
         // padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
         child: Center(
@@ -342,7 +433,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       ),
     );
   }
-  
+
   void _showGobackPopup(BuildContext context) {
     showDialog(
       context: context,
