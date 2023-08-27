@@ -38,7 +38,7 @@ class RecipeItem extends StatelessWidget {
                     children: <Widget>[
                       Text(name,
                           overflow: TextOverflow.visible,
-                          style: kReviewLabelTextStyle),
+                          style: kLikedRecipeLabel),
                       Padding(
                         padding: const EdgeInsets.only(right: 50, top: 10),
                         child: Row(
