@@ -21,8 +21,11 @@ class RouteGenerator {
             builder: (_) => const LoginScreen());
 
       case accountScreen:
-        return FadeRoute(
-            builder: (_) => const AccountScreen(), settings: settings);
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: AccountScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
       case notificationScreen:
         return PageTransition(
           child: const SafeArea(child: SafeArea(child: NotificationScreen())),
@@ -30,20 +33,35 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
       case accountpersonScreen:
-        return FadeRoute(
-            builder: (_) => const AccountPerSonScreen(), settings: settings);
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: AccountPerSonScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
       case editprofileScreen:
-        return FadeRoute(
-            builder: (_) => const EditProfileScreen(), settings: settings);
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: EditProfileScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
       case likedrecipeScreen:
-        return FadeRoute(
-            builder: (_) => const LikedRecipeScreen(), settings: settings);
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: LikedRecipeScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
       case recipedetailScreen:
-        return FadeRoute(
-            builder: (_) => const RecipeDetailsScreen(), settings: settings);
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: RecipeDetailsScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
       case reviewScreen:
-        return FadeRoute(
-            builder: (_) => const ReViewScreen(), settings: settings);
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: ReViewScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
 
       //
       default:
