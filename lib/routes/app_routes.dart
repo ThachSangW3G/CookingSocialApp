@@ -1,4 +1,3 @@
-
 import 'package:cooking_social_app/screens/home/home_screen.dart';
 import 'package:cooking_social_app/screens/splash/splash_screen.dart';
 
@@ -22,15 +21,11 @@ class RouteGenerator {
     final args = settings.arguments;
     switch (settings.name) {
       case home:
-
         return MaterialPageRoute<HomeScreen>(
             builder: (_) => const HomeScreen());
       case splash:
         return MaterialPageRoute<SplashScreen>(
             builder: (_) => const SplashScreen());
-
-        return MaterialPageRoute<LoginScreen>(
-            builder: (_) => const LoginScreen());
 
       case accountScreen:
         return PageTransition(
@@ -82,10 +77,8 @@ class RouteGenerator {
     }
   }
 
-  static const home = 'home';
-  static const splash = 'splash';
-
   static const home = '/';
+  static const splash = 'splash';
 
   // ACCOUNT
   static const accountScreen = 'account';
@@ -99,7 +92,6 @@ class RouteGenerator {
   static const recipedetailScreen = 'recipedetail';
   static const reviewScreen = 'review';
   //
-
 }
 
 class RouteException implements Exception {
