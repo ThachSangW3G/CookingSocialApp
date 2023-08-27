@@ -1,7 +1,7 @@
 // import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 // import 'package:cooking_social_app/screens/recipe/add_grocery_screen.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
-import 'package:cooking_social_app/screens/account/editprofile_screen.dart';
+import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       onGenerateRoute: RouteGenerator.generatorRoute,
-      home: const EditProfileScreen(),
+      home: const LoginScreen(),
     );
   }
 }

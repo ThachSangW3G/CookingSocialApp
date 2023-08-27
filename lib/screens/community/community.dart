@@ -25,42 +25,38 @@ class _CommunityScreenState extends State<CommunityScreen> {
             fontFamily: 'Recoleta',
             fontWeight: FontWeight.w800,
             fontSize: 20,
-
           ),
         ),
         leading: IconButton(
-          onPressed: (){},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
         centerTitle: true,
-
       ),
-
       body: Column(
         children: [
           Container(
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: AppColors.greyIron
-              )
-            ),
+            decoration:
+                BoxDecoration(border: Border.all(color: AppColors.greyIron)),
             child: Row(
               children: [
                 GestureDetector(
                   onTap: () {
-                    showDialog(context: context, builder: (BuildContext context){
-                      return const OptionItemDialog();
-                    });
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const OptionItemDialog();
+                        });
                   },
                   child: Container(
                     decoration: const BoxDecoration(
-                        border: Border(right: BorderSide(
-                            color: AppColors.greyIron
-                        ))
-                    ),
+                        border: Border(
+                            right: BorderSide(color: AppColors.greyIron))),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 10.0),
                       child: Row(
                         children: [
                           SvgPicture.asset(
@@ -69,15 +65,16 @@ class _CommunityScreenState extends State<CommunityScreen> {
                             height: 20,
                             width: 20,
                           ),
-                          const SizedBox(width: 15.0,),
+                          const SizedBox(
+                            width: 15.0,
+                          ),
                           const Text(
                             'Filter',
                             style: TextStyle(
-                              fontFamily: 'CeraPro',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.greyShuttle
-                            ),
+                                fontFamily: 'CeraPro',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.greyShuttle),
                           )
                         ],
                       ),
@@ -96,11 +93,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
                         child: const Text(
                           'Relevancy',
                           style: TextStyle(
-                            fontFamily: 'CeraPro',
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.yellowOrange
-                          ),
+                              fontFamily: 'CeraPro',
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.yellowOrange),
                         ),
                       ),
                       Container(
@@ -111,8 +107,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                               fontFamily: 'CeraPro',
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: AppColors.greyShuttle
-                          ),
+                              color: AppColors.greyShuttle),
                         ),
                       ),
                       Container(
@@ -123,8 +118,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                               fontFamily: 'CeraPro',
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: AppColors.greyShuttle
-                          ),
+                              color: AppColors.greyShuttle),
                         ),
                       ),
                       Container(
@@ -135,10 +129,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
                               fontFamily: 'CeraPro',
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: AppColors.greyShuttle
-                          ),
+                              color: AppColors.greyShuttle),
                         ),
-                      ),Container(
+                      ),
+                      Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: const Text(
                           'Appreciation',
@@ -146,8 +140,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                               fontFamily: 'CeraPro',
                               fontSize: 16,
                               fontWeight: FontWeight.w500,
-                              color: AppColors.greyShuttle
-                          ),
+                              color: AppColors.greyShuttle),
                         ),
                       )
                     ],
@@ -156,28 +149,29 @@ class _CommunityScreenState extends State<CommunityScreen> {
               ],
             ),
           ),
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: GridView.builder(
-
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisExtent: 320),
-                itemCount: listFeatured.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return  FeaturedCardSmallWidget(featured: listFeatured[index],);
-                }),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, mainAxisExtent: 320),
+                  itemCount: listFeatured.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return FeaturedCardSmallWidget(
+                      featured: listFeatured[index],
+                    );
+                  }),
             ),
           )
-
         ],
       ),
-
     );
   }
 }
-
 
 class OptionItemDialog extends StatelessWidget {
   const OptionItemDialog({super.key});
@@ -185,10 +179,8 @@ class OptionItemDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16))
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(16))),
       child: SizedBox(
         height: 500,
         child: Padding(
@@ -208,20 +200,34 @@ class OptionItemDialog extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0,),
+              const SizedBox(
+                height: 20.0,
+              ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    CategoryCard(category: listCategory[0],),
-                    CategoryCard(category: listCategory[1],),
-                    CategoryCard(category: listCategory[2],),
-                    CategoryCard(category: listCategory[3],),
-                    CategoryCard(category: listCategory[4],)
+                    CategoryCard(
+                      category: listCategory[0],
+                    ),
+                    CategoryCard(
+                      category: listCategory[1],
+                    ),
+                    CategoryCard(
+                      category: listCategory[2],
+                    ),
+                    CategoryCard(
+                      category: listCategory[3],
+                    ),
+                    CategoryCard(
+                      category: listCategory[4],
+                    )
                   ],
                 ),
               ),
-              const SizedBox(height: 20.0,),
+              const SizedBox(
+                height: 20.0,
+              ),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -235,7 +241,9 @@ class OptionItemDialog extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0,),
+              const SizedBox(
+                height: 20.0,
+              ),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -245,12 +253,13 @@ class OptionItemDialog extends StatelessWidget {
                         fontFamily: 'CeraPro',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.yellowOrange
-                    ),
+                        color: AppColors.yellowOrange),
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0,),
+              const SizedBox(
+                height: 20.0,
+              ),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -260,12 +269,13 @@ class OptionItemDialog extends StatelessWidget {
                         fontFamily: 'CeraPro',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.greyShuttle
-                    ),
+                        color: AppColors.greyShuttle),
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0,),
+              const SizedBox(
+                height: 20.0,
+              ),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -275,12 +285,13 @@ class OptionItemDialog extends StatelessWidget {
                         fontFamily: 'CeraPro',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.greyShuttle
-                    ),
+                        color: AppColors.greyShuttle),
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0,),
+              const SizedBox(
+                height: 20.0,
+              ),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -290,12 +301,13 @@ class OptionItemDialog extends StatelessWidget {
                         fontFamily: 'CeraPro',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.greyShuttle
-                    ),
+                        color: AppColors.greyShuttle),
                   ),
                 ],
               ),
-              const SizedBox(height: 20.0,),
+              const SizedBox(
+                height: 20.0,
+              ),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -305,17 +317,14 @@ class OptionItemDialog extends StatelessWidget {
                         fontFamily: 'CeraPro',
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.greyShuttle
-                    ),
+                        color: AppColors.greyShuttle),
                   ),
                 ],
               )
             ],
           ),
-
         ),
       ),
     );
   }
 }
-
