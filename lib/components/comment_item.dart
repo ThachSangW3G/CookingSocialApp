@@ -18,14 +18,14 @@ class CommentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15, bottom: 15, right: 15),
+      padding: const EdgeInsets.only(left: 25, bottom: 15, right: 25, top: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            height: 30,
-            width: 30,
+            height: 33,
+            width: 33,
             padding: const EdgeInsets.only(top: 5),
             decoration: const BoxDecoration(
                 shape: BoxShape.circle,
@@ -47,7 +47,7 @@ class CommentItem extends StatelessWidget {
                       color: Colors.black,
                       fontFamily: "CeraPro",
                       fontWeight: FontWeight.bold,
-                      fontSize: 15),
+                      fontSize: 16),
                 ),
                 Text(
                   time,
@@ -60,26 +60,42 @@ class CommentItem extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-              onPressed: () {},
-              icon: check == false
-                  ? const Icon(
-                      Icons.favorite_border_outlined,
-                      color: AppColors.greyBombay,
-                      size: 30,
+          Container(
+            padding: EdgeInsets.zero,
+            child: Row(children: [
+              check == false
+                  ? GestureDetector(
+                      onTap: () {},
+                      child: SvgPicture.asset(
+                        'assets/icon_svg/heart.svg',
+                        colorFilter: const ColorFilter.mode(
+                            AppColors.greyBombay, BlendMode.srcIn),
+                        height: 24,
+                        width: 24,
+                      ),
                     )
-                  : const Icon(
-                      Icons.favorite_sharp,
-                      color: Colors.red,
-                      size: 30,
-                    )),
-          SvgPicture.asset(
-            'assets/icon_svg/options.svg',
-            colorFilter:
-                const ColorFilter.mode(AppColors.greyBombay, BlendMode.srcIn),
-            height: 24,
-            width: 24,
-          )
+                  : GestureDetector(
+                      onTap: () {},
+                      child: SvgPicture.asset(
+                        'assets/icon_svg/heart_orange.svg',
+                        colorFilter: const ColorFilter.mode(
+                            AppColors.orangeCrusta, BlendMode.srcIn),
+                        height: 24,
+                        width: 24,
+                      ),
+                    ),
+              const SizedBox(
+                width: 10,
+              ),
+              SvgPicture.asset(
+                'assets/icon_svg/options.svg',
+                colorFilter: const ColorFilter.mode(
+                    AppColors.greyBombay, BlendMode.srcIn),
+                height: 24,
+                width: 24,
+              ),
+            ]),
+          ),
         ],
       ),
     );

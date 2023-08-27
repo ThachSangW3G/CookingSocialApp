@@ -1,6 +1,7 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class NotificationItem extends StatelessWidget {
   final String loaiTB;
@@ -17,82 +18,91 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String title;
-    IconData iconData;
+    String iconData;
     title = 'New Follower';
-    iconData = Icons.follow_the_signs_rounded;
+    iconData = 'assets/icon_svg/user-follow.svg';
     if (loaiTB == 'NewFollower') {
       title = 'New Follower';
-      iconData = Icons.supervisor_account_outlined;
+      iconData = 'assets/icon_svg/user-follow.svg';
     }
     if (loaiTB == 'Bookmarked') {
       title = 'Bookmarked';
-      iconData = Icons.bookmark_border;
+      iconData = 'assets/icon_svg/bookmark.svg';
     }
     if (loaiTB == 'Liked') {
       title = 'Liked';
-      iconData = Icons.favorite_border_outlined;
+      iconData = 'assets/icon_svg/heart.svg';
     }
     if (loaiTB == 'NewReview') {
       title = 'New Review';
-      iconData = Icons.comment_outlined;
+      iconData = 'assets/icon_svg/comment-square.svg';
     }
     if (loaiTB == 'ReviewLiked') {
       title = 'Review Liked';
-      iconData = Icons.thumb_up_alt_outlined;
+      iconData = 'assets/icon_svg/thumb-up.svg';
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(0),
-                child: Row(
-                  children: [
-                    Icon(
-                      iconData,
-                      color: AppColors.orangeCrusta,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      title,
-                      style: kLabelTextStyle,
-                    ),
-                  ],
+          SizedBox(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(0),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        iconData,
+                        height: 16,
+                        width: 16,
+                        colorFilter: const ColorFilter.mode(
+                            AppColors.orangeCrusta, BlendMode.srcIn),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Text(
-                time,
-                style: kLabelTextStyle,
-              )
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 33),
-            child: Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    contextTitle,
-                    style: kReviewLabelTextStyle,
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: kLabelTextStyle,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          contextTitle,
+                          style: kLabelTextStyleBigDark,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          contextDescription,
+                          style: kLabelTextStyleBig,
+                        )
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    contextDescription,
-                    style: kLabelTextStyle,
-                  )
-                ],
-              ),
+                ),
+              ],
             ),
-          )
+          ),
+          Text(
+            time,
+            style: kLabelTextStyle,
+          ),
         ],
       ),
     );
