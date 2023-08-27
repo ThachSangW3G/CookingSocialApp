@@ -1,13 +1,15 @@
+
+import 'package:cooking_social_app/screens/community/community.dart';
+import 'package:cooking_social_app/screens/cookbook/detail_cookbook.dart';
+
 import 'package:cooking_social_app/screens/home/home_screen.dart';
 import 'package:cooking_social_app/screens/splash/splash_screen.dart';
 
-import 'package:cooking_social_app/routes/fade_routes.dart';
 import 'package:cooking_social_app/screens/account/account_person_screen.dart';
 import 'package:cooking_social_app/screens/account/account_screen.dart';
 import 'package:cooking_social_app/screens/account/editprofile_screen.dart';
 import 'package:cooking_social_app/screens/account/liked_recipe_screen.dart';
 import 'package:cooking_social_app/screens/account/notification_screen.dart';
-import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/recipe_details_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/review_screen.dart';
 
@@ -21,11 +23,35 @@ class RouteGenerator {
     final args = settings.arguments;
     switch (settings.name) {
       case home:
-        return MaterialPageRoute<HomeScreen>(
-            builder: (_) => const HomeScreen());
+
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: HomeScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+
       case splash:
-        return MaterialPageRoute<SplashScreen>(
-            builder: (_) => const SplashScreen());
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: SplashScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+
+
+      case detailCookbook:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: DetailCookBookScreen())),
+          type: PageTransitionType.fade,
+          duration: const Duration(milliseconds: 400),
+        );
+
+      case community:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: CommunityScreen())),
+          type: PageTransitionType.fade,
+          duration: const Duration(milliseconds: 400),
+        );
+
 
       case accountScreen:
         return PageTransition(
@@ -77,8 +103,12 @@ class RouteGenerator {
     }
   }
 
-  static const home = '/';
   static const splash = 'splash';
+
+  static const home = 'home';
+  static const detailCookbook = 'detailCookbook';
+  static const community = 'community';
+
 
   // ACCOUNT
   static const accountScreen = 'account';
