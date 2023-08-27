@@ -1,3 +1,5 @@
+import 'package:cooking_social_app/screens/home/home_screen.dart';
+import 'package:cooking_social_app/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
@@ -7,17 +9,17 @@ class RouteGenerator {
     //final args = settings.arguments;
     switch (settings.name) {
       case home:
-      // return MaterialPageRoute<InputScreen>(
-      //     builder: (_) => const InputScreen());
+        return MaterialPageRoute<HomeScreen>(
+            builder: (_) => const HomeScreen());
       case splash:
-      // return MaterialPageRoute<SplashScreen>(
-      //     builder: (_) => const SplashScreen());
+        return MaterialPageRoute<SplashScreen>(
+            builder: (_) => const SplashScreen());
       default:
         throw const RouteException("Route not found");
     }
   }
 
-  static const home = '/';
+  static const home = 'home';
   static const splash = 'splash';
 }
 

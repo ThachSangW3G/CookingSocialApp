@@ -16,7 +16,7 @@ class _PostWidgetState extends State<PostWidget> {
     return ListView(
       padding: const EdgeInsets.all(0),
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+      //physics: const NeverScrollableScrollPhysics(),
       scrollDirection: Axis.vertical,
       children: [
         FeaturedCard(
