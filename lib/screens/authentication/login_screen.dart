@@ -1,4 +1,5 @@
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 // import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -46,7 +47,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const Text(
                   'Everyone can be a chef',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, fontFamily: 'CeraPro'),
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'CeraPro'),
                 ),
                 const SizedBox(
                   height: 30.0,
@@ -70,33 +74,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   //   print('Country changed to: ' + country.name);
                   // },
                 ),
-
-                const SizedBox(height: 10.0,),
+                const SizedBox(
+                  height: 10.0,
+                ),
                 GestureDetector(
-                  onTap: (){},
+                  onTap: () {
+                    Navigator.pushNamed(context, RouteGenerator.splash);
+                  },
                   child: Container(
                     width: double.infinity,
                     height: 60,
                     decoration: const BoxDecoration(
                       color: AppColors.orangeCrusta,
                       borderRadius: BorderRadius.all(Radius.circular(15.0)),
-
                     ),
                     child: const Center(
-                        child: Text('Send OTP',
-                        style: TextStyle(
+                        child: Text(
+                      'Send OTP',
+                      style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                           color: Colors.white,
                           letterSpacing: 1.2,
-                          fontFamily: 'CeraPro'
-                        ),
-                        )
-                    ),
+                          fontFamily: 'CeraPro'),
+                    )),
                   ),
-
                 ),
-                const SizedBox(height: 20.0,),
+                const SizedBox(
+                  height: 20.0,
+                ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -211,8 +217,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             Expanded(
                               child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                    horizontal: 6.0),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 6.0),
                                 child: const Text(
                                   'Facebook',
                                   style: TextStyle(
@@ -288,10 +294,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 const Text(
                   "By continuing, you agree to our",
                   style: TextStyle(
-                      color: Colors.black,
-                    fontSize: 12,
-                    fontFamily: 'CeraPro'
-                  ),
+                      color: Colors.black, fontSize: 12, fontFamily: 'CeraPro'),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -303,11 +306,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   BorderSide(color: Colors.black, width: 1.0))),
                       child: const Text(
                         "Terms of Service",
-                        style:  TextStyle(
+                        style: TextStyle(
                             color: Colors.black,
                             fontSize: 12,
-                            fontFamily: 'CeraPro'
-                        ),
+                            fontFamily: 'CeraPro'),
                       ),
                     ),
                     Container(
@@ -327,8 +329,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 12,
-                            fontFamily: 'CeraPro'
-                        ),
+                            fontFamily: 'CeraPro'),
                       ),
                     ),
                     Container(
@@ -348,8 +349,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 12,
-                            fontFamily: 'CeraPro'
-                        ),
+                            fontFamily: 'CeraPro'),
                       ),
                     )
                   ],

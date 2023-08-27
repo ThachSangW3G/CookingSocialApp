@@ -1,3 +1,7 @@
+
+import 'package:cooking_social_app/screens/home/home_screen.dart';
+import 'package:cooking_social_app/screens/splash/splash_screen.dart';
+
 import 'package:cooking_social_app/routes/fade_routes.dart';
 import 'package:cooking_social_app/screens/account/account_person_screen.dart';
 import 'package:cooking_social_app/screens/account/account_screen.dart';
@@ -7,6 +11,7 @@ import 'package:cooking_social_app/screens/account/notification_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/recipe_details_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/review_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -17,6 +22,13 @@ class RouteGenerator {
     final args = settings.arguments;
     switch (settings.name) {
       case home:
+
+        return MaterialPageRoute<HomeScreen>(
+            builder: (_) => const HomeScreen());
+      case splash:
+        return MaterialPageRoute<SplashScreen>(
+            builder: (_) => const SplashScreen());
+
         return MaterialPageRoute<LoginScreen>(
             builder: (_) => const LoginScreen());
 
@@ -64,10 +76,14 @@ class RouteGenerator {
         );
 
       //
+
       default:
         throw const RouteException("Route not found");
     }
   }
+
+  static const home = 'home';
+  static const splash = 'splash';
 
   static const home = '/';
 
@@ -83,6 +99,7 @@ class RouteGenerator {
   static const recipedetailScreen = 'recipedetail';
   static const reviewScreen = 'review';
   //
+
 }
 
 class RouteException implements Exception {

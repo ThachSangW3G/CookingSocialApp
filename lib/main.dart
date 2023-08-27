@@ -1,3 +1,4 @@
+
 // import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 // import 'package:cooking_social_app/screens/recipe/add_grocery_screen.dart';
 import 'package:cooking_social_app/screens/calendar/calendar_screen.dart';
@@ -36,8 +37,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
         useMaterial3: true,
       ),
+
       onGenerateRoute: RouteGenerator.generatorRoute,
       home: const EditProfileScreen(),
+
     );
   }
 }
