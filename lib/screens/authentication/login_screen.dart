@@ -204,51 +204,61 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          height: 60,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(15.0)),
-                              border: Border.all(
-                                  color: AppColors.greyBombay, width: 1)),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                margin:
-                                    const EdgeInsets.only(left: 20, right: 10),
-                                height: 30,
-                                width: 30,
-                                decoration: const BoxDecoration(
-                                    // image: DecorationImage(
-                                    //   image: AssetImage('assets/icons/apple_icon.png'),
-                                    //   fit: BoxFit.cover,
-                                    // )
-                                    ),
-                                child: const Image(
-                                  image: AssetImage(
-                                      'assets/icons/facebook_icon.png'),
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 6.0),
-                                  child: const Text(
-                                    'Facebook',
-                                    style: TextStyle(
-                                        fontSize: 17,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                        fontFamily: 'CeraPro',
-                                        letterSpacing: 1.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            AuthService().signInWithFacebook();
+                            print(FirebaseAuth.instance.currentUser);
+                            if (FirebaseAuth.instance.currentUser != null) {
+                              Navigator.pushNamed(
+                                  context, RouteGenerator.splash);
+                            }
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(15.0)),
+                                border: Border.all(
+                                    color: AppColors.greyBombay, width: 1)),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                      left: 20, right: 10),
+                                  height: 30,
+                                  width: 30,
+                                  decoration: const BoxDecoration(
+                                      // image: DecorationImage(
+                                      //   image: AssetImage('assets/icons/apple_icon.png'),
+                                      //   fit: BoxFit.cover,
+                                      // )
+                                      ),
+                                  child: const Image(
+                                    image: AssetImage(
+                                        'assets/icons/facebook_icon.png'),
+                                    fit: BoxFit.contain,
                                   ),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 6.0),
+                                    child: const Text(
+                                      'Facebook',
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                          fontFamily: 'CeraPro',
+                                          letterSpacing: 1.0),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
