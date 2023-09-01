@@ -205,10 +205,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {
-                            AuthService().signInWithFacebook();
+                          onTap: () async {
+                            await AuthService().signInWithFacebook();
                             print(FirebaseAuth.instance.currentUser);
-                            if (FirebaseAuth.instance.currentUser != null) {
+                            if (AuthService()
+                                .setInitalScreen(auth.currentUser)) {
+                              // ignore: use_build_context_synchronously
                               Navigator.pushNamed(
                                   context, RouteGenerator.splash);
                             }
@@ -267,10 +269,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {
-                            AuthService().signInWithGoogle();
+                          onTap: () async {
+                            await AuthService().signInWithGoogle();
                             print(FirebaseAuth.instance.currentUser);
-                            if (FirebaseAuth.instance.currentUser != null) {
+                            if (AuthService()
+                                .setInitalScreen(auth.currentUser)) {
+                              // ignore: use_build_context_synchronously
                               Navigator.pushNamed(
                                   context, RouteGenerator.splash);
                             }

@@ -37,14 +37,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Row(
                       children: [
-                        Container(
-                          height: 60,
-                          width: 60,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image: AssetImage('assets/images/avatar.jpg'),
-                                  fit: BoxFit.contain)),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, RouteGenerator.accountScreen);
+                          },
+                          child: Container(
+                            height: 60,
+                            width: 60,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/avatar.jpg'),
+                                    fit: BoxFit.contain)),
+                          ),
                         ),
                         const SizedBox(
                           width: 20,
