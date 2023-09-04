@@ -18,6 +18,13 @@ class AuthService {
     return false;
   }
 
+  Future<bool> isSignedIn() async {
+    return await _auth.currentUser != null;
+  }
+  Future<User> getUser() async {
+    return await _auth.currentUser!;
+  }
+
   //Google sign in
   Future<UserCredential?> signInWithGoogle() async {
     // begin interactive sign in process
@@ -54,5 +61,11 @@ class AuthService {
 
     // ignore: use_build_context_synchronously
     Navigator.pushNamed(context, RouteGenerator.login);
+  }
+
+  Future<void> signOut() async {
+    await GoogleSignIn().signOut();
+    await FacebookAuth.instance.logOut();
+    // ignore: use_build_context_synchronously
   }
 }
