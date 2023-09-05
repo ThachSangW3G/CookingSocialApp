@@ -1,3 +1,4 @@
+import 'package:cooking_social_app/blocs/blocs/authentication_bloc.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/bottom_navigation/bottom_navigation.dart';
@@ -14,8 +15,10 @@ import 'package:cooking_social_app/screens/account/liked_recipe_screen.dart';
 import 'package:cooking_social_app/screens/account/notification_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/recipe_details_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/review_screen.dart';
+import 'package:cooking_social_app/services/auth_service.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
 class RouteGenerator {
@@ -23,6 +26,7 @@ class RouteGenerator {
 
   static Route<dynamic> generatorRoute(RouteSettings settings) {
     final args = settings.arguments;
+    final AuthService _authService = AuthService();
     switch (settings.name) {
       case home:
         return PageTransition(
@@ -72,12 +76,23 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
 
+      // case accountScreen:
+      //   return PageTransition(
+      //     child: const SafeArea(child: SafeArea(child: AccountScreen())),
+      //     type: PageTransitionType.rightToLeft,
+      //     duration: const Duration(milliseconds: 400),
+      //   );
+
       case accountScreen:
         return PageTransition(
-          child: const SafeArea(child: SafeArea(child: AccountScreen())),
+          child: SafeArea(child: SafeArea(child: BlocProvider<AuthenticationBloc>(
+            create: (context) => AuthenticationBloc(authService: _authService),
+            child: const AccountScreen(),
+          ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
+
       case notificationScreen:
         return PageTransition(
           child: const SafeArea(child: SafeArea(child: NotificationScreen())),

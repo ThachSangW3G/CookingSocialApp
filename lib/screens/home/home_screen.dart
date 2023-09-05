@@ -42,9 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            // Navigator.pushNamed(
-                            //     context, RouteGenerator.accountScreen);
-                            BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationEventLoggedOut());
+                            Navigator.pushNamed(
+                                context, RouteGenerator.accountScreen);
+                            //BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationEventLoggedOut());
                           },
                           child: Container(
                             height: 60,

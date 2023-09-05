@@ -147,7 +147,8 @@ class _AccountScreenState extends State<AccountScreen> {
                     RowContentNotIcon(
                         label: 'Logout',
                         onTap: () {
-                          BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationEventLoggedOut());
+                          //BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationEventLoggedOut());
+                          AuthService().signOut();
                           print(AuthService().getUserID);
                         })
                   ],

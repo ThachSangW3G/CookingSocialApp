@@ -7,27 +7,47 @@ class LoginBloc extends Bloc<LoginEvent, LoginState>{
   AuthService _authService;
   LoginBloc({required AuthService authService}):assert(authService != null),
     _authService = authService,
-    super(LoginState.initial());
+    super(LoginState.initial()){
 
-
-  @override
-  Stream<LoginState> mapEventToState(LoginEvent loginEvent) async*{
-    final LoginState loginState;
-    if(loginEvent is LoginEventWithGooglePressed){
+    on<LoginEventWithGooglePressed>((event, emit) async {
       try {
         await _authService.signInWithGoogle();
-        yield LoginState.success();
-      }catch(exception) {
-        yield LoginState.failure();
+        emit(LoginState.success());
+      }catch (exception){
+        emit(LoginState.failure());
       }
-    }else if (loginEvent is LoginEventWithFacebookPressed){
+
+    });
+
+    on<LoginEventWithFacebookPressed>((event, emit) async {
       try {
         await _authService.signInWithFacebook();
-        yield LoginState.success();
-      }catch(exception){
-        yield LoginState.failure();
+        emit(LoginState.success());
+      }catch (exception){
+        emit(LoginState.failure());
       }
-    }
+    });
   }
+
+
+  // @override
+  // Stream<LoginState> mapEventToState(LoginEvent loginEvent) async*{
+  //   final LoginState loginState;
+  //   if(loginEvent is LoginEventWithGooglePressed){
+  //     try {
+  //       await _authService.signInWithGoogle();
+  //       yield LoginState.success();
+  //     }catch(exception) {
+  //       yield LoginState.failure();
+  //     }
+  //   }else if (loginEvent is LoginEventWithFacebookPressed){
+  //     try {
+  //       await _authService.signInWithFacebook();
+  //       yield LoginState.success();
+  //     }catch(exception){
+  //       yield LoginState.failure();
+  //     }
+  //   }
+  // }
 
 }
