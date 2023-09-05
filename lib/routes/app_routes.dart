@@ -1,4 +1,3 @@
-
 import 'package:cooking_social_app/screens/community/community.dart';
 import 'package:cooking_social_app/screens/cookbook/detail_cookbook.dart';
 
@@ -23,7 +22,6 @@ class RouteGenerator {
     final args = settings.arguments;
     switch (settings.name) {
       case home:
-
         return PageTransition(
           child: const SafeArea(child: SafeArea(child: HomeScreen())),
           type: PageTransitionType.rightToLeft,
@@ -36,7 +34,6 @@ class RouteGenerator {
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
-
 
       case detailCookbook:
         return PageTransition(
@@ -51,7 +48,6 @@ class RouteGenerator {
           type: PageTransitionType.fade,
           duration: const Duration(milliseconds: 400),
         );
-
 
       case accountScreen:
         return PageTransition(
@@ -108,7 +104,6 @@ class RouteGenerator {
   static const home = 'home';
   static const detailCookbook = 'detailCookbook';
   static const community = 'community';
-
 
   // ACCOUNT
   static const accountScreen = 'account';
