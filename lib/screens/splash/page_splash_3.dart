@@ -32,7 +32,7 @@ class _PageSplash3State extends State<PageSplash3> {
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        RouteGenerator.home,
+                        RouteGenerator.bottom_navigation,
                       );
                     },
                     child: Container(
