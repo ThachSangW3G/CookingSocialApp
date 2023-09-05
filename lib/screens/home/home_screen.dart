@@ -3,8 +3,11 @@ import 'package:cooking_social_app/models/category.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../blocs/blocs/authentication_bloc.dart';
+import '../../blocs/events/authentication_event.dart';
 import '../../models/featured.dart';
 import '../../widgets/cookbook_widget.dart';
 import '../../widgets/featured_card_widget.dart';
@@ -41,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             Navigator.pushNamed(
                                 context, RouteGenerator.accountScreen);
+                            //BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationEventLoggedOut());
                           },
                           child: Container(
                             height: 60,
