@@ -26,7 +26,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         builder: (context, authenticationState){
           if (authenticationState is AuthenticationStateSuccess){
-            return const HomeScreen();
+            return const SplashScreen();
           } else if(authenticationState is AuthenticationStateFailure){
             return BlocProvider<LoginBloc>(
               create: (context) => LoginBloc(authService: _authService),
