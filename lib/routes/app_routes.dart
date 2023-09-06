@@ -63,12 +63,12 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
 
-      // case login:
-      //   return PageTransition(
-      //     child: const SafeArea(child: SafeArea(child: LoginScreen())),
-      //     type: PageTransitionType.fade,
-      //     duration: const Duration(milliseconds: 400),
-      //   );
+      case login:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: LoginScreen())),
+          type: PageTransitionType.fade,
+          duration: const Duration(milliseconds: 400),
+        );
       case authentication:
         return PageTransition(
           child: const SafeArea(child: SafeArea(child: AuthenticationScreen())),
