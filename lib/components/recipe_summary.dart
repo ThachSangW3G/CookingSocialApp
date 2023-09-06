@@ -7,15 +7,23 @@ import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:cooking_social_app/models/recipe.dart';
 
 class RecipeSummary extends StatefulWidget {
-  const RecipeSummary({super.key});
-
+  const RecipeSummary({Key? key, required this.recipe}) : super(key: key);
+  final Recipe recipe;
   @override
   State<RecipeSummary> createState() => _RecipeSummaryState();
 }
 
 class _RecipeSummaryState extends State<RecipeSummary> {
+  Recipe? recipe;
+  @override
+  void initState() {
+    recipe = widget.recipe;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -71,13 +79,6 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                             decoration: const BoxDecoration(
                                 color: AppColors.white, shape: BoxShape.circle),
                             child: Center(
-                              // child: Image(
-                              //   image: AssetImage('assets/icons/heart.png'),
-                              //   width: 23,
-                              //   height: 23,
-                              //   color: AppColors.orangeCrusta,
-                              //   fit: BoxFit.cover,
-                              // ),
                               child: SvgPicture.asset(
                                 'assets/icon_svg/heart.svg',
                                 colorFilter: const ColorFilter.mode(
@@ -212,9 +213,9 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                               const SizedBox(
                                                 height: 5.0,
                                               ),
-                                              const Text(
-                                                'Sup Makaroni Daging Ayam Kampung',
-                                                style: TextStyle(
+                                              Text(
+                                                recipe!.name,
+                                                style: const TextStyle(
                                                   fontFamily: 'Recoleta',
                                                   fontSize: 24,
                                                   fontWeight: FontWeight.w600,
@@ -240,9 +241,10 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                                   const SizedBox(
                                                     width: 10.0,
                                                   ),
-                                                  const Text(
-                                                    '4.9',
-                                                    style: TextStyle(
+                                                  Text(
+                                                    recipe!.numberLike
+                                                        .toString(),
+                                                    style: const TextStyle(
                                                         fontFamily: 'CeraPro',
                                                         color: AppColors
                                                             .greyShuttle),
@@ -260,9 +262,10 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                                   const SizedBox(
                                                     width: 10.0,
                                                   ),
-                                                  const Text(
-                                                    '103',
-                                                    style: TextStyle(
+                                                  Text(
+                                                    recipe!.numberReView
+                                                        .toString(),
+                                                    style: const TextStyle(
                                                         fontFamily: 'CeraPro',
                                                         color: AppColors
                                                             .greyShuttle),
@@ -291,8 +294,9 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  const IconContentOrange(
-                                                    label: '40 min',
+                                                  IconContentOrange(
+                                                    label:
+                                                        "${recipe!.cookTime.toString()} min",
                                                     iconData:
                                                         'assets/icon_svg/clock.svg',
                                                   ),
@@ -301,8 +305,8 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                                     height: 40,
                                                     color: AppColors.greyBombay,
                                                   ),
-                                                  const IconContentOrange(
-                                                    label: 'Easy',
+                                                  IconContentOrange(
+                                                    label: recipe!.difficult,
                                                     iconData:
                                                         'assets/icon_svg/dinner.svg',
                                                   ),
@@ -311,8 +315,9 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                                     height: 40,
                                                     color: AppColors.greyBombay,
                                                   ),
-                                                  const IconContentOrange(
-                                                    label: 'Serves 2',
+                                                  IconContentOrange(
+                                                    label:
+                                                        'Serves ${recipe!.serves.toString()}',
                                                     iconData:
                                                         'assets/icon_svg/restaurant.svg',
                                                   ),
