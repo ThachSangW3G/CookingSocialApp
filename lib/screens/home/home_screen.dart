@@ -44,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             Navigator.pushNamed(
                                 context, RouteGenerator.accountScreen);
-                            //BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationEventLoggedOut());
+
                           },
                           child: Container(
                             height: 60,
