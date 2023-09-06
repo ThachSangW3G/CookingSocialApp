@@ -1,12 +1,14 @@
 import 'package:cooking_social_app/blocs/blocs/login_bloc.dart';
 import 'package:cooking_social_app/blocs/states/login_state.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/providers/provider_authentication/authentication_state.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:provider/provider.dart';
 
 import '../../blocs/blocs/authentication_bloc.dart';
 import '../../blocs/events/authentication_event.dart';
@@ -14,43 +16,31 @@ import '../../blocs/events/login_event.dart';
 // import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class LoginScreen extends StatefulWidget {
-  final AuthService _authService;
+  const LoginScreen({super.key});
 
-  const LoginScreen({super.key, required AuthService authService}): assert(authService != null), _authService = authService;
+  //final AuthService _authService;
+
+  //const LoginScreen({super.key, required AuthService authService}): assert(authService != null), _authService = authService;
+
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen> createState() {
+    return _LoginScreenState();
+  }
 }
 
 class _LoginScreenState extends State<LoginScreen> {
 
-  late LoginBloc _loginBloc;
-  AuthService get _authService => widget._authService;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _loginBloc = BlocProvider.of<LoginBloc>(context);
-  }
 
   FirebaseAuth auth = FirebaseAuth.instance;
   var numberPhone = "";
 
   @override
   Widget build(BuildContext context) {
+    final AuthenticationStateProvider authenticationStateProvider = Provider.of<AuthenticationStateProvider>(context, listen: false);
+
     return Scaffold(
-      body: BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, loginState){
-          if(loginState.isFailure) {
-            print('Login failed');
-          } else if(loginState.isSubmitting) {
-            print('Logging in');
-          } else if(loginState.isSuccess) {
-            //add event: AuthenticationEventLoggedIn ?
-            BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationEventLoggedIn());
-          }
-          return Stack(
+      body: Stack(
             children: [
               Container(
                 width: double.infinity,
@@ -235,8 +225,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Expanded(
                             child: GestureDetector(
-                              onTap: (){
-                                BlocProvider.of<LoginBloc>(context).add(LoginEventWithFacebookPressed());
+                              onTap: () async {
+                                try{
+                                  if(await authenticationStateProvider.singInWithFacebook()){
+                                Navigator.pushNamed(context, RouteGenerator.splash);
+                                }
+                                }catch (e){}
                               },
                               child: Container(
                                 width: double.infinity,
@@ -292,8 +286,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           Expanded(
                             child: GestureDetector(
-                              onTap: () {
-                                BlocProvider.of<LoginBloc>(context).add(LoginEventWithGooglePressed());
+                              onTap: () async {
+
+                                try{
+                                  if(await authenticationStateProvider.singInWithGoogle()){
+                                    Navigator.pushNamed(context, RouteGenerator.splash);
+                                  }
+                                }catch (e){}
+
                               },
                               child: Container(
                                 width: double.infinity,
@@ -419,10 +419,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               )
             ],
-          );
-        },
-      ),
-
+          )
     );
   }
 }

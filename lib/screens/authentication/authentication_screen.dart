@@ -30,7 +30,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           } else if(authenticationState is AuthenticationStateFailure){
             return BlocProvider<LoginBloc>(
               create: (context) => LoginBloc(authService: _authService),
-              child: LoginScreen(authService: _authService,),
+              child: const LoginScreen(),
             );
           }
           return const SplashScreen();
