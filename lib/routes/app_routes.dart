@@ -85,7 +85,9 @@ class RouteGenerator {
 
       case accountScreen:
         return PageTransition(
-          child: SafeArea(child: SafeArea(child: BlocProvider<AuthenticationBloc>(
+          child: SafeArea(
+              child: SafeArea(
+                  child: BlocProvider<AuthenticationBloc>(
             create: (context) => AuthenticationBloc(authService: _authService),
             child: const AccountScreen(),
           ))),
