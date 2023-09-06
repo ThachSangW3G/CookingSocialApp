@@ -63,12 +63,16 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
 
-      // case login:
-      //   return PageTransition(
-      //     child: const SafeArea(child: SafeArea(child: LoginScreen())),
-      //     type: PageTransitionType.fade,
-      //     duration: const Duration(milliseconds: 400),
-      //   );
+      case login:
+        return PageTransition(
+          child: SafeArea(
+              child: SafeArea(
+                  child: LoginScreen(
+            authService: _authService,
+          ))),
+          type: PageTransitionType.fade,
+          duration: const Duration(milliseconds: 400),
+        );
       case authentication:
         return PageTransition(
           child: const SafeArea(child: SafeArea(child: AuthenticationScreen())),
@@ -85,7 +89,9 @@ class RouteGenerator {
 
       case accountScreen:
         return PageTransition(
-          child: SafeArea(child: SafeArea(child: BlocProvider<AuthenticationBloc>(
+          child: SafeArea(
+              child: SafeArea(
+                  child: BlocProvider<AuthenticationBloc>(
             create: (context) => AuthenticationBloc(authService: _authService),
             child: const AccountScreen(),
           ))),
