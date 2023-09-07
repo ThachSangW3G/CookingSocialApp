@@ -9,18 +9,21 @@ class RecipeStateProvider extends ChangeNotifier {
 
   Future<void> fetchRecipe(String key) async {
     try {
-      debugPrint('jhfbgbbbbbbbbbb');
+      print(key);
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('recipes')
           .where('key', isEqualTo: key)
           .get();
-      List<Recipe> fetchedRecipe = snapshot.docs.map((doc) {
-        Recipe recipe = Recipe.fromJson(doc.data() as Map<String, dynamic>);
-        recipe.key = doc.id;
-        return recipe;
-      }).toList();
+      List<Recipe> fetchedRecipe = [];
+      snapshot.docs.forEach((doc) {
+        print('Document ID: ${doc.id}');
+        print('Data: ${doc.data()}');
+        fetchedRecipe.add(Recipe.fromJson(doc.data() as Map<String, dynamic>));
+        print(fetchedRecipe[0].description);
+      });
 
       _recipes = fetchedRecipe;
+      print(_recipes[0].description);
       notifyListeners();
     } catch (e) {
       debugPrint(e as String?);
@@ -40,7 +43,7 @@ class RecipeStateProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (error) {
-      throw error;
+      debugPrint(error as String?);
     }
   }
 
@@ -61,7 +64,7 @@ class RecipeStateProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (error) {
-      throw error;
+      debugPrint(error as String?);
     }
   }
 }

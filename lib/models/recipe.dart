@@ -33,21 +33,21 @@ class Recipe {
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
     return Recipe(
-        key: json['key'],
-        url: json['url'],
-        name: json['name'],
-        cookTime: json['cookTime'],
-        description: json['description'],
-        difficult: json['difficult'],
-        isPublic: json['isPublic'],
+        key: json['key'] as String,
+        url: json['URL'] as String,
+        name: json['name'] as String,
+        cookTime: json['cookTime'] as int,
+        description: json['description'] as String,
+        difficult: json['difficult'] as String,
+        isPublic: json['isPublic'] as bool,
         material: List<String>.from(json['material']),
-        numberLike: json['numberLike'],
-        numberReView: json['numberView'],
-        serves: json['serves'],
-        source: json['source'],
+        numberLike: json['numberLike'] as int,
+        numberReView: json['numberReview'] as int,
+        serves: json['serves'] as int,
+        source: json['source'] as String,
         spice: List<String>.from(json['spice']),
         steps: List<String>.from(json['steps']),
-        uidUser: json['uidUser']);
+        uidUser: json['uidUser'] as String);
   }
   Map<String, dynamic> toJson() {
     return {

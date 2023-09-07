@@ -1,27 +1,44 @@
 import 'package:cooking_social_app/components/ingredient_item.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/models/recipe.dart';
 import 'package:flutter/material.dart';
 
-class TabContentIntro extends StatelessWidget {
-  const TabContentIntro({super.key});
+class TabContentIntro extends StatefulWidget {
+  final Recipe? recipe;
+  const TabContentIntro({Key? key, required this.recipe}) : super(key: key);
+
+  @override
+  State<TabContentIntro> createState() => _TabContentIntroState();
+}
+
+class _TabContentIntroState extends State<TabContentIntro> {
+  String? _description;
+  String? _source;
+
+  @override
+  void initState() {
+    _description = widget.recipe?.description;
+    _source = widget.recipe?.source;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Mendengar kata-kata Sup pastinya yang terbayang dibenak kita adalah sesuatu yang enak dan lezat. Bagaimana tidak menu makanan yang satu ini adalah salah satu menu yang digemari diseluruh pelosok Indosesia. Makanan yang membuat kita lebih bersemangat untuk makan lebih banyak dari poris biyasanya. Kali ini saya akan sedikti mberikan sedikit informasi bagi ibu-ibu rumah tangga yang hobi akan memasak tentang Sup Makaroni yang mungkin bisa dijadikan salah satu menu masakan spesial untuk keluarga tercinta anda dirumah. Agar pembahasan kita tidak melebar kemana-mana mari kita langsung saja masuk kepembahasan utama kita tentang Sup Makaroni. Silahkan disimak langkah-langkah dibawah ini',
-            style: TextStyle(
+            _description!,
+            style: const TextStyle(
                 color: Colors.black, fontFamily: 'CeraPro', fontSize: 16),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
-          Text(
+          const Text(
             'Source',
             style: TextStyle(
                 fontSize: 20,
@@ -29,12 +46,12 @@ class TabContentIntro extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 color: Colors.black),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Text(
-            'https://www.fimela.com/lifestyle-relationsh',
-            style: TextStyle(
+            _source!,
+            style: const TextStyle(
                 fontFamily: 'CeraPro',
                 fontSize: 16,
                 color: AppColors.greyBombay),

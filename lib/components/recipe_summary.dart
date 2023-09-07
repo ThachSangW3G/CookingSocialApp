@@ -41,15 +41,13 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                 Container(
                   height: 400,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       image: DecorationImage(
-                          image:
-                              AssetImage('assets/images/image_background.png'),
-                          fit: BoxFit.fill)),
+                          image: NetworkImage(recipe!.url), fit: BoxFit.fill)),
                   alignment: Alignment.topCenter,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 50),
+                        horizontal: 10.0, vertical: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
