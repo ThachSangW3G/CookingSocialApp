@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/category.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
+import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/repository/recipe_repository.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
@@ -13,6 +15,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../blocs/blocs/authentication_bloc.dart';
 import '../../blocs/events/authentication_event.dart';
 import '../../models/featured.dart';
+import '../../widgets/category_card.dart';
 import '../../widgets/cookbook_widget.dart';
 import '../../widgets/featured_card_widget.dart';
 
@@ -30,7 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context, listen: false);
+    final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
+    final CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
     return Scaffold(
       backgroundColor: AppColors.whitePorcelain,
       body: Scaffold(
@@ -287,26 +291,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 15.0,
                 ),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      CategoryCard(
-                        category: listCategory[0],
-                      ),
-                      CategoryCard(
-                        category: listCategory[1],
-                      ),
-                      CategoryCard(
-                        category: listCategory[2],
-                      ),
-                      CategoryCard(
-                        category: listCategory[3],
-                      ),
-                      CategoryCard(
-                        category: listCategory[4],
-                      )
-                    ],
+                RefreshIndicator(
+                  onRefresh: () async{
+                    context.read<CategoryProvider>().init();
+                  },
+                  child: Container(
+                    height: 130,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: categoryProvider.categories.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index){
+                        final category = categoryProvider.categories[index];
+                        return CategoryCard(
+                          category: category,
+                        );
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -317,43 +318,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       )),
-    );
-  }
-}
-
-class CategoryCard extends StatelessWidget {
-  final Category category;
-  const CategoryCard({
-    super.key,
-    required this.category,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: Column(
-        children: [
-          Container(
-            width: 75,
-            height: 75,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(category.image), fit: BoxFit.cover),
-                borderRadius: const BorderRadius.all(Radius.circular(16.0))),
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          Text(
-            category.name,
-            style: const TextStyle(
-                fontFamily: 'CeraPro',
-                fontSize: 14,
-                fontWeight: FontWeight.w500),
-          )
-        ],
-      ),
     );
   }
 }

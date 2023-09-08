@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../models/category.dart';
+import '../../widgets/category_card.dart';
 import '../../widgets/featured_card_small_widget.dart';
 import '../home/home_screen.dart';
 
