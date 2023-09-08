@@ -1,7 +1,9 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/featured.dart';
+import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/category.dart';
 import '../../widgets/category_card.dart';
@@ -18,6 +20,7 @@ class CommunityScreen extends StatefulWidget {
 class _CommunityScreenState extends State<CommunityScreen> {
   @override
   Widget build(BuildContext context) {
+    final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -156,16 +159,22 @@ class _CommunityScreenState extends State<CommunityScreen> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, mainAxisExtent: 320),
-                  itemCount: listFeatured.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return FeaturedCardSmallWidget(
-                      featured: listFeatured[index],
-                    );
-                  }),
+              child: RefreshIndicator(
+                onRefresh:  () async {
+                  context.read<RecipeProvider>().init();
+                },
+                child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, mainAxisExtent: 320),
+                    itemCount: recipeProvider.features.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      final feature = recipeProvider.features[index];
+                      return FeaturedCardSmallWidget(
+                        featured: feature,
+                      );
+                    }),
+              ),
             ),
           )
         ],

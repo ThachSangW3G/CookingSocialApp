@@ -226,32 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               
-                // InkWell(
-                //   onTap: () {
-                //     Navigator.pushNamed(
-                //         context, RouteGenerator.recipedetailScreen);
-                //   },
-                //   child: FeaturedCard(
-                //     featured: listFeatured[0],
-                //   ),
-                // ),
-                // InkWell(
-                //   onTap: () {
-                //         context, RouteGenerator.recipedetailScreen);
-                //   },
-                //   child: FeaturedCard(
-                //     featured: listFeatured[1],
-                //   ),
-                // ),
-                // InkWell(
-                //   onTap: () {
-                //     Navigator.pushNamed(
-                //         context, RouteGenerator.recipedetailScreen);
-                //   },
-                //   child: FeaturedCard(
-                //     featured: listFeatured[2],
-                //   ),
-                // ),
+
                 const SizedBox(
                   height: 50,
                 ),

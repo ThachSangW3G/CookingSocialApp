@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -20,7 +21,7 @@ class FeaturedCardSmallWidget extends StatelessWidget {
           height: 180,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage(featured.image),
+                  image: CachedNetworkImageProvider(featured.image),
                   fit: BoxFit.cover
               ),
               borderRadius: const BorderRadius.all(Radius.circular(16.0))
@@ -61,7 +62,7 @@ class FeaturedCardSmallWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        image: AssetImage(featured.avatar)
+                        image: CachedNetworkImageProvider(featured.avatar)
                     )
                 ),
               ),
@@ -69,15 +70,20 @@ class FeaturedCardSmallWidget extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    Text(
-                      featured.nameUser,
-                      overflow: TextOverflow.clip,
-                      maxLines: 1,
-                      style: const TextStyle(
-                          fontFamily: 'CeraPro',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          featured.nameUser,
+                          overflow: TextOverflow.clip,
+                          maxLines: 1,
+                          style: const TextStyle(
+                              fontFamily: 'CeraPro',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                      ],
                     ),
                     Row(
                       children: [
