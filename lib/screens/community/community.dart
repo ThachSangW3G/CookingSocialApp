@@ -6,8 +6,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/category.dart';
+import '../../providers/category_provider.dart';
 import '../../widgets/category_card.dart';
 import '../../widgets/featured_card_small_widget.dart';
+import '../../widgets/featured_card_widget.dart';
 import '../home/home_screen.dart';
 
 class CommunityScreen extends StatefulWidget {
@@ -188,6 +190,7 @@ class OptionItemDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
     return Dialog(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16))),
@@ -213,26 +216,23 @@ class OptionItemDialog extends StatelessWidget {
               const SizedBox(
                 height: 20.0,
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    CategoryCard(
-                      category: listCategory[0],
-                    ),
-                    CategoryCard(
-                      category: listCategory[1],
-                    ),
-                    CategoryCard(
-                      category: listCategory[2],
-                    ),
-                    CategoryCard(
-                      category: listCategory[3],
-                    ),
-                    CategoryCard(
-                      category: listCategory[4],
-                    )
-                  ],
+              RefreshIndicator(
+                onRefresh: () async{
+                  context.read<CategoryProvider>().init();
+                },
+                child: Container(
+                  height: 130,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: categoryProvider.categories.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index){
+                      final category = categoryProvider.categories[index];
+                      return CategoryCard(
+                        category: category,
+                      );
+                    },
+                  ),
                 ),
               ),
               const SizedBox(
