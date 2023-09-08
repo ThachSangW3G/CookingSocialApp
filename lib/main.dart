@@ -1,6 +1,7 @@
 // import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 // import 'package:cooking_social_app/screens/recipe/add_grocery_screen.dart';
 import 'package:cooking_social_app/providers/provider_authentication/authentication_state.dart';
+import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
@@ -22,6 +23,9 @@ Future<void> main() async {
         providers: [
           ChangeNotifierProvider(
             create: (_) => AuthenticationStateProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => RecipeProvider(),
           )
         ],
         child:  const MyApp(),

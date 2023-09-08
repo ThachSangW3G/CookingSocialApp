@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/app_color.dart';
@@ -20,7 +21,7 @@ class FeaturedCard extends StatelessWidget {
             height: 300,
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(featured.image),
+                    image: CachedNetworkImageProvider(featured.image),
                     fit: BoxFit.cover
                 ),
                 borderRadius: const BorderRadius.all(Radius.circular(16.0))
@@ -29,13 +30,18 @@ class FeaturedCard extends StatelessWidget {
           const SizedBox(height: 10.0,),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Text(
-              featured.title,
-              style: const TextStyle(
-                  fontFamily: 'Recoleta',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  featured.title,
+                  style: const TextStyle(
+                      fontFamily: 'Recoleta',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 10.0,),
@@ -52,7 +58,7 @@ class FeaturedCard extends StatelessWidget {
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                              image: AssetImage(featured.avatar),
+                              image: CachedNetworkImageProvider(featured.avatar),
                               fit: BoxFit.contain
                           )
                       ),

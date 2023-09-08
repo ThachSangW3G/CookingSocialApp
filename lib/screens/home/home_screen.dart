@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/category.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
+import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:cooking_social_app/repository/recipe_repository.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../blocs/blocs/authentication_bloc.dart';
@@ -26,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: AppColors.whitePorcelain,
       body: Scaffold(
@@ -201,36 +206,52 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(
-                        context, RouteGenerator.recipedetailScreen);
-                  },
-                  child: FeaturedCard(
-                    featured: listFeatured[0],
+
+                RefreshIndicator(
+                  onRefresh:  () async {
+                    context.read<RecipeProvider>().init();
+                    },
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: recipeProvider.features.length,
+                    itemBuilder: (context, index){
+                      final featured =  recipeProvider.features[index];
+                      return FeaturedCard(featured: featured);
+                      },
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(
-                        context, RouteGenerator.recipedetailScreen);
-                  },
-                  child: FeaturedCard(
-                    featured: listFeatured[1],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(
-                        context, RouteGenerator.recipedetailScreen);
-                  },
-                  child: FeaturedCard(
-                    featured: listFeatured[2],
-                  ),
-                ),
+              
+                // InkWell(
+                //   onTap: () {
+                //     Navigator.pushNamed(
+                //         context, RouteGenerator.recipedetailScreen);
+                //   },
+                //   child: FeaturedCard(
+                //     featured: listFeatured[0],
+                //   ),
+                // ),
+                // InkWell(
+                //   onTap: () {
+                //         context, RouteGenerator.recipedetailScreen);
+                //   },
+                //   child: FeaturedCard(
+                //     featured: listFeatured[1],
+                //   ),
+                // ),
+                // InkWell(
+                //   onTap: () {
+                //     Navigator.pushNamed(
+                //         context, RouteGenerator.recipedetailScreen);
+                //   },
+                //   child: FeaturedCard(
+                //     featured: listFeatured[2],
+                //   ),
+                // ),
                 const SizedBox(
                   height: 50,
                 ),
+                //     Navigator.pushNamed(
                 InkWell(
                   onTap: () {
                     Navigator.pushNamed(context, RouteGenerator.community);
