@@ -4,6 +4,7 @@ import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/category.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/providers/category_provider.dart';
+import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/repository/recipe_repository.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
@@ -28,13 +29,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final PageController _pageController = PageController();
-  int pageCount = 3;
-  int pageCurrent = 1;
+
 
   @override
   Widget build(BuildContext context) {
     final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
     final CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
+    final CookbookProvider cookbookProvider = Provider.of<CookbookProvider>(context);
+    int pageCount = 2;
+    int pageCurrent = 0;
     return Scaffold(
       backgroundColor: AppColors.whitePorcelain,
       body: Scaffold(
@@ -148,37 +151,46 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   color: AppColors.whitePorcelain,
                   height: 500,
-                  child: PageView.builder(
-                    onPageChanged: (index) {
-                      setState(() {
-                        pageCurrent = index + 1;
-                      });
+                  child: RefreshIndicator(
+                    onRefresh: () async{
+                      context.read<CookbookProvider>().init();
+                      //print(cookbookProvider.cookbooks.length);
                     },
-                    controller: _pageController,
-                    itemCount: cookBookList.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, RouteGenerator.detailCookbook);
-                          },
-                          child: CookBookWidget(
-                            cookBook: cookBookList[index],
-                          ));
-                    },
+                    child: PageView.builder(
+                      onPageChanged: (index) {
+                        setState(() {
+                          pageCurrent = index + 1;
+                        });
+                      },
+                      controller: _pageController,
+                      itemCount: cookbookProvider.cookbooks.length,
+                      itemBuilder: (context, index) {
+
+                        final cookbook = cookbookProvider.cookbooks[index];
+                        print(cookbook);
+                        return InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, RouteGenerator.detailCookbook);
+                            },
+                            child: CookBookWidget(
+                              cookBook: cookbook,
+                            ));
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                SmoothPageIndicator(
-                  controller: _pageController,
-                  count: cookBookList.length,
-                  effect: const SwapEffect(
-                      activeDotColor: AppColors.orangeCrusta,
-                      dotWidth: 10,
-                      dotHeight: 10),
-                ),
+                // SmoothPageIndicator(
+                //   controller: _pageController,
+                //   count: cookbookProvider.cookbooks.length,
+                //   effect: const SwapEffect(
+                //       activeDotColor: AppColors.orangeCrusta,
+                //       dotWidth: 10,
+                //       dotHeight: 10),
+                // ),
                 const SizedBox(
                   height: 30,
                 ),
