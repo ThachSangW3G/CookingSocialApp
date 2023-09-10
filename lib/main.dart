@@ -4,6 +4,7 @@ import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/authentication_state.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:cooking_social_app/providers/user_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
@@ -34,6 +35,9 @@ Future<void> main() async {
           ),
           ChangeNotifierProvider(
             create: (_) => CookbookProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => UserProvider(),
           )
         ],
         child:  const MyApp(),

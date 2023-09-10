@@ -3,11 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/category.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
+import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:cooking_social_app/providers/user_provider.dart';
 import 'package:cooking_social_app/repository/recipe_repository.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -30,14 +33,20 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final PageController _pageController = PageController();
 
+  int pageCurrent = 1;
 
   @override
   Widget build(BuildContext context) {
     final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
     final CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
     final CookbookProvider cookbookProvider = Provider.of<CookbookProvider>(context);
-    int pageCount = 2;
-    int pageCurrent = 0;
+    //final UserProvider userProvider = Provider.of<UserProvider>(context);
+
+
+
+      //final userCurrent = await userProvider.getUser(FirebaseAuth.instance.currentUser!.uid);
+    int? pageCount = cookbookProvider.cookbooks.length;
+
     return Scaffold(
       backgroundColor: AppColors.whitePorcelain,
       body: Scaffold(
@@ -47,60 +56,83 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, RouteGenerator.accountScreen);
-
-                          },
-                          child: Container(
-                            height: 60,
-                            width: 60,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/avatar.jpg'),
-                                    fit: BoxFit.contain)),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Hi Nararaya',
-                              style: TextStyle(
-                                  fontFamily: 'CeraPro',
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Text(
-                              'Why are you cooking today?',
-                              style: TextStyle(
-                                  fontFamily: 'CeraPro',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      child: const Icon(
-                        Icons.notifications_outlined,
-                        size: 30,
-                      ),
-                    ),
-                  ],
+                Consumer<UserProvider>(
+                  builder: (context, userProvider, _) {
+                    return FutureBuilder<UserModel>(
+                      future: userProvider.getUser(FirebaseAuth.instance.currentUser!.uid),
+                      builder: (context, snapshot) {
+                         if (snapshot.hasError) {
+                          // Hiển thị widget khi có lỗi xảy ra
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          // Hiển thị widget khi dữ liệu đã được tải thành công
+                          final userCurrent = snapshot.data;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        RouteGenerator.accountScreen,
+                                      );
+                                    },
+                                    child: Container(
+                                      height: 60,
+                                      width: 60,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(50),
+                                        child: CachedNetworkImage(
+                                          imageUrl: userCurrent!.avatar,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Hi ${userCurrent!.name}',
+                                        style: const TextStyle(
+                                          fontFamily: 'CeraPro',
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                      const Text(
+                                        'Why are you cooking today?',
+                                        style: TextStyle(
+                                          fontFamily: 'CeraPro',
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: const Icon(
+                                  Icons.notifications_outlined,
+                                  size: 30,
+                                ),
+                              ),
+                            ],
+                          );
+                        }
+                      },
+                    );
+                  },
                 ),
                 const SizedBox(
                   height: 20,
@@ -151,46 +183,40 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   color: AppColors.whitePorcelain,
                   height: 500,
-                  child: RefreshIndicator(
-                    onRefresh: () async{
-                      context.read<CookbookProvider>().init();
-                      //print(cookbookProvider.cookbooks.length);
+                  child: PageView.builder(
+                    onPageChanged: (index) {
+                      setState(() {
+                        pageCurrent = index + 1;
+                      });
                     },
-                    child: PageView.builder(
-                      onPageChanged: (index) {
-                        setState(() {
-                          pageCurrent = index + 1;
-                        });
-                      },
-                      controller: _pageController,
-                      itemCount: cookbookProvider.cookbooks.length,
-                      itemBuilder: (context, index) {
+                    controller: _pageController,
+                    itemCount: cookbookProvider.cookbooks.length,
+                    itemBuilder: (context, index) {
 
-                        final cookbook = cookbookProvider.cookbooks[index];
-                        print(cookbook);
-                        return InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, RouteGenerator.detailCookbook);
-                            },
-                            child: CookBookWidget(
-                              cookBook: cookbook,
-                            ));
-                      },
-                    ),
+                      final cookbook = cookbookProvider.cookbooks[index];
+                      //print(cookbook);
+                      return InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, RouteGenerator.detailCookbook);
+                          },
+                          child: CookBookWidget(
+                            cookBook: cookbook,
+                          ));
+                    },
                   ),
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                // SmoothPageIndicator(
-                //   controller: _pageController,
-                //   count: cookbookProvider.cookbooks.length,
-                //   effect: const SwapEffect(
-                //       activeDotColor: AppColors.orangeCrusta,
-                //       dotWidth: 10,
-                //       dotHeight: 10),
-                // ),
+                SmoothPageIndicator(
+                  controller: _pageController,
+                  count: cookbookProvider.cookbooks.length,
+                  effect: const SwapEffect(
+                      activeDotColor: AppColors.orangeCrusta,
+                      dotWidth: 10,
+                      dotHeight: 10),
+                ),
                 const SizedBox(
                   height: 30,
                 ),
@@ -306,5 +332,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       )),
     );
+  }
+
+  void getUser() {
+
   }
 }

@@ -8,6 +8,7 @@ class UserModel {
 
   UserModel({required this.uid, required this.avatar, required this.name, required this.email});
 
+
   factory UserModel.fromJson(Map<String, dynamic> json){
     return UserModel(
       uid: json['uid'],

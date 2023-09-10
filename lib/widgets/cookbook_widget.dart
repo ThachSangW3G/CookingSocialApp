@@ -41,6 +41,13 @@ class CookBookWidget extends StatelessWidget {
                 child: CachedNetworkImage(
                   imageUrl: cookBook.image,
                   fit: BoxFit.cover,
+                    placeholder: (context, url) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.04),
+                        ),
+                      );
+                    },
                 ),
               ),
             ),
