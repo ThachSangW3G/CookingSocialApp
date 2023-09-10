@@ -1,6 +1,8 @@
 class Review {
   String key;
   String uidUser;
+  String name;
+  String avatar;
   String description;
   String time;
   String keyRecipe;
@@ -9,6 +11,8 @@ class Review {
       {required this.uidUser,
       required this.description,
       required this.key,
+      required this.avatar,
+      required this.name,
       required this.time,
       required this.keyRecipe});
 
@@ -29,6 +33,8 @@ class Review {
       description: json['description'],
       time: json['time'],
       keyRecipe: json['keyRecipe'],
+      avatar: json['avatar'],
+      name: json['name'],
     );
   }
 }

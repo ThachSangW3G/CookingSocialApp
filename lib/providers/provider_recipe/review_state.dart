@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/models/review.dart';
+import 'package:cooking_social_app/services/date_time.dart';
 import 'package:flutter/material.dart';
 
 class ReviewStateProvider extends ChangeNotifier {
@@ -8,13 +9,41 @@ class ReviewStateProvider extends ChangeNotifier {
 
   Future<void> fetchReview(String key) async {
     try {
+      List<Review> fetchedRecipe = [];
+      //
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('review')
           .where('keyRecipe', isEqualTo: key)
           .get();
-      List<Review> fetchedRecipe = [];
       for (var doc in snapshot.docs) {
-        fetchedRecipe.add(Review.fromJson(doc.data() as Map<String, dynamic>));
+        String uidUser = doc['uidUser'];
+        String description = doc['description'];
+        String key = doc['key'];
+        Timestamp timestamp = doc['time'];
+        String keyRecipe = doc['keyRecipe'];
+
+        //
+        Duration elapsedTime = calculateElapsedTime(timestamp);
+        String time = elapsedTime.toString();
+        //
+        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+            .collection('uidUser')
+            .doc(uidUser)
+            .get();
+
+        String name = userSnapshot['name'];
+        String avatar = userSnapshot['avatar'];
+
+        Review review = Review(
+          uidUser: uidUser,
+          description: description,
+          key: key,
+          avatar: avatar,
+          name: name,
+          time: time,
+          keyRecipe: keyRecipe,
+        );
+        fetchedRecipe.add(review);
       }
 
       _review = fetchedRecipe;
