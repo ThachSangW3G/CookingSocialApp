@@ -3,12 +3,15 @@
 import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/authentication_state.dart';
+
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/providers/user_provider.dart';
+
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/home/home_screen.dart';
+import 'package:cooking_social_app/screens/recipe_detail/recipe_details_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,6 +23,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
 
   runApp(
       MultiProvider(
@@ -44,6 +48,7 @@ Future<void> main() async {
       )
 
   );
+
 }
 
 class MyApp extends StatelessWidget {
@@ -52,7 +57,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final AuthenticationStateProvider authenticationStateProvider =  Provider.of<AuthenticationStateProvider>(context, listen: false);
+    final AuthenticationStateProvider authenticationStateProvider =
+        Provider.of<AuthenticationStateProvider>(context, listen: false);
     return MaterialApp(
       title: 'Cooking Social',
       debugShowCheckedModeBanner: false,
@@ -61,7 +67,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       onGenerateRoute: RouteGenerator.generatorRoute,
-      home: authenticationStateProvider.isLoggedIn ? const HomeScreen() : const LoginScreen(),
+      home: authenticationStateProvider.isLoggedIn
+          ? const HomeScreen()
+          : const LoginScreen(),
     );
   }
 }
