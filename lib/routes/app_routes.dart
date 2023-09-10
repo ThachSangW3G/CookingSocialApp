@@ -1,4 +1,5 @@
 import 'package:cooking_social_app/blocs/blocs/authentication_bloc.dart';
+import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/bottom_navigation/bottom_navigation.dart';
@@ -43,8 +44,9 @@ class RouteGenerator {
         );
 
       case detailCookbook:
+        CookBook cookbook = args as CookBook;
         return PageTransition(
-          child: const SafeArea(child: SafeArea(child: DetailCookBookScreen())),
+          child: SafeArea(child: SafeArea(child: DetailCookBookScreen(cookbook: cookbook,))),
           type: PageTransitionType.fade,
           duration: const Duration(milliseconds: 400),
         );
@@ -139,26 +141,26 @@ class RouteGenerator {
     }
   }
 
-  static const splash = 'splash';
+  static const splash = '/splash';
 
-  static const home = 'home';
-  static const detailCookbook = 'detailCookbook';
-  static const community = 'community';
-  static const bottom_navigation = 'bottom_navigation';
-  static const login = 'login';
-  static const authentication = 'authentication';
+  static const home = '/home';
+  static const detailCookbook = '/detailCookbook';
+  static const community = '/community';
+  static const bottom_navigation = '/bottom_navigation';
+  static const login = '/login';
+  static const authentication = '/authentication';
 
   // ACCOUNT
-  static const accountScreen = 'account';
-  static const notificationScreen = 'notification';
-  static const accountpersonScreen = 'accountperson';
-  static const editprofileScreen = 'editprofile';
-  static const likedrecipeScreen = 'likedrecipe';
+  static const accountScreen = '/account';
+  static const notificationScreen = '/notification';
+  static const accountpersonScreen = '/accountperson';
+  static const editprofileScreen = '/editprofile';
+  static const likedrecipeScreen = '/likedrecipe';
   //
 
   // RECIPE DETAILS
-  static const recipedetailScreen = 'recipedetail';
-  static const reviewScreen = 'review';
+  static const recipedetailScreen = '/recipedetail';
+  static const reviewScreen = '/review';
   //
 }
 
