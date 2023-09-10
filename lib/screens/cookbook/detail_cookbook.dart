@@ -3,9 +3,12 @@ import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/models/recipe_item_published.dart';
 import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
+import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:cooking_social_app/widgets/popular_recipe.dart';
 import 'package:cooking_social_app/widgets/recipe_item_unpublished_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/recipe.dart';
 import '../../widgets/recipe_item_published_widget.dart';
@@ -242,7 +245,24 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                   const SizedBox(
                     height: 10.0,
                   ),
-                  //PopularRecipe(recipe: ,),
+                  Consumer<RecipeProvider>(
+                    builder: (context, recipeProvider, _){
+                      return FutureBuilder(
+                        future: recipeProvider.getUser(cookbook.recipes[cookbook.popularRecipeIndex] as String),
+                        builder: (context, snapshot){
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+
+                            final recipe = snapshot.data;
+                            return PopularRecipe(recipe: recipe!);
+                          }
+                        },
+                      );
+                    },
+                  ),
                   const SizedBox(
                     height: 20.0,
                   ),

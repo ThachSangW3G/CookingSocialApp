@@ -7,6 +7,7 @@ import 'package:cooking_social_app/repository/user_repository.dart';
 
 abstract class RecipeRepository{
   Future<List<Recipe>> getAllRecipes();
+  Future<Recipe> getRecipe(String idRecipe);
 }
 
 class RecipeRepositoryImpl implements RecipeRepository{
@@ -18,6 +19,11 @@ class RecipeRepositoryImpl implements RecipeRepository{
   @override
   Future<List<Recipe>> getAllRecipes() {
     return _recipeFirestoreService.getAllRecipes();
+  }
+
+  @override
+  Future<Recipe> getRecipe(String idRecipe) {
+    return _recipeFirestoreService.getRecipe(idRecipe);
   }
 
 }

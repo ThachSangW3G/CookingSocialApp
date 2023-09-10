@@ -3,6 +3,7 @@ import 'package:cooking_social_app/models/recipe.dart';
 
 abstract class RecipeDataService{
   Future<List<Recipe>> getAllRecipes();
+  Future<Recipe> getRecipe(String idRecipe);
 }
 
 class RecipeFirestoreService implements RecipeDataService{
@@ -20,6 +21,16 @@ class RecipeFirestoreService implements RecipeDataService{
     });
 
     return Future.value(recipeList);
+  }
+
+  @override
+  Future<Recipe> getRecipe(String idRecipe) async {
+    return await recipes.doc(idRecipe).get().then(
+            (DocumentSnapshot doc){
+          final data = Recipe.fromJson(doc.data() as Map<String, dynamic>);
+          return Future.value(data);
+        }
+    );
   }
 
 }

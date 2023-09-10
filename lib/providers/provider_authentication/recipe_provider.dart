@@ -33,5 +33,12 @@ class RecipeProvider extends ChangeNotifier{
   }
 
 
+  Future<Recipe> getUser(String idRecipe) async {
+    _recipeRepository = RecipeRepositoryImpl();
+    Recipe recipe = await _recipeRepository.getRecipe(idRecipe);
+    return recipe;
+  }
+
+
 
 }

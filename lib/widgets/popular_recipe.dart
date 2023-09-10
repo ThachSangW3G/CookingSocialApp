@@ -26,120 +26,122 @@ class PopularRecipe extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    recipe.name,
-                    style: const TextStyle(
-                      fontFamily: 'CeraPro',
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      recipe.name,
+                      style: const TextStyle(
+                        fontFamily: 'CeraPro',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 8.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icon_svg/heart.svg',
-                        color: AppColors.orangeCrusta,
-                        height: 15,
-                        width: 15,
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Text(
-                        recipe.numberLike.toString(),
-                        style: const TextStyle(
-                            fontFamily: 'CeraPro',
-                            color: AppColors.greyShuttle),
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      const Text(
-                        '|',
-                        style: TextStyle(
-                            fontFamily: 'CeraPro',
-                            color: AppColors.greyShuttle),
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Text(
-                        recipe.numberView.toString(),
-                        style: const TextStyle(
-                            fontFamily: 'CeraPro',
-                            color: AppColors.greyShuttle),
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      const Text(
-                        'Reviews',
-                        style: TextStyle(
-                            fontFamily: 'CeraPro',
-                            color: AppColors.greyShuttle),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icon_svg/clock.svg',
-                        height: 16,
-                        width: 16,
-                        color: AppColors.greyBombay,
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Text(
-                        recipe.cookTime.toString(),
-                        style: const TextStyle(
-                            fontFamily: 'CeraPro',
-                            fontSize: 14,
-                            color: AppColors.greyShuttle),
-                      ),
-                      const SizedBox(
-                        width: 8.0,
-                      ),
-                      const Text(
-                        'mins',
-                        style: TextStyle(
-                            fontFamily: 'CeraPro',
-                            fontSize: 14,
-                            color: AppColors.greyShuttle),
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      SvgPicture.asset(
-                        'assets/icon_svg/dinner.svg',
-                        height: 16,
-                        width: 16,
-                        color: AppColors.greyBombay,
-                      ),
-                      const SizedBox(
-                        width: 10.0,
-                      ),
-                      Text(
-                        recipe.difficult,
-                        style: const TextStyle(
-                            fontFamily: 'CeraPro',
-                            fontSize: 14,
-                            color: AppColors.greyShuttle),
-                      )
-                    ],
-                  )
-                ],
+                    const SizedBox(
+                      height: 8.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icon_svg/heart.svg',
+                          color: AppColors.orangeCrusta,
+                          height: 15,
+                          width: 15,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(
+                          recipe.numberLike.toString(),
+                          style: const TextStyle(
+                              fontFamily: 'CeraPro',
+                              color: AppColors.greyShuttle),
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        const Text(
+                          '|',
+                          style: TextStyle(
+                              fontFamily: 'CeraPro',
+                              color: AppColors.greyShuttle),
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(
+                          recipe.numberView.toString(),
+                          style: const TextStyle(
+                              fontFamily: 'CeraPro',
+                              color: AppColors.greyShuttle),
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        const Text(
+                          'Reviews',
+                          style: TextStyle(
+                              fontFamily: 'CeraPro',
+                              color: AppColors.greyShuttle),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icon_svg/clock.svg',
+                          height: 16,
+                          width: 16,
+                          color: AppColors.greyBombay,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(
+                          recipe.cookTime.toString(),
+                          style: const TextStyle(
+                              fontFamily: 'CeraPro',
+                              fontSize: 14,
+                              color: AppColors.greyShuttle),
+                        ),
+                        const SizedBox(
+                          width: 8.0,
+                        ),
+                        const Text(
+                          'mins',
+                          style: TextStyle(
+                              fontFamily: 'CeraPro',
+                              fontSize: 14,
+                              color: AppColors.greyShuttle),
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        SvgPicture.asset(
+                          'assets/icon_svg/dinner.svg',
+                          height: 16,
+                          width: 16,
+                          color: AppColors.greyBombay,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Text(
+                          recipe.difficult,
+                          style: const TextStyle(
+                              fontFamily: 'CeraPro',
+                              fontSize: 14,
+                              color: AppColors.greyShuttle),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
               Container(
                 height: 100,
