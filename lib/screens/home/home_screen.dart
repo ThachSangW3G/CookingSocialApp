@@ -198,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return InkWell(
                           onTap: () {
                             Navigator.pushNamed(
-                                context, RouteGenerator.detailCookbook);
+                                context, RouteGenerator.detailCookbook, arguments: cookbook);
                           },
                           child: CookBookWidget(
                             cookBook: cookbook,

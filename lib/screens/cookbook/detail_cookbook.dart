@@ -1,4 +1,5 @@
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/models/recipe_item_published.dart';
 import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
 import 'package:cooking_social_app/widgets/recipe_item_unpublished_widget.dart';
@@ -17,6 +18,17 @@ class DetailCookBookScreen extends StatefulWidget {
 class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
   @override
   Widget build(BuildContext context) {
+
+    final Object? cookBook = ModalRoute.of(context)!.settings.arguments;
+    //CookBook? cookBook = arguments as CookBook?;
+
+    if (cookBook != null) {
+      print(cookBook);
+    } else {
+      // Xử lý khi giá trị không hợp lệ (null hoặc không phải kiểu CookBook)
+      print('null');
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
