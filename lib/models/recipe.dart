@@ -1,21 +1,26 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Recipe {
   String key;
+  String uidUser;
   String url;
   String name;
   int cookTime;
   String description;
   String difficult;
   bool isPublic;
-  List<String> material;
+  List<dynamic> material;
   int numberLike;
   int numberReView;
   int serves;
   String source;
-  List<String> spice;
-  List<String> steps;
-  String uidUser;
+
+  List<dynamic> spice;
+  List<dynamic> steps;
+
+
   Recipe(
-      {required this.key,
+      {required this.key, required this.uidUser,
       required this.url,
       required this.name,
       required this.cookTime,
@@ -28,30 +33,36 @@ class Recipe {
       required this.serves,
       required this.source,
       required this.spice,
-      required this.steps,
-      required this.uidUser});
 
-  factory Recipe.fromJson(Map<String, dynamic> json) {
+      required this.steps
+    });
+
+
+  factory Recipe.fromJson(Map<String, dynamic> json){
+
     return Recipe(
-        key: json['key'] as String,
-        url: json['URL'] as String,
-        name: json['name'] as String,
-        cookTime: json['cookTime'] as int,
-        description: json['description'] as String,
-        difficult: json['difficult'] as String,
-        isPublic: json['isPublic'] as bool,
-        material: List<String>.from(json['material']),
-        numberLike: json['numberLike'] as int,
-        numberReView: json['numberReview'] as int,
-        serves: json['serves'] as int,
-        source: json['source'] as String,
-        spice: List<String>.from(json['spice']),
-        steps: List<String>.from(json['steps']),
-        uidUser: json['uidUser'] as String);
+      key: json['id'],
+      uidUser: json["uidUser"] ,
+      url: json["URL"],
+      name: json["name"],
+      cookTime: json["cookTime"],
+      description: json["description"],
+      difficult: json["difficult"],
+      isPublic: json["isPublic"],
+      material: json["material"],
+      numberLike: json["numberLike"],
+      numberView: json["numberReview"],
+      serves: json["serves"],
+      source: json["source"],
+      spice: json["spice"],
+      steps: json["steps"]
+    );
   }
+
   Map<String, dynamic> toJson() {
     return {
-      'key': key,
+      'uidUser': uidUser,
+
       'URL': url,
       'name': name,
       'cookTime': cookTime,
@@ -60,12 +71,13 @@ class Recipe {
       'isPublic': isPublic,
       'material': material,
       'numberLike': numberLike,
-      'numberReView': numberReView,
+
+      'numberReview': numberView,
       'serves': serves,
       'source': source,
       'spice': spice,
-      'steps': steps,
-      'uidUser': uidUser
+      'steps': steps
+
     };
   }
 }
