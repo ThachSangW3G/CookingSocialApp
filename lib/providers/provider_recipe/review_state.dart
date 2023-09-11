@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/models/review.dart';
 import 'package:cooking_social_app/services/date_time.dart';
 import 'package:flutter/material.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ReviewStateProvider extends ChangeNotifier {
   List<Review> _review = [];
@@ -9,7 +10,7 @@ class ReviewStateProvider extends ChangeNotifier {
 
   Future<void> fetchReview(String key) async {
     try {
-      List<Review> fetchedRecipe = [];
+      List<Review> fetchedReview = [];
       //
       QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('reviews')
@@ -23,11 +24,13 @@ class ReviewStateProvider extends ChangeNotifier {
         String keyRecipe = doc['keyRecipe'];
 
         //
-        Duration elapsedTime = calculateElapsedTime(timestamp);
-        String time = elapsedTime.toString();
+        DateTime dateTime = timestamp.toDate();
+
+        // Sử dụng DateTime và timeago để hiển thị khoảng thời gian
+        String timeAgo = calculateTimeAgo(dateTime);
         //
         DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-            .collection('uidUser')
+            .collection('users')
             .doc(uidUser)
             .get();
 
@@ -42,7 +45,7 @@ class ReviewStateProvider extends ChangeNotifier {
         for (var docs in snapshotLike.docs) {
           if (docs['uidUser'] == "vkddOoqrq9WriyaLsKCdb6scf252") {
             check = true;
-            return;
+            break;
           }
         }
         Review review = Review(
@@ -51,13 +54,13 @@ class ReviewStateProvider extends ChangeNotifier {
             key: key,
             avatar: avatar,
             name: name,
-            time: time,
+            time: timeAgo,
             keyRecipe: keyRecipe,
             check: check);
-        fetchedRecipe.add(review);
+        fetchedReview.add(review);
       }
 
-      _review = fetchedRecipe;
+      _review = fetchedReview;
       notifyListeners();
     } catch (e) {
       debugPrint(e as String?);
