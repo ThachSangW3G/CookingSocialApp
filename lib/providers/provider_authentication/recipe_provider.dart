@@ -1,3 +1,4 @@
+
 import 'package:cooking_social_app/repository/feature_repository.dart';
 import 'package:cooking_social_app/repository/recipe_repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,12 +34,16 @@ class RecipeProvider extends ChangeNotifier{
   }
 
 
-  Future<Recipe> getUser(String idRecipe) async {
+  Future<Recipe> getRecipe(String idRecipe) async {
     _recipeRepository = RecipeRepositoryImpl();
     Recipe recipe = await _recipeRepository.getRecipe(idRecipe);
     return recipe;
   }
 
+
+  Future<List<Recipe>> getListRecipeByListID(List<dynamic> idRecipes){
+    return _recipeRepository.getListRecipeByListID(idRecipes);
+  }
 
 
 }

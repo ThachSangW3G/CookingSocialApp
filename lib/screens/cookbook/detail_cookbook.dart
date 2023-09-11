@@ -24,6 +24,8 @@ class DetailCookBookScreen extends StatefulWidget {
 }
 
 class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
+
+  bool isAbs = true;
   @override
   Widget build(BuildContext context) {
 
@@ -248,10 +250,13 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                   Consumer<RecipeProvider>(
                     builder: (context, recipeProvider, _){
                       return FutureBuilder(
-                        future: recipeProvider.getUser(cookbook.recipes[cookbook.popularRecipeIndex] as String),
+                        future: recipeProvider.getRecipe(cookbook.recipes[cookbook.popularRecipeIndex] as String),
                         builder: (context, snapshot){
                           if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
+                            return const SizedBox(
+                              height: 150,
+                                child: Center(child: CircularProgressIndicator())
+                            );
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {
@@ -272,71 +277,78 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'All Recipe (7)',
+                        Text(
+                          'All Recipe (${cookbook.recipes.length.toString()})',
                           textAlign: TextAlign.start,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'Recoleta',
                               fontWeight: FontWeight.w700,
                               fontSize: 20),
                         ),
-                        SvgPicture.asset(
-                          'assets/icon_svg/sort-alpha-down.svg',
-                          height: 24,
-                          width: 24,
-                          color: AppColors.greyBombay,
+                        GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              isAbs = !isAbs;
+                            });
+                          },
+                          child: SvgPicture.asset(
+                            isAbs ? 'assets/icon_svg/sort-alpha-down.svg' : 'assets/icon_svg/sort-alpha-up.svg',
+                            height: 24,
+                            width: 24,
+                            color: AppColors.greyBombay,
+                          ),
                         )
                       ],
                     ),
                   ),
                   SizedBox(
                     height: 500,
-                    child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      children: [
-                        RecipeItemPublishedWidget(
-                          recipeItemPublished: RecipeItemPublished(
-                              'Ayam Kecap Manis',
-                              4.9,
-                              109,
-                              'assets/images/background_1.jpg'),
-                        ),
-                        RecipeItemPublishedWidget(
-                          recipeItemPublished: RecipeItemPublished(
-                              'Ayam Kecap Manis',
-                              4.9,
-                              109,
-                              'assets/images/background_1.jpg'),
-                        ),
-                        RecipeItemPublishedWidget(
-                          recipeItemPublished: RecipeItemPublished(
-                              'Ayam Kecap Manis',
-                              4.9,
-                              109,
-                              'assets/images/background_1.jpg'),
-                        ),
-                        RecipeItemUnPublishedWidget(
-                            recipeItemUnPublished: RecipeItemUnPublished(
-                                'Nasi Magelangan',
-                                40,
-                                'Easy',
-                                'assets/images/background_splash_1.jpg')),
-                        RecipeItemUnPublishedWidget(
-                            recipeItemUnPublished: RecipeItemUnPublished(
-                                'Nasi Magelangan',
-                                40,
-                                'Easy',
-                                'assets/images/background_splash_1.jpg')),
-                        RecipeItemUnPublishedWidget(
-                            recipeItemUnPublished: RecipeItemUnPublished(
-                                'Nasi Magelangan',
-                                40,
-                                'Easy',
-                                'assets/images/background_splash_1.jpg')),
-                      ],
+                    child: Consumer<RecipeProvider>(
+                      builder: (context, recipeProvider, _){
+                        return FutureBuilder<List<Recipe>>(
+                          future: recipeProvider.getListRecipeByListID(cookbook.recipes),
+                          builder: (context, snapshot){
+                            if (snapshot.connectionState == ConnectionState.waiting){
+                              return const Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  CircularProgressIndicator(),
+                                ],
+                              );
+                            }
+                            else if (snapshot.hasError){
+                              return Text('Error: ${snapshot.error}');
+                            }
+                            else{
+                              final recipes = snapshot.data;
+                              if(isAbs){
+                                recipes!.sort((a, b) => a.name.compareTo(b.name));
+                              }
+                              else
+                                {
+                                  recipes!.sort((a, b) => b.name.compareTo(a.name));
+                                }
+                              return ListView.builder(
+
+                                itemCount: recipes!.length,
+                                itemBuilder: (context, index){
+                                  return RecipeItemUnPublishedWidget(recipe: recipes![index]);
+                                },
+                              );
+                            }
+                          },
+                        );
+                      },
+                      // child: ListView.builder(
+                      //   itemCount: cookbook.recipes.length,
+                      //   shrinkWrap: true,
+                      //   scrollDirection: Axis.vertical,
+                      //   itemBuilder: (context, index){
+                      //
+                      //   },
+
+                      ),
                     ),
-                  )
                 ],
               ),
             )

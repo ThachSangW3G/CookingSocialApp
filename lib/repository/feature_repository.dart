@@ -28,24 +28,8 @@ class FeatureRepositoryImpl implements FeatureRepository{
 
   @override
   Future<List<Featured>> getAllFeature(List<Recipe> recipes) async {
-    //print(recipes.length);
     List<Recipe> listRecipe = (await _recipeFirestoreService.getAllRecipes());
     List<Featured> listFeature = [];
-    //print(listRecipe.length);
-    // listRecipe.map((recipe) {
-    //   UserModel userModel = _userFirestoreService.getUser(recipe.uidUser) as UserModel;
-    //   Featured featured =  Featured(id: recipe.key, image: recipe.url, title: recipe.name, avatar: userModel.avatar, nameUser: userModel.name, likeCount: recipe.numberLike, reviewCount: recipe.numberView);
-    //   listFeature.add(featured);
-    //   //print(listFeature.length);
-    // });
-    // // await listRecipe.map((recipe) {
-    // //   UserModel userModel = _userFirestoreService.getUser(recipe.uidUser) as UserModel;
-    // //   Featured featured =  Featured(id: recipe.key, image: recipe.url, title: recipe.name, avatar: userModel.avatar, nameUser: userModel.name, likeCount: recipe.numberLike, reviewCount: recipe.numberView);
-    // //   listFeature.add(featured);
-    // //
-    // // });
-    // //print(listFeature.length);
-
 
     for (var recipe in listRecipe) {
       UserModel userModel = await _userFirestoreService.getUser(recipe.uidUser) as UserModel;
