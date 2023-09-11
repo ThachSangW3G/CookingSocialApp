@@ -11,11 +11,13 @@ class Recipe {
   bool isPublic;
   List<dynamic> material;
   int numberLike;
-  int numberView;
+  int numberReView;
   int serves;
   String source;
+
   List<dynamic> spice;
   List<dynamic> steps;
+
 
   Recipe(
       {required this.key, required this.uidUser,
@@ -27,10 +29,11 @@ class Recipe {
       required this.isPublic,
       required this.material,
       required this.numberLike,
-      required this.numberView,
+      required this.numberReView,
       required this.serves,
       required this.source,
       required this.spice,
+
       required this.steps
     });
 
@@ -59,6 +62,7 @@ class Recipe {
   Map<String, dynamic> toJson() {
     return {
       'uidUser': uidUser,
+
       'URL': url,
       'name': name,
       'cookTime': cookTime,
@@ -67,11 +71,13 @@ class Recipe {
       'isPublic': isPublic,
       'material': material,
       'numberLike': numberLike,
+
       'numberReview': numberView,
       'serves': serves,
       'source': source,
       'spice': spice,
       'steps': steps
+
     };
   }
 }

@@ -79,7 +79,7 @@ class _AddGrocerySate extends State<AddGroceryScreen> {
               ),
             ),
           ),
-          const TabContentIngredients(),
+          //const TabContentIngredients(),
         ],
       ),
     );
