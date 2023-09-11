@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../constants/app_color.dart';
-import '../models/recipe.dart';
+import '../models/recipe_cookbook.dart';
 
 class PopularRecipe extends StatelessWidget {
   final Recipe recipe;

@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
-import 'package:cooking_social_app/models/recipe_item_published.dart';
-import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/widgets/popular_recipe.dart';
 import 'package:cooking_social_app/widgets/recipe_item_unpublished_widget.dart';
@@ -10,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/recipe.dart';
+
+import '../../models/recipe_cookbook.dart';
 import '../../widgets/recipe_item_published_widget.dart';
 
 class DetailCookBookScreen extends StatefulWidget {
@@ -332,7 +331,7 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
 
                                 itemCount: recipes!.length,
                                 itemBuilder: (context, index){
-                                  return RecipeItemUnPublishedWidget(recipe: recipes![index]);
+                                  return recipes![index].isPublic ? RecipeItemPublishedWidget(recipe:  recipes![index]) : RecipeItemUnPublishedWidget(recipe: recipes![index]);
                                 },
                               );
                             }

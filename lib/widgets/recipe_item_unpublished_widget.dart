@@ -1,11 +1,12 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cooking_social_app/models/recipe.dart';
 import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../constants/app_color.dart';
+
+import '../models/recipe_cookbook.dart';
 import '../models/recipe_item_published.dart';
 
 class RecipeItemUnPublishedWidget extends StatelessWidget {
