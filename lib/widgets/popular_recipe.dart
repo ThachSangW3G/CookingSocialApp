@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../constants/app_color.dart';
-import '../models/recipe.dart';
+import '../models/recipe_cookbook.dart';
 
 class PopularRecipe extends StatelessWidget {
   final Recipe recipe;
   const PopularRecipe({
-    super.key, required this.recipe,
+    super.key,
+    required this.recipe,
   });
 
   @override
@@ -18,8 +19,7 @@ class PopularRecipe extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Container(
         decoration: BoxDecoration(
-            borderRadius:
-            const BorderRadius.all(Radius.circular(16)),
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
             border: Border.all(color: AppColors.greyIron)),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -147,8 +147,7 @@ class PopularRecipe extends StatelessWidget {
                 height: 100,
                 width: 100,
                 child: ClipRRect(
-                    borderRadius:
-                    const BorderRadius.all(Radius.circular(16.0)),
+                    borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                     child: CachedNetworkImage(
                         imageUrl: recipe.url,
                         fit: BoxFit.cover,
@@ -158,9 +157,7 @@ class PopularRecipe extends StatelessWidget {
                               color: Colors.black.withOpacity(0.04),
                             ),
                           );
-                        }
-                    )
-                ),
+                        })),
               )
             ],
           ),

@@ -7,10 +7,8 @@ import 'package:cooking_social_app/providers/provider_authentication/authenticat
 import 'package:cooking_social_app/providers/provider_recipe/recipe_state.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 
-
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/providers/user_provider.dart';
-
 
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
@@ -29,32 +27,28 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (_) => AuthenticationStateProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => RecipeProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => CategoryProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => CookbookProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => UserProvider(),
-          ),
-           ChangeNotifierProvider(create: (_) => RecipeStateProvider()),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => AuthenticationStateProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => RecipeProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CategoryProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CookbookProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => UserProvider(),
+      ),
+      ChangeNotifierProvider(create: (_) => RecipeStateProvider()),
       ChangeNotifierProvider(create: (_) => ReviewStateProvider())
-        ],
-        child:  const MyApp(),
-      )
-
-  );
-
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -73,7 +67,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       onGenerateRoute: RouteGenerator.generatorRoute,
-      home: const RecipeDetailsScreen(),
+      home: authenticationStateProvider.isLoggedIn
+          ? const HomeScreen()
+          : const LoginScreen(),
     );
   }
 }

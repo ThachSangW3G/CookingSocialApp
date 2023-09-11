@@ -10,27 +10,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/recipe.dart';
+import '../../models/recipe_cookbook.dart';
 import '../../widgets/recipe_item_published_widget.dart';
 
 class DetailCookBookScreen extends StatefulWidget {
-
   final CookBook? cookbook;
   const DetailCookBookScreen({super.key, this.cookbook});
-
 
   @override
   State<DetailCookBookScreen> createState() => _DetailCookBookScreenState();
 }
 
 class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
-
   bool isAbs = true;
   @override
   Widget build(BuildContext context) {
-
-
-
     final cookbook = widget.cookbook!;
     return Scaffold(
       body: SingleChildScrollView(
@@ -248,19 +242,20 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                     height: 10.0,
                   ),
                   Consumer<RecipeProvider>(
-                    builder: (context, recipeProvider, _){
+                    builder: (context, recipeProvider, _) {
                       return FutureBuilder(
-                        future: recipeProvider.getRecipe(cookbook.recipes[cookbook.popularRecipeIndex] as String),
-                        builder: (context, snapshot){
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                        future: recipeProvider.getRecipe(cookbook
+                            .recipes[cookbook.popularRecipeIndex] as String),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return const SizedBox(
-                              height: 150,
-                                child: Center(child: CircularProgressIndicator())
-                            );
+                                height: 150,
+                                child:
+                                    Center(child: CircularProgressIndicator()));
                           } else if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           } else {
-
                             final recipe = snapshot.data;
                             return PopularRecipe(recipe: recipe!);
                           }
@@ -286,13 +281,15 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                               fontSize: 20),
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             setState(() {
                               isAbs = !isAbs;
                             });
                           },
                           child: SvgPicture.asset(
-                            isAbs ? 'assets/icon_svg/sort-alpha-down.svg' : 'assets/icon_svg/sort-alpha-up.svg',
+                            isAbs
+                                ? 'assets/icon_svg/sort-alpha-down.svg'
+                                : 'assets/icon_svg/sort-alpha-up.svg',
                             height: 24,
                             width: 24,
                             color: AppColors.greyBombay,
@@ -304,35 +301,35 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                   SizedBox(
                     height: 500,
                     child: Consumer<RecipeProvider>(
-                      builder: (context, recipeProvider, _){
+                      builder: (context, recipeProvider, _) {
                         return FutureBuilder<List<Recipe>>(
-                          future: recipeProvider.getListRecipeByListID(cookbook.recipes),
-                          builder: (context, snapshot){
-                            if (snapshot.connectionState == ConnectionState.waiting){
+                          future: recipeProvider
+                              .getListRecipeByListID(cookbook.recipes),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return const Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   CircularProgressIndicator(),
                                 ],
                               );
-                            }
-                            else if (snapshot.hasError){
+                            } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
-                            }
-                            else{
+                            } else {
                               final recipes = snapshot.data;
-                              if(isAbs){
-                                recipes!.sort((a, b) => a.name.compareTo(b.name));
+                              if (isAbs) {
+                                recipes!
+                                    .sort((a, b) => a.name.compareTo(b.name));
+                              } else {
+                                recipes!
+                                    .sort((a, b) => b.name.compareTo(a.name));
                               }
-                              else
-                                {
-                                  recipes!.sort((a, b) => b.name.compareTo(a.name));
-                                }
                               return ListView.builder(
-
                                 itemCount: recipes!.length,
-                                itemBuilder: (context, index){
-                                  return RecipeItemUnPublishedWidget(recipe: recipes![index]);
+                                itemBuilder: (context, index) {
+                                  return RecipeItemUnPublishedWidget(
+                                      recipe: recipes![index]);
                                 },
                               );
                             }
@@ -346,9 +343,8 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                       //   itemBuilder: (context, index){
                       //
                       //   },
-
-                      ),
                     ),
+                  ),
                 ],
               ),
             )
@@ -358,4 +354,3 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
     );
   }
 }
-
