@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cooking_social_app/components/comment_item.dart';
 import 'package:cooking_social_app/components/comment_item_not_option.dart';
 import 'package:cooking_social_app/components/icon_content_orange.dart';
@@ -46,7 +47,9 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                 width: double.infinity,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: NetworkImage(recipe!.url), fit: BoxFit.fill)),
+                  image: CachedNetworkImageProvider(recipe!.url),
+                  fit: BoxFit.fill,
+                )),
                 alignment: Alignment.topCenter,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(

@@ -31,11 +31,10 @@ class _CommentItemNotOptionState extends State<CommentItemNotOption> {
           height: 33,
           width: 33,
           padding: const EdgeInsets.only(top: 5),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                  image: AssetImage('assets/images/avatar.jpg'),
-                  fit: BoxFit.contain)),
+                  image: NetworkImage(review!.avatar), fit: BoxFit.fill)),
         ),
         const SizedBox(
           width: 10,
