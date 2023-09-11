@@ -1,4 +1,6 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cooking_social_app/models/recipe.dart';
 import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,9 +9,9 @@ import '../constants/app_color.dart';
 import '../models/recipe_item_published.dart';
 
 class RecipeItemUnPublishedWidget extends StatelessWidget {
-  final RecipeItemUnPublished recipeItemUnPublished;
+  final Recipe recipe;
   const RecipeItemUnPublishedWidget({
-    super.key, required this.recipeItemUnPublished,
+    super.key, required this.recipe,
   });
 
   @override
@@ -25,15 +27,15 @@ class RecipeItemUnPublishedWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+            SizedBox(
               height: 60,
               width: 60,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(recipeItemUnPublished.image),
-                      fit: BoxFit.cover
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(16.0))
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                child: CachedNetworkImage(
+                  imageUrl: recipe.url,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(width: 10.0,),
@@ -42,7 +44,7 @@ class RecipeItemUnPublishedWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    recipeItemUnPublished.title,
+                    recipe.name,
                     style: const TextStyle(
                         fontFamily: 'CeraPro',
                         fontSize: 16,
@@ -64,7 +66,7 @@ class RecipeItemUnPublishedWidget extends StatelessWidget {
                             ),
                             const SizedBox(width: 10.0,),
                             Text(
-                              recipeItemUnPublished.time.toString(),
+                              recipe.cookTime.toString(),
                               style: const TextStyle(
                                 fontFamily: 'CeraPro',
                                 fontSize: 14,
@@ -89,7 +91,7 @@ class RecipeItemUnPublishedWidget extends StatelessWidget {
                             ),
                             const SizedBox(width: 8.0,),
                             Text(
-                              recipeItemUnPublished.level,
+                              recipe.difficult,
                               style: const TextStyle(
                                 fontFamily: 'CeraPro',
                                 fontSize: 14,

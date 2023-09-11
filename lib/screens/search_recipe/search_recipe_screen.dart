@@ -112,23 +112,23 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
               ],
             ),
           ),
-          Expanded(
-
-            child: ListView(
-              scrollDirection: Axis.vertical,
-              children: [
-                RecipeItemUnPublishedWidget(
-                  recipeItemUnPublished: RecipeItemUnPublished('Resep Ayam Kuah Santan Pedas Lezat', 40, 'Easy', 'assets/images/background_1.jpg'),
-                ),
-                RecipeItemUnPublishedWidget(
-                  recipeItemUnPublished: RecipeItemUnPublished('Sup Makaroni Daging Ayam Kampung', 40, 'Easy', 'assets/images/background_splash_1.jpg'),
-                ),
-                RecipeItemUnPublishedWidget(
-                  recipeItemUnPublished: RecipeItemUnPublished('Resep Ayam Geprek Jogja', 40, 'Easy', 'assets/images/background_splash_2.jpg'),
-                )
-              ],
-            ),
-          ),
+          // Expanded(
+          //
+          //   child: ListView(
+          //     scrollDirection: Axis.vertical,
+          //     children: [
+          //       RecipeItemUnPublishedWidget(
+          //         recipeItemUnPublished: RecipeItemUnPublished('Resep Ayam Kuah Santan Pedas Lezat', 40, 'Easy', 'assets/images/background_1.jpg'),
+          //       ),
+          //       RecipeItemUnPublishedWidget(
+          //         recipeItemUnPublished: RecipeItemUnPublished('Sup Makaroni Daging Ayam Kampung', 40, 'Easy', 'assets/images/background_splash_1.jpg'),
+          //       ),
+          //       RecipeItemUnPublishedWidget(
+          //         recipeItemUnPublished: RecipeItemUnPublished('Resep Ayam Geprek Jogja', 40, 'Easy', 'assets/images/background_splash_2.jpg'),
+          //       )
+          //     ],
+          //   ),
+          // ),
 
         ],
       ),
