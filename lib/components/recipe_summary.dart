@@ -408,12 +408,9 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                           const SizedBox(
                                             height: 10,
                                           ),
-                                          const CommentItemNotOption(
-                                              name: 'Renata Moeloek',
-                                              time: '4 day ago',
-                                              content:
-                                                  'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-                                              check: false),
+                                          CommentItemNotOption(
+                                            review: provider.review[0],
+                                          ),
                                         ],
                                       ),
                                     ),

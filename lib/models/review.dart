@@ -6,6 +6,7 @@ class Review {
   String description;
   String time;
   String keyRecipe;
+  bool check;
 
   Review(
       {required this.uidUser,
@@ -14,7 +15,8 @@ class Review {
       required this.avatar,
       required this.name,
       required this.time,
-      required this.keyRecipe});
+      required this.keyRecipe,
+      required this.check});
 
   Map<String, dynamic> toJson() {
     return {
@@ -28,13 +30,13 @@ class Review {
 
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
-      key: json['key'],
-      uidUser: json['uidUser'],
-      description: json['description'],
-      time: json['time'],
-      keyRecipe: json['keyRecipe'],
-      avatar: json['avatar'],
-      name: json['name'],
-    );
+        key: json['key'],
+        uidUser: json['uidUser'],
+        description: json['description'],
+        time: json['time'],
+        keyRecipe: json['keyRecipe'],
+        avatar: json['avatar'],
+        name: json['name'],
+        check: json['check']);
   }
 }

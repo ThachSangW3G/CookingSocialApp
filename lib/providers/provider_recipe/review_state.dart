@@ -12,7 +12,7 @@ class ReviewStateProvider extends ChangeNotifier {
       List<Review> fetchedRecipe = [];
       //
       QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('review')
+          .collection('reviews')
           .where('keyRecipe', isEqualTo: key)
           .get();
       for (var doc in snapshot.docs) {
@@ -33,16 +33,27 @@ class ReviewStateProvider extends ChangeNotifier {
 
         String name = userSnapshot['name'];
         String avatar = userSnapshot['avatar'];
-
+        //
+        QuerySnapshot snapshotLike = await FirebaseFirestore.instance
+            .collection('reviewlike')
+            .where('keyReview', isEqualTo: key)
+            .get();
+        bool check = false;
+        for (var docs in snapshotLike.docs) {
+          if (docs['uidUser'] == "vkddOoqrq9WriyaLsKCdb6scf252") {
+            check = true;
+            return;
+          }
+        }
         Review review = Review(
-          uidUser: uidUser,
-          description: description,
-          key: key,
-          avatar: avatar,
-          name: name,
-          time: time,
-          keyRecipe: keyRecipe,
-        );
+            uidUser: uidUser,
+            description: description,
+            key: key,
+            avatar: avatar,
+            name: name,
+            time: time,
+            keyRecipe: keyRecipe,
+            check: check);
         fetchedRecipe.add(review);
       }
 
