@@ -3,6 +3,7 @@ import 'package:cooking_social_app/components/row_content.dart';
 import 'package:cooking_social_app/components/row_content_not_icon.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:cooking_social_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/line_row.dart';
@@ -134,7 +135,11 @@ class _AccountScreenState extends State<AccountScreen> {
               RowContent(label: 'Send FeedBack', onTap: () {}),
               RowContent(label: 'Rate Us', onTap: () {}),
               RowContent(label: 'Check For Update', onTap: () {}),
-              RowContentNotIcon(label: 'Logout', onTap: () {})
+              RowContentNotIcon(
+                  label: 'Logout',
+                  onTap: () {
+                    AuthService().logout(context);
+                  })
             ],
           ),
         )
