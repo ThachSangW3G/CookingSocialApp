@@ -22,8 +22,8 @@ class AuthenticationStateProvider extends ChangeNotifier{
         _email = userCredential.user?.email;
 
         await _authService.addDataUser(userCredential);
-        print(_uid);
-        print(userCredential);
+        // print(_uid);
+        //print(userCredential);
 
         return success = true;
       }
