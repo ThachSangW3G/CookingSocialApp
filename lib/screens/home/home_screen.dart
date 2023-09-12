@@ -319,6 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         final category = categoryProvider.categories[index];
                         return CategoryCard(
                           category: category,
+                          select: false,
                         );
                       },
                     ),
