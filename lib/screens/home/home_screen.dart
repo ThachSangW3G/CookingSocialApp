@@ -317,9 +317,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index){
                         final category = categoryProvider.categories[index];
-                        return CategoryCard(
-                          category: category,
-                          select: false,
+                        return GestureDetector(
+                          onTap: (){
+                            recipeProvider.eventFilterKey(category.id);
+                            Navigator.pushNamed(context, RouteGenerator.community);
+                          },
+                          child: CategoryCard(
+                            category: category,
+                            select: false,
+                          ),
                         );
                       },
                     ),
