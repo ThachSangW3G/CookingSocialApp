@@ -79,6 +79,7 @@ class AuthService {
     if (!userSnapshot.exists) {
       // Thêm dữ liệu vào Firestore
       await _fireStore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
         'name': userCredential.user?.displayName,
         'email': userCredential.additionalUserInfo!.profile!['email'],
         'avatar': userCredential.additionalUserInfo!.profile!['picture']

@@ -20,6 +20,9 @@ class CommunityScreen extends StatefulWidget {
 }
 
 class _CommunityScreenState extends State<CommunityScreen> {
+
+
+
   @override
   Widget build(BuildContext context) {
     final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
@@ -168,10 +171,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 child: GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2, mainAxisExtent: 320),
-                    itemCount: recipeProvider.features.length,
+                    itemCount: recipeProvider.filterFeatured.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
-                      final feature = recipeProvider.features[index];
+                      final feature = recipeProvider.filterFeatured[index];
                       return FeaturedCardSmallWidget(
                         featured: feature,
                       );
@@ -191,6 +194,7 @@ class OptionItemDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
+    final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
     return Dialog(
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16))),
@@ -228,8 +232,14 @@ class OptionItemDialog extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index){
                       final category = categoryProvider.categories[index];
-                      return CategoryCard(
-                        category: category,
+                      return GestureDetector(
+                        onTap: (){
+                          recipeProvider.eventFilterKey(category.id);
+                        },
+                        child: CategoryCard(
+                          category: category,
+                          select: recipeProvider.containsFilter(category.id),
+                        ),
                       );
                     },
                   ),

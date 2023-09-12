@@ -1,14 +1,16 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../constants/app_color.dart';
+import '../models/recipe_cookbook.dart';
 import '../models/recipe_item_published.dart';
 
 class RecipeItemPublishedWidget extends StatelessWidget {
-  final RecipeItemPublished recipeItemPublished;
+  final Recipe recipe;
   const RecipeItemPublishedWidget({
-    super.key, required this.recipeItemPublished,
+    super.key, required this.recipe,
   });
 
   @override
@@ -27,12 +29,12 @@ class RecipeItemPublishedWidget extends StatelessWidget {
             Container(
               height: 60,
               width: 60,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(recipeItemPublished.image),
-                      fit: BoxFit.cover
-                  ),
-                  borderRadius: const BorderRadius.all(Radius.circular(16.0))
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(16.0)),
+                child: CachedNetworkImage(
+                  imageUrl: recipe.url,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(width: 10.0,),
@@ -41,7 +43,7 @@ class RecipeItemPublishedWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    recipeItemPublished.title,
+                    recipe.name,
                     style: const TextStyle(
                         fontFamily: 'CeraPro',
                         fontSize: 16,
@@ -63,7 +65,7 @@ class RecipeItemPublishedWidget extends StatelessWidget {
                             ),
                             const SizedBox(width: 5.0,),
                             Text(
-                              recipeItemPublished.like.toString(),
+                              recipe.numberLike.toString(),
                               style: const TextStyle(
                                 fontFamily: 'CeraPro',
                                 fontSize: 14,
@@ -81,7 +83,7 @@ class RecipeItemPublishedWidget extends StatelessWidget {
                             ),
                             const SizedBox(width: 5.0,),
                             Text(
-                              recipeItemPublished.review.toString(),
+                              recipe.numberView.toString(),
                               style: const TextStyle(
                                 fontFamily: 'CeraPro',
                                 fontSize: 14,
