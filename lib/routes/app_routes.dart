@@ -46,7 +46,11 @@ class RouteGenerator {
       case detailCookbook:
         CookBook cookbook = args as CookBook;
         return PageTransition(
-          child: SafeArea(child: SafeArea(child: DetailCookBookScreen(cookbook: cookbook,))),
+          child: SafeArea(
+              child: SafeArea(
+                  child: DetailCookBookScreen(
+            cookbook: cookbook,
+          ))),
           type: PageTransitionType.fade,
           duration: const Duration(milliseconds: 400),
         );
@@ -128,8 +132,13 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
       case reviewScreen:
+        String keyRecipe = args as String;
         return PageTransition(
-          child: const SafeArea(child: SafeArea(child: ReViewScreen())),
+          child: SafeArea(
+              child: SafeArea(
+                  child: ReViewScreen(
+            keyRecipe: keyRecipe,
+          ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );

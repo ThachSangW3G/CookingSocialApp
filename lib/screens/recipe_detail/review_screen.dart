@@ -1,17 +1,37 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/comment_item.dart';
 import 'package:cooking_social_app/components/line_row.dart';
+import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../constants/app_color.dart';
 
 class ReViewScreen extends StatefulWidget {
-  const ReViewScreen({super.key});
+  final String keyRecipe;
+  const ReViewScreen({super.key, required this.keyRecipe});
 
   @override
   State<ReViewScreen> createState() => _ReViewScreenState();
 }
 
 class _ReViewScreenState extends State<ReViewScreen> {
+  String? keyRecipe;
+  String? _description;
+  @override
+  void initState() {
+    keyRecipe = widget.keyRecipe;
+    context.read<ReviewStateProvider>().fetchReview(keyRecipe!);
+    super.initState();
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   context.read<ReviewStateProvider>().fetchReview(keyRecipe!);
+  //   super.didChangeDependencies();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,48 +61,69 @@ class _ReViewScreenState extends State<ReViewScreen> {
             preferredSize: Size.fromHeight(16.0), child: LineRow()),
       ),
       resizeToAvoidBottomInset: false,
-      body: ListView(shrinkWrap: true, reverse: true, children: const <Widget>[
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-      ]),
+      body: Consumer<ReviewStateProvider>(builder: (context, provider, _) {
+        return Padding(
+            padding: const EdgeInsets.all(0),
+            child: provider.review.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      context
+                          .read<ReviewStateProvider>()
+                          .fetchReview(keyRecipe!);
+                    },
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: provider.review.length,
+                      itemBuilder: (context, index) {
+                        return CommentItem(review: provider.review[index]);
+                      },
+                    ),
+                    // child: ListView.builder(itemBuilder: itemBuilder),
+                    // child: ListView(shrinkWrap: true, reverse: true, children: const <Widget>[
+                    // CommentItem(
+                    //     name: 'Renata Moeloek',
+                    //     time: '4 day ago',
+                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+                    //     check: false),
+                    // CommentItem(
+                    //     name: 'Renata Moeloek',
+                    //     time: '4 day ago',
+                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+                    //     check: false),
+                    // CommentItem(
+                    //     name: 'Renata Moeloek',
+                    //     time: '4 day ago',
+                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+                    //     check: false),
+                    // CommentItem(
+                    //     name: 'Renata Moeloek',
+                    //     time: '4 day ago',
+                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+                    //     check: false),
+                    // CommentItem(
+                    //     name: 'Renata Moeloek',
+                    //     time: '4 day ago',
+                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+                    //     check: false),
+                    // CommentItem(
+                    //     name: 'Renata Moeloek',
+                    //     time: '4 day ago',
+                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+                    //     check: false),
+                    // CommentItem(
+                    //     name: 'Renata Moeloek',
+                    //     time: '4 day ago',
+                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+                    //     check: false),
+                    // CommentItem(
+                    //     name: 'Renata Moeloek',
+                    //     time: '4 day ago',
+                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+                    //     check: false),
+                    //]),
+                  ));
+      }),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
             border: Border(top: BorderSide(color: AppColors.greyBombay))),
@@ -96,7 +137,9 @@ class _ReViewScreenState extends State<ReViewScreen> {
                 style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.whitePorcelain),
                 child: TextField(
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    _description = value;
+                  },
                   onTap: () {},
                   decoration: const InputDecoration(
                     hintText: 'Your Review',
@@ -113,7 +156,11 @@ class _ReViewScreenState extends State<ReViewScreen> {
               width: 10,
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                if (_description != null) {
+                  addReview(_description!, keyRecipe!);
+                }
+              },
               child: const Text(
                 'SUBMIT',
                 style: TextStyle(
@@ -127,5 +174,36 @@ class _ReViewScreenState extends State<ReViewScreen> {
         ),
       ),
     );
+  }
+}
+
+void addReview(String description, String keyRecipe) async {
+  // Khởi tạo Firestore instance
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  try {
+    // Tạo một document reference và lấy ra ID ngẫu nhiên
+    DocumentReference reviewRef = firestore.collection('reviews').doc();
+
+    // Tạo một map chứa thông tin review
+    Map<String, dynamic> reviewData = {
+      'uidUser':
+          FirebaseAuth.instance.currentUser?.uid, // Giá trị uidUser (String)
+      'time': Timestamp.now(), // Giá trị time (Timestamp)
+      'key': reviewRef.id, // Giá trị key (String)
+      'keyRecipe': keyRecipe,
+      'description': description
+    };
+
+    // Thêm review vào Firestore
+    await reviewRef.set(reviewData);
+
+    if (kDebugMode) {
+      print('Review added successfully!');
+    }
+  } catch (error) {
+    if (kDebugMode) {
+      print('Error adding review: $error');
+    }
   }
 }

@@ -30,6 +30,12 @@ class _RecipeSummaryState extends State<RecipeSummary> {
   }
 
   @override
+  void didChangeDependencies() {
+    context.read<ReviewStateProvider>().fetchReview(recipe!.key);
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<ReviewStateProvider>(builder: (context, provider, _) {
       return Expanded(
@@ -380,7 +386,8 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                           GestureDetector(
                                             onTap: () {
                                               Navigator.pushNamed(context,
-                                                  RouteGenerator.reviewScreen);
+                                                  RouteGenerator.reviewScreen,
+                                                  arguments: recipe!.key);
                                             },
                                             child: const Text(
                                               'READ ALL',
