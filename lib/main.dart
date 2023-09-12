@@ -4,6 +4,9 @@ import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/authentication_state.dart';
 
+import 'package:cooking_social_app/providers/provider_recipe/recipe_state.dart';
+import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
+
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/providers/user_provider.dart';
 
@@ -24,31 +27,28 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-
-  runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (_) => AuthenticationStateProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => RecipeProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => CategoryProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => CookbookProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => UserProvider(),
-          )
-        ],
-        child:  const MyApp(),
-      )
-
-  );
-
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => AuthenticationStateProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => RecipeProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CategoryProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CookbookProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => UserProvider(),
+      ),
+      ChangeNotifierProvider(create: (_) => RecipeStateProvider()),
+      ChangeNotifierProvider(create: (_) => ReviewStateProvider())
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

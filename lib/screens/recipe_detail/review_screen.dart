@@ -18,6 +18,7 @@ class _ReViewScreenState extends State<ReViewScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
+        elevation: 0,
         title: const Text(
           'Reviews',
           textAlign: TextAlign.center,
