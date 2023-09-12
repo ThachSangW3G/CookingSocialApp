@@ -20,6 +20,9 @@ class CommunityScreen extends StatefulWidget {
 }
 
 class _CommunityScreenState extends State<CommunityScreen> {
+
+
+
   @override
   Widget build(BuildContext context) {
     final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);

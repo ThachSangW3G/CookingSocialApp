@@ -18,6 +18,9 @@ class RecipeProvider extends ChangeNotifier {
 
   List<Featured> get features => _features;
 
+  List<Recipe> searchRecipe = [];
+  String searchText = '';
+
   RecipeProvider() {
     _recipeRepository = RecipeRepositoryImpl();
     _featureRepository = FeatureRepositoryImpl();
@@ -44,6 +47,22 @@ class RecipeProvider extends ChangeNotifier {
 
   Future<List<Recipe>> getListRecipeByListID(List<dynamic> idRecipes){
     return _recipeRepository.getListRecipeByListID(idRecipes);
+  }
+
+  updateSearch() async {
+    if(searchText.isEmpty){
+      searchRecipe = await _recipeRepository.getAllRecipes();
+    }else {
+      searchRecipe = _recipes.where((element) => element.name.toLowerCase().contains(searchText)).toList();
+
+    }
+    //print(searchRecipe![0].name);
+    notifyListeners();
+  }
+
+  search(String search){
+    searchText = search;
+    updateSearch();
   }
 
 
