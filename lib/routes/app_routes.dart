@@ -126,8 +126,13 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
       case recipedetailScreen:
+        String key = args as String;
         return PageTransition(
-          child: const SafeArea(child: SafeArea(child: RecipeDetailsScreen())),
+          child: SafeArea(
+              child: SafeArea(
+                  child: RecipeDetailsScreen(
+            keyRecipe: key,
+          ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );

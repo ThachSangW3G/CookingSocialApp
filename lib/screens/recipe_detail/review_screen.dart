@@ -17,6 +17,7 @@ class ReViewScreen extends StatefulWidget {
 }
 
 class _ReViewScreenState extends State<ReViewScreen> {
+  TextEditingController _textEditingController = TextEditingController();
   String? keyRecipe;
   String? _description;
   @override
@@ -62,117 +63,84 @@ class _ReViewScreenState extends State<ReViewScreen> {
       ),
       resizeToAvoidBottomInset: false,
       body: Consumer<ReviewStateProvider>(builder: (context, provider, _) {
-        return Padding(
-            padding: const EdgeInsets.all(0),
-            child: provider.review.isEmpty
-                ? const Center(child: CircularProgressIndicator())
-                : RefreshIndicator(
-                    onRefresh: () async {
-                      context
-                          .read<ReviewStateProvider>()
-                          .fetchReview(keyRecipe!);
-                    },
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: provider.review.length,
-                      itemBuilder: (context, index) {
-                        return CommentItem(review: provider.review[index]);
-                      },
+        return SingleChildScrollView(
+          child: Scaffold(
+            body: Padding(
+                padding: const EdgeInsets.all(0),
+                child: provider.review.isEmpty
+                    ? const Center(child: CircularProgressIndicator())
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          context
+                              .read<ReviewStateProvider>()
+                              .fetchReview(keyRecipe!);
+                        },
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: provider.review.length,
+                          itemBuilder: (context, index) {
+                            return CommentItem(review: provider.review[index]);
+                          },
+                        ),
+                      )),
+            bottomNavigationBar: Container(
+              decoration: const BoxDecoration(
+                  border: Border(top: BorderSide(color: AppColors.greyBombay))),
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.whitePorcelain),
+                      child: TextField(
+                        controller: _textEditingController,
+                        onChanged: (value) {
+                          _description = value;
+                        },
+                        onTap: () {},
+                        decoration: const InputDecoration(
+                          hintText: 'Your Review',
+                          hintStyle: TextStyle(
+                              color: AppColors.greyShuttle,
+                              fontFamily: 'CeraPro',
+                              fontWeight: FontWeight.w400),
+                          border: InputBorder.none,
+                        ),
+                      ),
                     ),
-                    // child: ListView.builder(itemBuilder: itemBuilder),
-                    // child: ListView(shrinkWrap: true, reverse: true, children: const <Widget>[
-                    // CommentItem(
-                    //     name: 'Renata Moeloek',
-                    //     time: '4 day ago',
-                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-                    //     check: false),
-                    // CommentItem(
-                    //     name: 'Renata Moeloek',
-                    //     time: '4 day ago',
-                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-                    //     check: false),
-                    // CommentItem(
-                    //     name: 'Renata Moeloek',
-                    //     time: '4 day ago',
-                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-                    //     check: false),
-                    // CommentItem(
-                    //     name: 'Renata Moeloek',
-                    //     time: '4 day ago',
-                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-                    //     check: false),
-                    // CommentItem(
-                    //     name: 'Renata Moeloek',
-                    //     time: '4 day ago',
-                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-                    //     check: false),
-                    // CommentItem(
-                    //     name: 'Renata Moeloek',
-                    //     time: '4 day ago',
-                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-                    //     check: false),
-                    // CommentItem(
-                    //     name: 'Renata Moeloek',
-                    //     time: '4 day ago',
-                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-                    //     check: false),
-                    // CommentItem(
-                    //     name: 'Renata Moeloek',
-                    //     time: '4 day ago',
-                    //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-                    //     check: false),
-                    //]),
-                  ));
-      }),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-            border: Border(top: BorderSide(color: AppColors.greyBombay))),
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.whitePorcelain),
-                child: TextField(
-                  onChanged: (value) {
-                    _description = value;
-                  },
-                  onTap: () {},
-                  decoration: const InputDecoration(
-                    hintText: 'Your Review',
-                    hintStyle: TextStyle(
-                        color: AppColors.greyShuttle,
-                        fontFamily: 'CeraPro',
-                        fontWeight: FontWeight.w400),
-                    border: InputBorder.none,
                   ),
-                ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      if (_description != null) {
+                        addReview(_description!, keyRecipe!);
+                        context
+                            .read<ReviewStateProvider>()
+                            .fetchReview(keyRecipe!);
+                        _textEditingController.clear();
+                      }
+                    },
+                    child: const Text(
+                      'SUBMIT',
+                      style: TextStyle(
+                          color: AppColors.orangeCrusta,
+                          fontFamily: 'CeraPro',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17),
+                    ),
+                  )
+                ],
               ),
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            GestureDetector(
-              onTap: () {
-                if (_description != null) {
-                  addReview(_description!, keyRecipe!);
-                }
-              },
-              child: const Text(
-                'SUBMIT',
-                style: TextStyle(
-                    color: AppColors.orangeCrusta,
-                    fontFamily: 'CeraPro',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17),
-              ),
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      }),
     );
   }
 }

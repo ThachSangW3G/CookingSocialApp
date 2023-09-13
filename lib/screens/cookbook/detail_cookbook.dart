@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/widgets/popular_recipe.dart';
 import 'package:cooking_social_app/widgets/recipe_item_unpublished_widget.dart';
 import 'package:flutter/material.dart';
@@ -256,7 +257,13 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                             return Text('Error: ${snapshot.error}');
                           } else {
                             final recipe = snapshot.data;
-                            return PopularRecipe(recipe: recipe!);
+                            return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      RouteGenerator.recipedetailScreen,
+                                      arguments: recipe.key);
+                                },
+                                child: PopularRecipe(recipe: recipe!));
                           }
                         },
                       );
@@ -326,10 +333,17 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                               }
                               return ListView.builder(
                                 itemCount: recipes!.length,
-
-                                itemBuilder: (context, index){
-                                  return recipes![index].isPublic ? RecipeItemPublishedWidget(recipe:  recipes![index]) : RecipeItemUnPublishedWidget(recipe: recipes![index]);
-
+                                itemBuilder: (context, index) {
+                                  final Recipe recipe = recipes![index];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                          RouteGenerator.recipedetailScreen,
+                                          arguments: recipe.key);
+                                    },
+                                    child: RecipeItemUnPublishedWidget(
+                                        recipe: recipe),
+                                  );
                                 },
                               );
                             }

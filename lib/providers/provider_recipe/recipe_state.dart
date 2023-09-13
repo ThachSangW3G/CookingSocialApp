@@ -7,27 +7,23 @@ class RecipeStateProvider extends ChangeNotifier {
   List<Recipe> _recipes = [];
   List<Recipe> get recipes => _recipes;
 
-  Future<void> fetchRecipe(String key) async {
-    try {
-      print(key);
-      QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('recipes')
-          .where('key', isEqualTo: key)
-          .get();
-      List<Recipe> fetchedRecipe = [];
-      snapshot.docs.forEach((doc) {
-        print('Document ID: ${doc.id}');
-        print('Data: ${doc.data()}');
-        fetchedRecipe.add(Recipe.fromJson(doc.data() as Map<String, dynamic>));
-        print(fetchedRecipe[0].description);
-      });
-
-      _recipes = fetchedRecipe;
-      print(_recipes[0].description);
-      notifyListeners();
-    } catch (e) {
-      debugPrint(e as String?);
+  Future<Recipe> fetchRecipe(String key) async {
+    //try {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('recipes')
+        .where('key', isEqualTo: key)
+        .get();
+    List<Recipe> fetchedRecipe = [];
+    for (var doc in snapshot.docs) {
+      fetchedRecipe.add(Recipe.fromJson(doc.data() as Map<String, dynamic>));
     }
+    _recipes.clear();
+    _recipes.addAll(fetchedRecipe);
+    notifyListeners();
+    return Future.value(_recipes[0]);
+    // } catch (e) {
+    //   debugPrint(e.toString());
+    // }
   }
 
   Future<void> delete(Recipe recipe) async {
