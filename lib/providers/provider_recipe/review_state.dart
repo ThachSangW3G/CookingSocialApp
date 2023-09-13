@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cooking_social_app/models/recipe.dart';
 import 'package:cooking_social_app/models/review.dart';
 import 'package:cooking_social_app/services/date_time.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -43,7 +45,7 @@ class ReviewStateProvider extends ChangeNotifier {
             .get();
         bool check = false;
         for (var docs in snapshotLike.docs) {
-          if (docs['uidUser'] == "vkddOoqrq9WriyaLsKCdb6scf252") {
+          if (docs['uidUser'] == FirebaseAuth.instance.currentUser?.uid) {
             check = true;
             break;
           }
@@ -59,7 +61,7 @@ class ReviewStateProvider extends ChangeNotifier {
             check: check);
         fetchedReview.add(review);
       }
-
+      _review.clear();
       _review = fetchedReview;
       notifyListeners();
     } catch (e) {

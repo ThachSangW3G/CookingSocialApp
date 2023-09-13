@@ -38,13 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
-    final CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
-    final CookbookProvider cookbookProvider = Provider.of<CookbookProvider>(context);
+    final CategoryProvider categoryProvider =
+        Provider.of<CategoryProvider>(context);
+    final CookbookProvider cookbookProvider =
+        Provider.of<CookbookProvider>(context);
     //final UserProvider userProvider = Provider.of<UserProvider>(context);
 
-
-
-      //final userCurrent = await userProvider.getUser(FirebaseAuth.instance.currentUser!.uid);
+    //final userCurrent = await userProvider.getUser(FirebaseAuth.instance.currentUser!.uid);
     int? pageCount = cookbookProvider.cookbooks.length;
 
     return Scaffold(
@@ -59,9 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 Consumer<UserProvider>(
                   builder: (context, userProvider, _) {
                     return FutureBuilder<UserModel>(
-                      future: userProvider.getUser(FirebaseAuth.instance.currentUser!.uid),
+                      future: userProvider
+                          .getUser(FirebaseAuth.instance.currentUser!.uid),
                       builder: (context, snapshot) {
-                         if (snapshot.hasError) {
+                        if (snapshot.hasError) {
                           // Hiển thị widget khi có lỗi xảy ra
                           return Text('Error: ${snapshot.error}');
                         } else {
@@ -98,7 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                     width: 20,
                                   ),
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Hi ${userCurrent!.name}',
@@ -192,14 +194,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     controller: _pageController,
                     itemCount: cookbookProvider.cookbooks.length,
                     itemBuilder: (context, index) {
-
                       final cookbook = cookbookProvider.cookbooks[index];
                       //print(cookbook);
                       return InkWell(
                           onTap: () {
                             // Navigator.pushNamed(
                             //     context, RouteGenerator.detailCookbook, arguments: CookBook(id: cookbook.id, title: cookbook.title, description: cookbook.description, likes: cookbook.likes, recipes: cookbook.recipes, image: cookbook.image, popularRecipeIndex: cookbook.popularRecipeIndex));
-                            Navigator.of(context).pushNamed( RouteGenerator.detailCookbook, arguments: cookbook);
+                            Navigator.of(context).pushNamed(
+                                RouteGenerator.detailCookbook,
+                                arguments: cookbook);
                           },
                           child: CookBookWidget(
                             cookBook: cookbook,
@@ -251,20 +254,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
 
                 RefreshIndicator(
-                  onRefresh:  () async {
+                  onRefresh: () async {
                     context.read<RecipeProvider>().init();
-                    },
+                  },
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: recipeProvider.features.length,
-                    itemBuilder: (context, index){
-                      final featured =  recipeProvider.features[index];
-                      return FeaturedCard(featured: featured);
-                      },
+                    itemBuilder: (context, index) {
+                      final featured = recipeProvider.features[index];
+                      return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                                RouteGenerator.recipedetailScreen,
+                                arguments: featured.id);
+                          },
+                          child: FeaturedCard(featured: featured));
+                    },
                   ),
                 ),
-              
 
                 const SizedBox(
                   height: 50,
@@ -306,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 15.0,
                 ),
                 RefreshIndicator(
-                  onRefresh: () async{
+                  onRefresh: () async {
                     context.read<CategoryProvider>().init();
                   },
                   child: Container(
@@ -315,7 +323,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       shrinkWrap: true,
                       itemCount: categoryProvider.categories.length,
                       scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index){
+                      itemBuilder: (context, index) {
                         final category = categoryProvider.categories[index];
                         return CategoryCard(
                           category: category,
@@ -335,7 +343,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void getUser() {
-
-  }
+  void getUser() {}
 }

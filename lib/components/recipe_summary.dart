@@ -54,7 +54,7 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                   image: CachedNetworkImageProvider(recipe!.url),
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 )),
                 alignment: Alignment.topCenter,
                 child: Padding(
