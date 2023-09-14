@@ -8,6 +8,7 @@ import 'package:cooking_social_app/providers/provider_recipe/recipe_state.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:cooking_social_app/providers/recent_search_provider.dart';
 import 'package:cooking_social_app/providers/user_provider.dart';
 
 import 'package:cooking_social_app/routes/app_routes.dart';
@@ -15,6 +16,7 @@ import 'package:cooking_social_app/screens/authentication/authentication_screen.
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/home/home_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/recipe_details_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -45,7 +47,8 @@ Future<void> main() async {
         create: (_) => UserProvider(),
       ),
       ChangeNotifierProvider(create: (_) => RecipeStateProvider()),
-      ChangeNotifierProvider(create: (_) => ReviewStateProvider())
+      ChangeNotifierProvider(create: (_) => ReviewStateProvider()),
+      ChangeNotifierProvider(create: (_) => RecentSearchProvider(FirebaseAuth.instance.currentUser!.uid))
     ],
     child: const MyApp(),
   ));
