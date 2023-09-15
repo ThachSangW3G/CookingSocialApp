@@ -210,149 +210,162 @@ class OptionItemDialog extends StatelessWidget {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16))),
       child: SizedBox(
-        height: 500,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Category',
-                    style: TextStyle(
-                      fontFamily: 'CeraPro',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
+        height: 480,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              children: [
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Category',
+                      style: TextStyle(
+                        fontFamily: 'CeraPro',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              RefreshIndicator(
-                onRefresh: () async{
-                  context.read<CategoryProvider>().init();
-                },
-                child: Container(
-                  height: 130,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: categoryProvider.categories.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index){
-                      final category = categoryProvider.categories[index];
-                      return GestureDetector(
-                        onTap: (){
-                          recipeProvider.eventFilterKey(category.id);
-                        },
-                        child: CategoryCard(
-                          category: category,
-                          select: recipeProvider.containsFilter(category.id),
-                        ),
-                      );
-                    },
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                RefreshIndicator(
+                  onRefresh: () async{
+                    context.read<CategoryProvider>().init();
+                  },
+                  child: Container(
+                    height: 130,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: categoryProvider.categories.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index){
+                        final category = categoryProvider.categories[index];
+                        return GestureDetector(
+                          onTap: (){
+                            recipeProvider.eventFilterKey(category.id);
+                          },
+                          child: CategoryCard(
+                            category: category,
+                            select: recipeProvider.containsFilter(category.id),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Sort',
-                    style: TextStyle(
-                      fontFamily: 'CeraPro',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
+                const SizedBox(
+                  height: 20.0,
+                ),
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Sort',
+                      style: TextStyle(
+                        fontFamily: 'CeraPro',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Relevancy',
-                    style: TextStyle(
-                        fontFamily: 'CeraPro',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.yellowOrange),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Popular',
-                    style: TextStyle(
-                        fontFamily: 'CeraPro',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.greyShuttle),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Commented',
-                    style: TextStyle(
-                        fontFamily: 'CeraPro',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.greyShuttle),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Preparation Time',
-                    style: TextStyle(
-                        fontFamily: 'CeraPro',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.greyShuttle),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    'Appreciation',
-                    style: TextStyle(
-                        fontFamily: 'CeraPro',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.greyShuttle),
-                  ),
-                ],
-              )
-            ],
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        recipeProvider.setSort('relevancy');
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Relevancy',
+                        style: TextStyle(
+                            fontFamily: 'CeraPro',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: recipeProvider.sort == 'relevancy' ? AppColors.yellowOrange : AppColors.greyShuttle),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        recipeProvider.setSort('popular');
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Popular',
+                        style: TextStyle(
+                            fontFamily: 'CeraPro',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: recipeProvider.sort == 'popular' ? AppColors.yellowOrange : AppColors.greyShuttle),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        recipeProvider.setSort('commented');
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Commented',
+                        style: TextStyle(
+                            fontFamily: 'CeraPro',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color:recipeProvider.sort == 'commented' ? AppColors.yellowOrange : AppColors.greyShuttle),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        recipeProvider.setSort('preparation_time');
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Preparation Time',
+                        style: TextStyle(
+                            fontFamily: 'CeraPro',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: recipeProvider.sort == 'preparation_time' ? AppColors.yellowOrange : AppColors.greyShuttle),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+              ],
+            ),
           ),
         ),
       ),
