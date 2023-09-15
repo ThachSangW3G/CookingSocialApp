@@ -100,7 +100,10 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          if (check) {
+                          if (!check) {
+                            setState(() {
+                              check = !check;
+                            });
                             // Thêm dữ liệu vào Firestore
                             await FirebaseFirestore.instance
                                 .collection('recipelike')
@@ -110,6 +113,9 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                               // Thêm các trường dữ liệu khác của bạn nếu cần
                             });
                           } else {
+                            setState(() {
+                              check = !check;
+                            });
                             QuerySnapshot snapshot = await FirebaseFirestore
                                 .instance
                                 .collection('recipelike')
@@ -123,9 +129,6 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                               }
                             }
                           }
-                          setState(() {
-                            check = !check;
-                          });
                         },
                         child: Container(
                           height: 50,
