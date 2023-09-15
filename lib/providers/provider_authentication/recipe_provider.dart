@@ -24,6 +24,10 @@ class RecipeProvider extends ChangeNotifier {
   List<Featured> filterFeatured = [];
   List<String> filterKey = [];
 
+  String _sort = 'relevancy';
+
+  String get sort => _sort;
+
   RecipeProvider() {
     _recipeRepository = RecipeRepositoryImpl();
     _featureRepository = FeatureRepositoryImpl();
@@ -39,7 +43,11 @@ class RecipeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
+  setSort(String strSort){
+    _sort = strSort;
+    filterListFeatured();
+    notifyListeners();
+  }
 
   Future<Recipe> getRecipe(String idRecipe) async {
     _recipeRepository = RecipeRepositoryImpl();
@@ -78,6 +86,27 @@ class RecipeProvider extends ChangeNotifier {
       }).toList();
     }
 
+    switch (_sort){
+      case 'relevancy':
+        if (filterKey.isEmpty) {
+          filterFeatured = features;
+        }else{
+          filterFeatured = features.where((feature){
+            return filterKey.contains(feature.category);
+          }).toList();
+        }
+        break;
+      case 'popular':
+        filterFeatured.sort((a, b) => b.likeCount.compareTo(a.likeCount));
+        break;
+      case 'commented':
+        filterFeatured.sort((a, b) => b.reviewCount.compareTo(a.reviewCount));
+        break;
+      case 'preparation_time':
+        filterFeatured.sort((a, b) => b.cookTime.compareTo(a.cookTime));
+    }
+
+    print(_sort);
 
   }
 

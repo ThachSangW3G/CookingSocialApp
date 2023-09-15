@@ -23,9 +23,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
 
 
+
   @override
   Widget build(BuildContext context) {
-    final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
+    final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context)..filterListFeatured();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -99,59 +100,68 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     children: [
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: const Text(
-                          'Relevancy',
-                          style: TextStyle(
-                              fontFamily: 'CeraPro',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.yellowOrange),
+                        child: GestureDetector(
+                          onTap: (){
+                            recipeProvider.setSort('relevancy');
+                          },
+                          child: Text(
+                            'Relevancy',
+                            style: TextStyle(
+                                fontFamily: 'CeraPro',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: recipeProvider.sort == 'relevancy' ? AppColors.yellowOrange : AppColors.greyShuttle),
+                          ),
                         ),
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: const Text(
-                          'Popular',
-                          style: TextStyle(
-                              fontFamily: 'CeraPro',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.greyShuttle),
+                        child: GestureDetector(
+                          onTap: (){
+                            recipeProvider.setSort('popular');
+                          },
+                          child: Text(
+                            'Popular',
+                            style: TextStyle(
+                                fontFamily: 'CeraPro',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: recipeProvider.sort == 'popular' ? AppColors.yellowOrange : AppColors.greyShuttle),
+                          ),
                         ),
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: const Text(
-                          'Commented',
-                          style: TextStyle(
-                              fontFamily: 'CeraPro',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.greyShuttle),
+                        child: GestureDetector(
+                          onTap: (){
+                            recipeProvider.setSort('commented');
+                          },
+                          child: Text(
+                            'Commented',
+                            style: TextStyle(
+                                fontFamily: 'CeraPro',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color:  recipeProvider.sort == 'commented' ? AppColors.yellowOrange : AppColors.greyShuttle),
+                          ),
                         ),
                       ),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: const Text(
-                          'Preparation Time',
-                          style: TextStyle(
-                              fontFamily: 'CeraPro',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.greyShuttle),
+                        child: GestureDetector(
+                          onTap: (){
+                            recipeProvider.setSort('preparation_time');
+                          },
+                          child: Text(
+                            'Preparation Time',
+                            style: TextStyle(
+                                fontFamily: 'CeraPro',
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: recipeProvider.sort == 'preparation_time' ? AppColors.yellowOrange : AppColors.greyShuttle),
+                          ),
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: const Text(
-                          'Appreciation',
-                          style: TextStyle(
-                              fontFamily: 'CeraPro',
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.greyShuttle),
-                        ),
-                      )
                     ],
                   ),
                 )
@@ -190,6 +200,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
 class OptionItemDialog extends StatelessWidget {
   const OptionItemDialog({super.key});
+
 
   @override
   Widget build(BuildContext context) {
