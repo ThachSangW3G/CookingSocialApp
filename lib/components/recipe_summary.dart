@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/comment_item.dart';
 import 'package:cooking_social_app/components/comment_item_not_option.dart';
 import 'package:cooking_social_app/components/icon_content_orange.dart';
 import 'package:cooking_social_app/components/line_row.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/models/review.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,17 +25,31 @@ class RecipeSummary extends StatefulWidget {
 
 class _RecipeSummaryState extends State<RecipeSummary> {
   Recipe? recipe;
+  bool check = false;
   @override
   void initState() {
     recipe = widget.recipe;
     context.read<ReviewStateProvider>().fetchReview(recipe!.key);
+    _getLikeData();
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-    context.read<ReviewStateProvider>().fetchReview(recipe!.key);
-    super.didChangeDependencies();
+  // @override
+  // void didChangeDependencies() {
+  //   //context.read<ReviewStateProvider>().fetchReview(recipe!.key);
+  //   super.didChangeDependencies();
+  // }
+  _getLikeData() async {
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('recipelike')
+        .where('keyRecipe', isEqualTo: recipe!.key)
+        .get();
+    for (var element in snapshot.docs) {
+      if (element['uidUser'] == FirebaseAuth.instance.currentUser?.uid) {
+        check = true;
+        break;
+      }
+    }
   }
 
   @override
@@ -82,21 +99,60 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () async {
+                          if (check) {
+                            // Thêm dữ liệu vào Firestore
+                            await FirebaseFirestore.instance
+                                .collection('recipelike')
+                                .add({
+                              'uidUser': FirebaseAuth.instance.currentUser?.uid,
+                              'keyRecipe': recipe!.key,
+                              // Thêm các trường dữ liệu khác của bạn nếu cần
+                            });
+                          } else {
+                            QuerySnapshot snapshot = await FirebaseFirestore
+                                .instance
+                                .collection('recipelike')
+                                .where('keyRecipe', isEqualTo: recipe!.key)
+                                .get();
+                            // Xóa dữ liệu khỏi Firestore
+                            for (var element in snapshot.docs) {
+                              if (element['uidUser'] ==
+                                  FirebaseAuth.instance.currentUser?.uid) {
+                                await element.reference.delete();
+                              }
+                            }
+                          }
+                          setState(() {
+                            check = !check;
+                          });
+                        },
                         child: Container(
                           height: 50,
                           width: 50,
                           decoration: const BoxDecoration(
                               color: AppColors.white, shape: BoxShape.circle),
-                          child: Center(
-                            child: SvgPicture.asset(
-                              'assets/icon_svg/heart.svg',
-                              colorFilter: const ColorFilter.mode(
-                                  AppColors.orangeCrusta, BlendMode.srcIn),
-                              height: 24,
-                              width: 24,
-                            ),
-                          ),
+                          child: check == false
+                              ? Center(
+                                  child: SvgPicture.asset(
+                                    'assets/icon_svg/heart.svg',
+                                    colorFilter: const ColorFilter.mode(
+                                        AppColors.orangeCrusta,
+                                        BlendMode.srcIn),
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                                )
+                              : Center(
+                                  child: SvgPicture.asset(
+                                    'assets/icon_svg/heart_orange.svg',
+                                    colorFilter: const ColorFilter.mode(
+                                        AppColors.orangeCrusta,
+                                        BlendMode.srcIn),
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                                ),
                         ),
                       )
                     ],
@@ -403,9 +459,7 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                         height: 10,
                                       ),
                                       provider.review.isEmpty
-                                          ? const Center(
-                                              child:
-                                                  CircularProgressIndicator())
+                                          ? const Center()
                                           : CommentItemNotOption(
                                               review: provider.review[0],
                                             ),
