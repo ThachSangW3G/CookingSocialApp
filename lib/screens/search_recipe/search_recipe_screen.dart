@@ -1,7 +1,9 @@
 import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
+import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/widgets/recipe_item_unpublished_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/app_color.dart';
 
@@ -13,60 +15,16 @@ class SearchRecipeScreen extends StatefulWidget {
 }
 
 class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Search Recipe',
-          style: TextStyle(
-            fontFamily: 'Recoleta',
-            fontSize: 20,
-            fontWeight: FontWeight.w800
-          ),
-        ),
-        centerTitle: true,
-        bottom:  PreferredSize(
-          preferredSize: const Size.fromHeight(1),
-          child: Container(
-            color: AppColors.greyIron,
-            width: double.infinity,
-            height: 1,
-          ),
-        ),
-      ),
-      body: Column(
+
+  bool _isSearch = false;
+  RecipeProvider? recipeProvider;
+
+
+
+  Widget _buildSearch(){
+    if (!_isSearch){
+      return Column(
         children: [
-
-          const SizedBox(height: 15.0,),
-          Container(
-            height: 48,
-            margin: const EdgeInsets.symmetric(horizontal: 20.0),
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                color: AppColors.greyIron
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Recipe Title, Ingredient',
-                  hintStyle: const TextStyle(
-                      fontFamily: 'CeraPro',
-                      fontSize: 17,
-                      color: AppColors.greyShuttle
-                  ),
-                  border: InputBorder.none,
-                  suffixIcon: IconButton(
-                    onPressed: (){},
-                    icon: SvgPicture.asset('assets/icon_svg/search.svg', height: 25, width: 25, color: AppColors.greyShuttle,
-                    ),
-                  ),
-
-                ),
-              ),
-            ),
-          ),
           const SizedBox(height: 20.0,),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -75,9 +33,9 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                 Text(
                   'Recent Search',
                   style: TextStyle(
-                    fontFamily: 'Recoleta',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20
+                      fontFamily: 'Recoleta',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20
                   ),
                 )
               ],
@@ -112,6 +70,98 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
               ],
             ),
           ),
+        ],
+      );
+    }else{
+      return
+        Container(
+          child: Expanded(
+
+            child: ListView.builder(
+              itemCount: recipeProvider!.searchRecipe.length,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index){
+                print( recipeProvider!.searchRecipe.length);
+                return RecipeItemUnPublishedWidget(
+                  recipe: recipeProvider!.searchRecipe[index],
+                );
+              },
+            ),
+          ),
+        );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    recipeProvider = Provider.of<RecipeProvider>(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Search Recipe',
+          style: TextStyle(
+            fontFamily: 'Recoleta',
+            fontSize: 20,
+            fontWeight: FontWeight.w800
+          ),
+        ),
+        centerTitle: true,
+        bottom:  PreferredSize(
+          preferredSize: const Size.fromHeight(1),
+          child: Container(
+            color: AppColors.greyIron,
+            width: double.infinity,
+            height: 1,
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+
+          const SizedBox(height: 15.0,),
+          Container(
+            height: 48,
+            margin: const EdgeInsets.symmetric(horizontal: 20.0),
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                color: AppColors.greyIron
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: TextField(
+
+                decoration: InputDecoration(
+                  hintText: 'Recipe Title, Ingredient',
+                  hintStyle: const TextStyle(
+                      fontFamily: 'CeraPro',
+                      fontSize: 17,
+                      color: AppColors.greyShuttle
+                  ),
+                  border: InputBorder.none,
+                  suffixIcon: IconButton(
+                    onPressed: (){},
+                    icon: SvgPicture.asset('assets/icon_svg/search.svg', height: 25, width: 25, color: AppColors.greyShuttle,
+                    ),
+                  ),
+
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    if (value.isEmpty){
+                      _isSearch = false;
+                    }else {
+                      _isSearch = true;
+                    }
+                  });
+                  recipeProvider!.search(value);
+                  //print(recipeProvider!.searchRecipe.length);
+                }
+              ),
+            ),
+          ),
+          _buildSearch()
+
+
           // Expanded(
           //
           //   child: ListView(
@@ -135,6 +185,8 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
     );
   }
 }
+
+
 
 class RecentSearchWidget extends StatelessWidget {
   final String search;

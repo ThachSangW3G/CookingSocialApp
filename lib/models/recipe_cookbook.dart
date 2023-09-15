@@ -16,6 +16,7 @@ class Recipe {
   String source;
   List<dynamic> spice;
   List<dynamic> steps;
+  String category;
 
   Recipe(
       {required this.key,
@@ -32,7 +33,9 @@ class Recipe {
       required this.serves,
       required this.source,
       required this.spice,
-      required this.steps});
+      required this.steps,
+        required this.category
+      });
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
     return Recipe(
@@ -50,7 +53,9 @@ class Recipe {
         serves: json["serves"],
         source: json["source"],
         spice: json["spice"],
-        steps: json["steps"]);
+        steps: json["steps"],
+        category: json['category']
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -68,7 +73,8 @@ class Recipe {
       'serves': serves,
       'source': source,
       'spice': spice,
-      'steps': steps
+      'steps': steps,
+      'category': category
     };
   }
 }
