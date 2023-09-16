@@ -6,8 +6,10 @@ import '../models/featured.dart';
 
 class FeaturedCard extends StatelessWidget {
   final Featured featured;
+  final VoidCallback like;
+  final bool liked;
   const FeaturedCard({
-    super.key, required this.featured,
+    super.key, required this.featured, required this.like, required this.liked,
   });
 
   @override
@@ -138,13 +140,16 @@ class FeaturedCard extends StatelessWidget {
                   ],
                 ),
 
-                Container(
-                  width: 28,
-                  height: 28,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/icons/heart_border_orange.png')
-                      )
+                GestureDetector(
+                  onTap: like,
+                  child: Container(
+                    width: 28,
+                    height: 28,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: liked  ? const AssetImage('assets/icons/heart_orange.png') : const AssetImage('assets/icons/heart_border_orange.png')
+                        )
+                    ),
                   ),
                 )
 
