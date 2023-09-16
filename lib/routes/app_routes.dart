@@ -3,10 +3,14 @@ import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/bottom_navigation/bottom_navigation.dart';
+import 'package:cooking_social_app/screens/calendar/calendar_screen.dart';
 import 'package:cooking_social_app/screens/community/community.dart';
 import 'package:cooking_social_app/screens/cookbook/detail_cookbook.dart';
 
 import 'package:cooking_social_app/screens/home/home_screen.dart';
+import 'package:cooking_social_app/screens/recipe/add_grocery_screen.dart';
+import 'package:cooking_social_app/screens/recipe/recipe_add_screen.dart';
+import 'package:cooking_social_app/screens/recipe/recipe_edit_screen.dart';
 import 'package:cooking_social_app/screens/splash/splash_screen.dart';
 
 import 'package:cooking_social_app/screens/account/account_person_screen.dart';
@@ -147,6 +151,44 @@ class RouteGenerator {
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
+      case recipeeditScreen:
+        // String keyRecipe = args as String;
+        return PageTransition(
+          child: const SafeArea(
+              child: SafeArea(
+                  child: RecipeEditScreen(
+              // keyRecipe: keyRecipe,
+          ))),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+      case recipeaddgroceryScreen:
+        return PageTransition(
+          child: const SafeArea(
+              child: SafeArea(
+                  child: AddGroceryScreen(
+          ))),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+      case recipeaddScreen:
+        return PageTransition(
+          child: const SafeArea(
+              child: SafeArea(
+                  child: RecipeAddScreen(
+          ))),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+      case calendarScreen:
+        return PageTransition(
+          child: const SafeArea(
+              child: SafeArea(
+                  child: CalendarScreen(
+          ))),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
 
       //
 
@@ -175,7 +217,19 @@ class RouteGenerator {
   // RECIPE DETAILS
   static const recipedetailScreen = '/recipedetail';
   static const reviewScreen = '/review';
-  //
+  
+  //RECIPE EDIT
+  static const recipeeditScreen = '/recipededit';
+  static const recipeaddgroceryScreen = '/recipeeditaddgrocery';
+
+  //RECIPE ADD
+  static const recipeaddScreen = '/recipeadd';
+
+  //GROCERY
+  static const groceryScreen = '/grocery';
+
+  //CALENDAR
+  static const calendarScreen = '/calendar';
 }
 
 class RouteException implements Exception {
