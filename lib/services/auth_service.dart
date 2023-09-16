@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthService {
   //Variables
   final _auth = FirebaseAuth.instance;
+  final _fireStore = FirebaseFirestore.instance;
 
   //Getters
   String get getUserID => _auth.currentUser?.uid ?? "";
@@ -16,6 +18,13 @@ class AuthService {
       return true;
     }
     return false;
+  }
+
+  Future<bool> isSignedIn() async {
+    return await _auth.currentUser != null;
+  }
+  Future<User> getUser() async {
+    return await _auth.currentUser!;
   }
 
   //Google sign in
@@ -54,5 +63,28 @@ class AuthService {
 
     // ignore: use_build_context_synchronously
     Navigator.pushNamed(context, RouteGenerator.login);
+  }
+
+  Future<void> signOut() async {
+    await GoogleSignIn().signOut();
+    await FacebookAuth.instance.logOut();
+    // ignore: use_build_context_synchronously
+  }
+
+  Future<void> addDataUser(UserCredential userCredential) async {
+    DocumentSnapshot userSnapshot = await _fireStore
+        .collection('users')
+        .doc(userCredential.user!.uid)
+        .get();
+    if (!userSnapshot.exists) {
+      // Thêm dữ liệu vào Firestore
+      await _fireStore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'name': userCredential.user?.displayName,
+        'email': userCredential.additionalUserInfo!.profile!['email'],
+        'avatar': userCredential.additionalUserInfo!.profile!['picture']
+        // Thêm các trường dữ liệu khác tùy ý
+      });
+    }
   }
 }

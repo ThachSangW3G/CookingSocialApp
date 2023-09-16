@@ -1,23 +1,45 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/comment_item.dart';
 import 'package:cooking_social_app/components/line_row.dart';
+import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../constants/app_color.dart';
 
 class ReViewScreen extends StatefulWidget {
-  const ReViewScreen({super.key});
+  final String keyRecipe;
+  const ReViewScreen({super.key, required this.keyRecipe});
 
   @override
   State<ReViewScreen> createState() => _ReViewScreenState();
 }
 
 class _ReViewScreenState extends State<ReViewScreen> {
+  TextEditingController _textEditingController = TextEditingController();
+  String? keyRecipe;
+  String? _description;
+  @override
+  void initState() {
+    keyRecipe = widget.keyRecipe;
+    context.read<ReviewStateProvider>().fetchReview(keyRecipe!);
+    super.initState();
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   context.read<ReviewStateProvider>().fetchReview(keyRecipe!);
+  //   super.didChangeDependencies();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
+        elevation: 0,
         title: const Text(
           'Reviews',
           textAlign: TextAlign.center,
@@ -40,91 +62,116 @@ class _ReViewScreenState extends State<ReViewScreen> {
             preferredSize: Size.fromHeight(16.0), child: LineRow()),
       ),
       resizeToAvoidBottomInset: false,
-      body: ListView(shrinkWrap: true, reverse: true, children: const <Widget>[
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        CommentItem(
-            name: 'Renata Moeloek',
-            time: '4 day ago',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-      ]),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-            border: Border(top: BorderSide(color: AppColors.greyBombay))),
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.whitePorcelain),
-                child: TextField(
-                  onChanged: (value) {},
-                  onTap: () {},
-                  decoration: const InputDecoration(
-                    hintText: 'Your Review',
-                    hintStyle: TextStyle(
-                        color: AppColors.greyShuttle,
-                        fontFamily: 'CeraPro',
-                        fontWeight: FontWeight.w400),
-                    border: InputBorder.none,
+      body: Consumer<ReviewStateProvider>(builder: (context, provider, _) {
+        return SingleChildScrollView(
+          child: Scaffold(
+            body: Padding(
+                padding: const EdgeInsets.all(0),
+                child: provider.review.isEmpty
+                    ? const Center(child: CircularProgressIndicator())
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          context
+                              .read<ReviewStateProvider>()
+                              .fetchReview(keyRecipe!);
+                        },
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: provider.review.length,
+                          itemBuilder: (context, index) {
+                            return CommentItem(review: provider.review[index]);
+                          },
+                        ),
+                      )),
+            bottomNavigationBar: Container(
+              decoration: const BoxDecoration(
+                  border: Border(top: BorderSide(color: AppColors.greyBombay))),
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.whitePorcelain),
+                      child: TextField(
+                        controller: _textEditingController,
+                        onChanged: (value) {
+                          _description = value;
+                        },
+                        onTap: () {},
+                        decoration: const InputDecoration(
+                          hintText: 'Your Review',
+                          hintStyle: TextStyle(
+                              color: AppColors.greyShuttle,
+                              fontFamily: 'CeraPro',
+                              fontWeight: FontWeight.w400),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      if (_description != null) {
+                        addReview(_description!, keyRecipe!);
+                        context
+                            .read<ReviewStateProvider>()
+                            .fetchReview(keyRecipe!);
+                        _textEditingController.clear();
+                      }
+                    },
+                    child: const Text(
+                      'SUBMIT',
+                      style: TextStyle(
+                          color: AppColors.orangeCrusta,
+                          fontFamily: 'CeraPro',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 17),
+                    ),
+                  )
+                ],
               ),
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: const Text(
-                'SUBMIT',
-                style: TextStyle(
-                    color: AppColors.orangeCrusta,
-                    fontFamily: 'CeraPro',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17),
-              ),
-            )
-          ],
-        ),
-      ),
+          ),
+        );
+      }),
     );
+  }
+}
+
+void addReview(String description, String keyRecipe) async {
+  // Khởi tạo Firestore instance
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  try {
+    // Tạo một document reference và lấy ra ID ngẫu nhiên
+    DocumentReference reviewRef = firestore.collection('reviews').doc();
+
+    // Tạo một map chứa thông tin review
+    Map<String, dynamic> reviewData = {
+      'uidUser':
+          FirebaseAuth.instance.currentUser?.uid, // Giá trị uidUser (String)
+      'time': Timestamp.now(), // Giá trị time (Timestamp)
+      'key': reviewRef.id, // Giá trị key (String)
+      'keyRecipe': keyRecipe,
+      'description': description
+    };
+
+    // Thêm review vào Firestore
+    await reviewRef.set(reviewData);
+
+    if (kDebugMode) {
+      print('Review added successfully!');
+    }
+  } catch (error) {
+    if (kDebugMode) {
+      print('Error adding review: $error');
+    }
   }
 }

@@ -1,3 +1,6 @@
+import 'package:cooking_social_app/blocs/blocs/authentication_bloc.dart';
+import 'package:cooking_social_app/models/cookbook.dart';
+import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/bottom_navigation/bottom_navigation.dart';
 import 'package:cooking_social_app/screens/community/community.dart';
@@ -13,8 +16,10 @@ import 'package:cooking_social_app/screens/account/liked_recipe_screen.dart';
 import 'package:cooking_social_app/screens/account/notification_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/recipe_details_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/review_screen.dart';
+import 'package:cooking_social_app/services/auth_service.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 
 class RouteGenerator {
@@ -22,6 +27,7 @@ class RouteGenerator {
 
   static Route<dynamic> generatorRoute(RouteSettings settings) {
     final args = settings.arguments;
+    final AuthService _authService = AuthService();
     switch (settings.name) {
       case home:
         return PageTransition(
@@ -38,8 +44,13 @@ class RouteGenerator {
         );
 
       case detailCookbook:
+        CookBook cookbook = args as CookBook;
         return PageTransition(
-          child: const SafeArea(child: SafeArea(child: DetailCookBookScreen())),
+          child: SafeArea(
+              child: SafeArea(
+                  child: DetailCookBookScreen(
+            cookbook: cookbook,
+          ))),
           type: PageTransitionType.fade,
           duration: const Duration(milliseconds: 400),
         );
@@ -64,13 +75,32 @@ class RouteGenerator {
           type: PageTransitionType.fade,
           duration: const Duration(milliseconds: 400),
         );
+      case authentication:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: AuthenticationScreen())),
+          type: PageTransitionType.fade,
+          duration: const Duration(milliseconds: 400),
+        );
+
+      // case accountScreen:
+      //   return PageTransition(
+      //     child: const SafeArea(child: SafeArea(child: AccountScreen())),
+      //     type: PageTransitionType.rightToLeft,
+      //     duration: const Duration(milliseconds: 400),
+      //   );
 
       case accountScreen:
         return PageTransition(
-          child: const SafeArea(child: SafeArea(child: AccountScreen())),
+          child: SafeArea(
+              child: SafeArea(
+                  child: BlocProvider<AuthenticationBloc>(
+            create: (context) => AuthenticationBloc(authService: _authService),
+            child: const AccountScreen(),
+          ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
+
       case notificationScreen:
         return PageTransition(
           child: const SafeArea(child: SafeArea(child: NotificationScreen())),
@@ -96,14 +126,24 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
       case recipedetailScreen:
+        String key = args as String;
         return PageTransition(
-          child: const SafeArea(child: SafeArea(child: RecipeDetailsScreen())),
+          child: SafeArea(
+              child: SafeArea(
+                  child: RecipeDetailsScreen(
+            keyRecipe: key,
+          ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
       case reviewScreen:
+        String keyRecipe = args as String;
         return PageTransition(
-          child: const SafeArea(child: SafeArea(child: ReViewScreen())),
+          child: SafeArea(
+              child: SafeArea(
+                  child: ReViewScreen(
+            keyRecipe: keyRecipe,
+          ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
@@ -115,25 +155,26 @@ class RouteGenerator {
     }
   }
 
-  static const splash = 'splash';
+  static const splash = '/splash';
 
-  static const home = 'home';
-  static const detailCookbook = 'detailCookbook';
-  static const community = 'community';
-  static const bottom_navigation = 'bottom_navigation';
-  static const login = 'login';
+  static const home = '/home';
+  static const detailCookbook = '/detailCookbook';
+  static const community = '/community';
+  static const bottom_navigation = '/bottom_navigation';
+  static const login = '/login';
+  static const authentication = '/authentication';
 
   // ACCOUNT
-  static const accountScreen = 'account';
-  static const notificationScreen = 'notification';
-  static const accountpersonScreen = 'accountperson';
-  static const editprofileScreen = 'editprofile';
-  static const likedrecipeScreen = 'likedrecipe';
+  static const accountScreen = '/account';
+  static const notificationScreen = '/notification';
+  static const accountpersonScreen = '/accountperson';
+  static const editprofileScreen = '/editprofile';
+  static const likedrecipeScreen = '/likedrecipe';
   //
 
   // RECIPE DETAILS
-  static const recipedetailScreen = 'recipedetail';
-  static const reviewScreen = 'review';
+  static const recipedetailScreen = '/recipedetail';
+  static const reviewScreen = '/review';
   //
 }
 

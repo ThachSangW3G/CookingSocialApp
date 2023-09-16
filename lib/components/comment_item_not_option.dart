@@ -1,19 +1,25 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/models/review.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class CommentItemNotOption extends StatelessWidget {
-  final String name;
-  final String time;
-  final String content;
-  final bool check;
-  const CommentItemNotOption(
-      {super.key,
-      required this.name,
-      required this.time,
-      required this.content,
-      required this.check});
+class CommentItemNotOption extends StatefulWidget {
+  final Review review;
+  const CommentItemNotOption({super.key, required this.review});
+
+  @override
+  State<CommentItemNotOption> createState() => _CommentItemNotOptionState();
+}
+
+class _CommentItemNotOptionState extends State<CommentItemNotOption> {
+  Review? review;
+
+  @override
+  void initState() {
+    review = widget.review;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +31,10 @@ class CommentItemNotOption extends StatelessWidget {
           height: 33,
           width: 33,
           padding: const EdgeInsets.only(top: 5),
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(
-                  image: AssetImage('assets/images/avatar.jpg'),
-                  fit: BoxFit.contain)),
+                  image: NetworkImage(review!.avatar), fit: BoxFit.fill)),
         ),
         const SizedBox(
           width: 10,
@@ -40,7 +45,7 @@ class CommentItemNotOption extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                name,
+                review!.name,
                 style: const TextStyle(
                     color: Colors.black,
                     fontFamily: "CeraPro",
@@ -48,11 +53,11 @@ class CommentItemNotOption extends StatelessWidget {
                     fontSize: 16),
               ),
               Text(
-                time,
+                review!.time,
                 style: kLabelTextStyle,
               ),
               Text(
-                content,
+                review!.description,
                 style: kReviewLabelTextStyle,
               )
             ],
@@ -61,7 +66,7 @@ class CommentItemNotOption extends StatelessWidget {
         Container(
           padding: EdgeInsets.zero,
           child: Row(children: [
-            check == false
+            review!.check == false
                 ? GestureDetector(
                     onTap: () {},
                     child: SvgPicture.asset(

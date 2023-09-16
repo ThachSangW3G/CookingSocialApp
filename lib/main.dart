@@ -1,10 +1,27 @@
 // import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 // import 'package:cooking_social_app/screens/recipe/add_grocery_screen.dart';
+import 'package:cooking_social_app/providers/category_provider.dart';
+import 'package:cooking_social_app/providers/cookbook_provider.dart';
+import 'package:cooking_social_app/providers/like_provider.dart';
+import 'package:cooking_social_app/providers/provider_authentication/authentication_state.dart';
+
+import 'package:cooking_social_app/providers/provider_recipe/recipe_state.dart';
+import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
+
+import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:cooking_social_app/providers/recent_search_provider.dart';
+import 'package:cooking_social_app/providers/user_provider.dart';
+
 import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
+import 'package:cooking_social_app/screens/home/home_screen.dart';
+import 'package:cooking_social_app/screens/recipe_detail/recipe_details_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -13,7 +30,30 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => AuthenticationStateProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => RecipeProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CategoryProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CookbookProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => UserProvider(),
+      ),
+      ChangeNotifierProvider(create: (_) => RecipeStateProvider()),
+      ChangeNotifierProvider(create: (_) => ReviewStateProvider()),
+      ChangeNotifierProvider(create: (_) => RecentSearchProvider(FirebaseAuth.instance.currentUser!.uid)),
+      ChangeNotifierProvider(create: (_) => LikeProvider()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -22,6 +62,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final AuthenticationStateProvider authenticationStateProvider =
+        Provider.of<AuthenticationStateProvider>(context, listen: false);
     return MaterialApp(
       title: 'Cooking Social',
       debugShowCheckedModeBanner: false,
@@ -30,7 +72,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       onGenerateRoute: RouteGenerator.generatorRoute,
-      home: const LoginScreen(),
+      //home: const RecipeDetailsScreen(),
+      home: authenticationStateProvider.isLoggedIn
+          ? const HomeScreen()
+          : const LoginScreen(),
     );
   }
 }
