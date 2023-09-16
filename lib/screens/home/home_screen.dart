@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/category.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
+import 'package:cooking_social_app/models/like_model.dart';
 import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/providers/cookbook_provider.dart';
+import 'package:cooking_social_app/providers/like_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/providers/user_provider.dart';
 import 'package:cooking_social_app/repository/recipe_repository.dart';
@@ -13,6 +15,7 @@ import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -42,9 +45,14 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<CategoryProvider>(context);
     final CookbookProvider cookbookProvider =
         Provider.of<CookbookProvider>(context);
+
+    final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
     //final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     //final userCurrent = await userProvider.getUser(FirebaseAuth.instance.currentUser!.uid);
+
+    final user = FirebaseAuth.instance.currentUser!;
+
     int? pageCount = cookbookProvider.cookbooks.length;
 
     return Scaffold(
@@ -269,7 +277,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                 RouteGenerator.recipedetailScreen,
                                 arguments: featured.id);
                           },
-                          child: FeaturedCard(featured: featured));
+                          child: FutureBuilder<LikeModel>(
+                            future: likeProvider.likeExist(featured.id, user.uid),
+                            builder: (context, snapshot){
+                              final LikeModel? liked = snapshot.data;
+                              return  FeaturedCard(featured: featured, like: (){
+
+                                if(liked == null){
+                                  LikeModel likeModel = LikeModel(
+                                      id: DateTime.now().toIso8601String(),
+                                      idRecipe: featured.id,
+                                      idUser: user.uid,
+                                      time: Timestamp.now()
+                                  );
+                                  likeProvider.addLike(likeModel);
+                                }else {
+                                  likeProvider.deleteLike(liked);
+                                }
+
+                              }, liked: liked != null,);
+                            }
+                          ));
                     },
                   ),
                 ),

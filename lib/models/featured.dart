@@ -7,13 +7,12 @@ class Featured {
   final int likeCount;
   final int reviewCount;
   final String category;
+  final int cookTime;
 
   // Featured(this.id, this.image, this.title, this.avatar, this.nameUser,
   //     this.likeCount, this.reviewCount);
-  Featured( {required this.id, required this.image, required this.title, required this.avatar, required this.nameUser,
-      required this.likeCount, required this.reviewCount, required this.category,});
-
-
+  Featured({required this.id, required this.image, required this.title, required this.avatar, required this.nameUser,
+      required this.likeCount, required this.reviewCount, required this.category, required this.cookTime});
 
 }
 
