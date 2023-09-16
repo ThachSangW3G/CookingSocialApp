@@ -1,5 +1,4 @@
 import 'package:cooking_social_app/components/ingredient_item.dart';
-import 'package:cooking_social_app/widgets/tab_content_ingredients.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/app_color.dart';
