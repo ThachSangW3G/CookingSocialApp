@@ -1,12 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/featured.dart';
+import 'package:cooking_social_app/models/like_model.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/category.dart';
 import '../../providers/category_provider.dart';
+import '../../providers/like_provider.dart';
 import '../../widgets/category_card.dart';
 import '../../widgets/featured_card_small_widget.dart';
 import '../../widgets/featured_card_widget.dart';
@@ -27,6 +31,9 @@ class _CommunityScreenState extends State<CommunityScreen> {
   @override
   Widget build(BuildContext context) {
     final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context)..filterListFeatured();
+    final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
+    final user = FirebaseAuth.instance.currentUser!;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -185,8 +192,26 @@ class _CommunityScreenState extends State<CommunityScreen> {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       final feature = recipeProvider.filterFeatured[index];
-                      return FeaturedCardSmallWidget(
-                        featured: feature,
+                      return FutureBuilder<LikeModel>(
+                        future: likeProvider.likeExist(feature.id, user.uid),
+                        builder: (context, snapshot){
+                          final LikeModel? liked = snapshot.data;
+                          return  FeaturedCardSmallWidget(featured: feature, like: (){
+
+                            if(liked == null){
+                              LikeModel likeModel = LikeModel(
+                                  id: DateTime.now().toIso8601String(),
+                                  idRecipe: feature.id,
+                                  idUser: user.uid,
+                                  time: Timestamp.now()
+                              );
+                              likeProvider.addLike(likeModel);
+                            }else {
+                              likeProvider.deleteLike(liked);
+                            }
+
+                          }, liked: liked != null,);
+                        },
                       );
                     }),
               ),
