@@ -1,11 +1,18 @@
+import 'package:cooking_social_app/blocs/blocs/authentication_bloc.dart';
+import 'package:cooking_social_app/blocs/states/authentication_state.dart';
 import 'package:cooking_social_app/components/icon_content.dart';
 import 'package:cooking_social_app/components/row_content.dart';
 import 'package:cooking_social_app/components/row_content_not_icon.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/providers/provider_authentication/authentication_state.dart';
+import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:cooking_social_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
+import '../../blocs/events/authentication_event.dart';
 import '../../components/line_row.dart';
-import '../../constants/app_color.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -15,11 +22,13 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
+  final AuthService _authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
+    final AuthenticationStateProvider _authenticationStateProvider = Provider.of<AuthenticationStateProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.whitePorcelain,
         centerTitle: true,
         title: const Text(
           'Account',
@@ -31,104 +40,126 @@ class _AccountScreenState extends State<AccountScreen> {
               fontFamily: 'Recoleta'),
         ),
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: const Icon(
               Icons.arrow_back_ios_outlined,
               color: Colors.black,
               size: 20,
             )),
+        bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(16.0), child: LineRow()),
       ),
-      backgroundColor: AppColors.whitePorcelain,
       body: Column(children: [
-        const LineRow(),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+              child: Column(
                 children: [
-                  const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Nararaya Kiana',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "CeraPro"),
+                      const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Nararaya Kiana',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "CeraPro"),
+                          ),
+                          Text('trungtinh1620@gmail.com', style: kLabelTextStyle)
+                        ],
                       ),
-                      Text('trungtinh1620@gmail.com', style: kLabelTextStyle)
+                      Container(
+                        height: 60,
+                        width: 60,
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: AssetImage('assets/images/avatar.jpg'),
+                                fit: BoxFit.contain)),
+                      ),
                     ],
                   ),
-                  Container(
-                    height: 60,
-                    width: 60,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/avatar.jpg'),
-                            fit: BoxFit.contain)),
+                  const SizedBox(
+                    height: 15,
                   ),
+                  const LineRow()
                 ],
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              const LineRow()
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                IconContent(
-                    label: 'Liked Recipe',
-                    iconData: Icons.favorite_border_outlined,
-                    onTap: () {}),
-                IconContent(
-                    label: 'Notifications',
-                    iconData: Icons.notifications_on_outlined,
-                    onTap: () {}),
-                IconContent(
-                    label: 'Settings',
-                    iconData: Icons.settings_outlined,
-                    onTap: () {}),
-              ],
             ),
-            const SizedBox(
-              height: 10,
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
+              child: Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    IconContent(
+                        label: 'Liked Recipe',
+                        iconData: 'assets/icon_svg/heart.svg',
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, RouteGenerator.likedrecipeScreen);
+                        }),
+                    IconContent(
+                        label: 'Notifications',
+                        iconData: 'assets/icon_svg/bell.svg',
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, RouteGenerator.notificationScreen);
+                        }),
+                    IconContent(
+                        label: 'Settings',
+                        iconData: 'assets/icon_svg/equalizer.svg',
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, RouteGenerator.accountpersonScreen);
+                        }),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const LineRow()
+              ]),
             ),
-            const LineRow()
-          ]),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'General',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    fontFamily: 'Recoleta'),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'General',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        fontFamily: 'Recoleta'),
+                  ),
+                  RowContent(label: 'Abount', onTap: () {}),
+                  RowContent(label: 'Help & Support', onTap: () {}),
+                  RowContent(label: 'Send FeedBack', onTap: () {}),
+                  RowContent(label: 'Rate Us', onTap: () {}),
+                  RowContent(label: 'Check For Update', onTap: () {}),
+                  RowContentNotIcon(
+                      label: 'Logout',
+                      onTap: () async {
+                        print(_authenticationStateProvider.getUID);
+                        try {
+                          await _authenticationStateProvider.signOut();
+                          Navigator.pushNamed(context, RouteGenerator.login);
+
+                        }catch (e){}
+
+
+                      })
+                ],
               ),
-              RowContent(label: 'Abount', onTap: () {}),
-              RowContent(label: 'Help & Support', onTap: () {}),
-              RowContent(label: 'Send FeedBack', onTap: () {}),
-              RowContent(label: 'Rate Us', onTap: () {}),
-              RowContent(label: 'Check For Update', onTap: () {}),
-              RowContentNotIcon(label: 'Logout', onTap: () {})
-            ],
-          ),
-        )
-      ]),
+            )
+          ])
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cooking_social_app/components/line_row.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/widgets/post_widget.dart';
 import 'package:cooking_social_app/widgets/reviews_widget.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,9 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
                       child: Container(
                         height: 50,
                         width: 50,
@@ -68,7 +71,10 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, RouteGenerator.editprofileScreen);
+                      },
                       child: Container(
                         height: 50,
                         width: 50,
@@ -90,7 +96,7 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 210),
+              margin: const EdgeInsets.only(top: 240),
               child: Column(
                 children: [
                   Row(
@@ -226,7 +232,7 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 160),
+              margin: const EdgeInsets.only(top: 190),
               width: double.infinity,
               height: 90,
               alignment: Alignment.center,

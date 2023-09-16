@@ -1,16 +1,25 @@
+import 'package:cooking_social_app/components/ingredient_item.dart';
 import 'package:cooking_social_app/widgets/tab_content_ingredients.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/app_color.dart';
 
 class AddGroceryScreen extends StatefulWidget {
-  const AddGroceryScreen({super.key});
+  // final List<String> ingredients ;
+  // const AddGroceryScreen({required Key key, ingredients, required this.ingredients}) : super(key: key);
+
+  // final List<String>? _ingredients;
+
+  const AddGroceryScreen({Key? key,}) : super(key: key);
+
 
   @override
-  State<StatefulWidget> createState() => _AddGrocerySate();
+  State<StatefulWidget> createState() => _AddGroceryState();
 }
 
-class _AddGrocerySate extends State<AddGroceryScreen> {
+class _AddGroceryState extends State<AddGroceryScreen> {
+  List<String>? _ingredients = ["A", 'B', 'C', 'D'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,20 +75,20 @@ class _AddGrocerySate extends State<AddGroceryScreen> {
                   fontWeight: FontWeight.w400),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
-            child: Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.grey, // Màu của đường gạch
-                    width: 0.5, // Độ dày của đường gạch
-                  ),
-                ),
-              ),
-            ),
+          const Divider(thickness: 0.5, indent: 16, endIndent: 16,),
+          ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: _ingredients!.length,
+            itemBuilder: (context, index) {
+              return IngredientItemComponents(ingredientItem: _ingredients![index]);
+            },
           ),
-          const TabContentIngredients(),
+          // IngredientItemComponents(ingredientItem: ingredientItem)
+
+          
+          // const TabContentIngredients(recipe: null,),
         ],
       ),
     );

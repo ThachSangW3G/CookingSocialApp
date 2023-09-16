@@ -1,7 +1,12 @@
+import 'package:cooking_social_app/models/recent_search.dart';
 import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
+import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:cooking_social_app/providers/recent_search_provider.dart';
 import 'package:cooking_social_app/widgets/recipe_item_unpublished_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/app_color.dart';
 
@@ -13,8 +18,97 @@ class SearchRecipeScreen extends StatefulWidget {
 }
 
 class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
+
+  bool _isSearch = false;
+  RecipeProvider? recipeProvider;
+  RecentSearchProvider? recentSearchProvider;
+
+
+
+
+  Widget _buildSearch(){
+    if (!_isSearch){
+      return Column(
+        children: [
+          const SizedBox(height: 20.0,),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              children: [
+                Text(
+                  'Recent Search',
+                  style: TextStyle(
+                      fontFamily: 'Recoleta',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20
+                  ),
+                )
+              ],
+            ),
+          ),
+          const SizedBox(height: 20.0,),
+          SizedBox(
+            height: 150,
+            child: RefreshIndicator(
+              onRefresh: () async {
+                context.read<RecentSearchProvider>().getListRecentSearch(FirebaseAuth.instance.currentUser!.uid);
+                //recentSearchProvider!.getListRecentSearch(FirebaseAuth.instance.currentUser!.uid);
+              },
+              child: ListView.builder(
+                        itemCount: recentSearchProvider!.listRecentSearch.length > 3 ? 3 :recentSearchProvider!.listRecentSearch.length,
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index){
+                        final recentSearch = recentSearchProvider!.listRecentSearch[index];
+                        return RecentSearchWidget(search: recentSearch.title);
+                        },
+                        ),
+            )
+          ),
+
+  const SizedBox(height: 10.0,),
+    const Padding(
+    padding: EdgeInsets.symmetric(horizontal: 20.0),
+    child: Row(
+    children: [
+    Text
+    (
+                  'Last Seen',
+                  style: TextStyle(
+                      fontFamily: 'Recoleta',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 20
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      );
+    }else{
+      return
+        Container(
+          child: Expanded(
+
+            child: ListView.builder(
+              itemCount: recipeProvider!.searchRecipe.length,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index){
+                print( recipeProvider!.searchRecipe.length);
+                return RecipeItemUnPublishedWidget(
+                  recipe: recipeProvider!.searchRecipe[index],
+                );
+              },
+            ),
+          ),
+        );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    recipeProvider = Provider.of<RecipeProvider>(context);
+    recentSearchProvider = Provider.of<RecentSearchProvider>(context)..getListRecentSearch(FirebaseAuth.instance.currentUser!.uid);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -49,6 +143,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: TextField(
+
                 decoration: InputDecoration(
                   hintText: 'Recipe Title, Ingredient',
                   hintStyle: const TextStyle(
@@ -64,77 +159,29 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                   ),
 
                 ),
+                onChanged: (value) {
+                  setState(() {
+                    if (value.isEmpty){
+                      _isSearch = false;
+                    }else {
+                      _isSearch = true;
+                    }
+                  });
+                  recipeProvider!.search(value);
+                  //print(recipeProvider!.searchRecipe.length);
+                }
               ),
             ),
           ),
-          const SizedBox(height: 20.0,),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
-              children: [
-                Text(
-                  'Recent Search',
-                  style: TextStyle(
-                    fontFamily: 'Recoleta',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(height: 20.0,),
-          SizedBox(
-            height: 150,
-            child: ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              children: const [
-                RecentSearchWidget(search: 'Sayur',),
-                RecentSearchWidget(search: 'Ayam',),
-                RecentSearchWidget(search: 'Ayam',)
-              ],
-            ),
-          ),
-          const SizedBox(height: 10.0,),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Row(
-              children: [
-                Text(
-                  'Last Seen',
-                  style: TextStyle(
-                      fontFamily: 'Recoleta',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20
-                  ),
-                )
-              ],
-            ),
-          ),
-          Expanded(
-
-            child: ListView(
-              scrollDirection: Axis.vertical,
-              children: [
-                RecipeItemUnPublishedWidget(
-                  recipeItemUnPublished: RecipeItemUnPublished('Resep Ayam Kuah Santan Pedas Lezat', 40, 'Easy', 'assets/images/background_1.jpg'),
-                ),
-                RecipeItemUnPublishedWidget(
-                  recipeItemUnPublished: RecipeItemUnPublished('Sup Makaroni Daging Ayam Kampung', 40, 'Easy', 'assets/images/background_splash_1.jpg'),
-                ),
-                RecipeItemUnPublishedWidget(
-                  recipeItemUnPublished: RecipeItemUnPublished('Resep Ayam Geprek Jogja', 40, 'Easy', 'assets/images/background_splash_2.jpg'),
-                )
-              ],
-            ),
-          ),
+          _buildSearch()
 
         ],
       ),
     );
   }
 }
+
+
 
 class RecentSearchWidget extends StatelessWidget {
   final String search;

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../constants/app_color.dart';
@@ -32,15 +33,22 @@ class CookBookWidget extends StatelessWidget {
             Container(
               height: 300,
               width: double.infinity,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(cookBook.image),
-                      fit: BoxFit.cover
-                  ),
-                  borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(12),
-                      topLeft: Radius.circular(12)
-                  )
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(12),
+                    topLeft: Radius.circular(12)
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: cookBook.image,
+                  fit: BoxFit.cover,
+                    placeholder: (context, url) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.04),
+                        ),
+                      );
+                    },
+                ),
               ),
             ),
             Row(
@@ -96,7 +104,7 @@ class CookBookWidget extends StatelessWidget {
                         ),
                         const SizedBox(height: 10,),
                         Text(
-                          cookBook.describe,
+                          cookBook.description,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontFamily: 'CeraPro',
@@ -110,7 +118,7 @@ class CookBookWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              cookBook.like.toString(),
+                              cookBook.likes.toString(),
                               style: const TextStyle(
                                 fontFamily: 'CeraPro',
                                 fontSize: 18,
@@ -135,7 +143,7 @@ class CookBookWidget extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              cookBook.recipe.toString(),
+                              cookBook.recipes.length.toString(),
                               style: const TextStyle(
                                 fontFamily: 'CeraPro',
                                 fontSize: 18,

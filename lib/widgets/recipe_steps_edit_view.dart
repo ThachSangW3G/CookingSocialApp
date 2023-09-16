@@ -11,20 +11,30 @@ class RecipeStepsEdit extends StatefulWidget {
 }
 
 class _RecipeStepsEditState extends State<RecipeStepsEdit>{
+  List<String> steps = ['Cooking A', 'Cooking B', 'Cooking C', 'Cooking D'];
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return ReorderableListView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      children: const [
-        StepEditCard(step: 'Cooking A',),
-        StepEditCard(step: 'Cooking B',),
-        StepEditCard(step: 'Cooking c',),
-        StepEditCard(step: 'Cooking D',),
-        // Text('aaaaa'),
-        // Text('dsefe')
-      ],
+      onReorder: (int oldIndex, int newIndex) { 
+        setState(() {
+            if (newIndex > oldIndex) newIndex -= 1;
+            final String step = steps.removeAt(oldIndex);
+            steps.insert(newIndex, step);
+          });
+      },      
+      children: steps.asMap().map((index, step) {
+        return MapEntry(index, StepEditCard(
+          key: ValueKey(index),
+          step: step,
+        ),
+      );
+      })
+      .values
+      .toList(),
     );
   }
 }

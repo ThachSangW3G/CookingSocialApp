@@ -1,22 +1,31 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
-import 'package:cooking_social_app/models/recipe_item_published.dart';
-import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
+import 'package:cooking_social_app/models/cookbook.dart';
+import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:cooking_social_app/widgets/popular_recipe.dart';
 import 'package:cooking_social_app/widgets/recipe_item_unpublished_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
+
+import '../../models/recipe_cookbook.dart';
 import '../../widgets/recipe_item_published_widget.dart';
 
 class DetailCookBookScreen extends StatefulWidget {
-  const DetailCookBookScreen({super.key});
+  final CookBook? cookbook;
+  const DetailCookBookScreen({super.key, this.cookbook});
 
   @override
   State<DetailCookBookScreen> createState() => _DetailCookBookScreenState();
 }
 
 class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
+  bool isAbs = true;
   @override
   Widget build(BuildContext context) {
+    final cookbook = widget.cookbook!;
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -24,30 +33,32 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
             Container(
               height: 300,
               width: double.infinity,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/background_1.jpg'),
-                  fit: BoxFit.cover
-                )
-              ),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: CachedNetworkImageProvider(cookbook.image),
+                      fit: BoxFit.cover)),
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal:10.0, vertical: 40),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 40),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      height: 48,
-                      width: 48,
-                      decoration: const BoxDecoration(
-                        color: AppColors.white,
-                        shape: BoxShape.circle
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          Icons.arrow_back_ios_new,
-                          color: AppColors.black,
-                          size: 25,
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: 48,
+                        width: 48,
+                        decoration: const BoxDecoration(
+                            color: AppColors.white, shape: BoxShape.circle),
+                        child: const Center(
+                          child: Icon(
+                            Icons.arrow_back_ios_new,
+                            color: AppColors.black,
+                            size: 25,
+                          ),
                         ),
                       ),
                     ),
@@ -55,20 +66,16 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                       height: 48,
                       width: 48,
                       decoration: const BoxDecoration(
-                          color: AppColors.white,
-                          shape: BoxShape.circle
-                      ),
+                          color: AppColors.white, shape: BoxShape.circle),
                       child: Center(
-                        child: Container(
-                          height: 25,
-                          width: 25,
-                          decoration: const BoxDecoration(
+                          child: Container(
+                        height: 25,
+                        width: 25,
+                        decoration: const BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('assets/icons/pencil.png'),
-                            )
-                          ),
-                        )
-                      ),
+                          image: AssetImage('assets/icons/pencil.png'),
+                        )),
+                      )),
                     )
                   ],
                 ),
@@ -82,90 +89,93 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                       // margin: EdgeInsets.symmetric(horizontal: 20),
+                        // margin: EdgeInsets.symmetric(horizontal: 20),
                         height: 190,
                         width: MediaQuery.of(context).size.width - 40,
                         decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(15)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(15)),
                             color: Colors.white,
                             boxShadow: [
-                              BoxShadow(color: Colors.grey.withOpacity(0.5), // Màu và độ mờ của đổ bóng
-                                spreadRadius: 0.1, // Bán kính mở rộng của đổ bóng
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(
+                                    0.5), // Màu và độ mờ của đổ bóng
+                                spreadRadius:
+                                    0.1, // Bán kính mở rộng của đổ bóng
                                 blurRadius: 0.1, // Độ mờ của đổ bóng
-                                offset: const Offset(0, 1), // Vị trí của đổ bóng trong hệ tọa độ (x, y)
+                                offset: const Offset(0,
+                                    1), // Vị trí của đổ bóng trong hệ tọa độ (x, y)
                               )
-                            ]
-                        ),
+                            ]),
 
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
                           child: Column(
                             children: [
-                              SizedBox(height: 20.0,),
+                              const SizedBox(
+                                height: 20.0,
+                              ),
                               Text(
-                                'Menu ayam spesial',
-                                style: TextStyle(
+                                cookbook.title,
+                                style: const TextStyle(
                                   fontFamily: 'Recoleta',
                                   fontSize: 24,
                                   fontWeight: FontWeight.w600,
-
                                 ),
                               ),
-                              SizedBox(height: 10.0,),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
                               Text(
-                                'Keep it easy with these simple but delicious recipes.',
+                                cookbook.description,
                                 textAlign: TextAlign.center,
                                 softWrap: true,
                                 overflow: TextOverflow.clip,
-                                style: TextStyle(
-                                  fontFamily: 'CeraPro',
-                                  fontSize: 16,
-                                  color: AppColors.greyShuttle
-                                ),
+                                style: const TextStyle(
+                                    fontFamily: 'CeraPro',
+                                    fontSize: 16,
+                                    color: AppColors.greyShuttle),
                               ),
-                              SizedBox(height: 10.0,),
+                              const SizedBox(
+                                height: 10.0,
+                              ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Text(
-                                    '4.8',
-                                    style: TextStyle(
-                                      fontFamily: 'CeraPro',
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500
-                                    ),
+                                    cookbook.likes.toString(),
+                                    style: const TextStyle(
+                                        fontFamily: 'CeraPro',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500),
                                   ),
-                                  Text(
-                                    'Ratings',
+                                  const Text(
+                                    'Likes',
                                     style: TextStyle(
                                       fontFamily: 'CeraPro',
                                       fontSize: 16,
-
                                     ),
                                   ),
-                                  Text(
+                                  const Text(
                                     '|',
                                     style: TextStyle(
                                         fontFamily: 'CeraPro',
                                         fontSize: 30,
-                                        color: AppColors.greyIron
-
-                                    ),
+                                        color: AppColors.greyIron),
                                   ),
                                   Text(
-                                    '7',
-                                    style: TextStyle(
+                                    cookbook.recipes.length.toString(),
+                                    style: const TextStyle(
                                       fontFamily: 'CeraPro',
                                       fontSize: 18,
-
                                     ),
                                   ),
-                                  Text(
+                                  const Text(
                                     'Recipes',
                                     style: TextStyle(
                                       fontFamily: 'CeraPro',
                                       fontSize: 16,
-
                                     ),
                                   )
                                 ],
@@ -176,38 +186,44 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20.0,),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
                   Container(
                     height: 48,
                     margin: const EdgeInsets.symmetric(horizontal: 20.0),
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                      color: AppColors.greyIron
-                    ),
+                        borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                        color: AppColors.greyIron),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Recipe Title, Ingredient',
                           hintStyle: const TextStyle(
-                            fontFamily: 'CeraPro',
-                            fontSize: 17,
-                            color: AppColors.greyShuttle
-                          ),
+                              fontFamily: 'CeraPro',
+                              fontSize: 17,
+                              color: AppColors.greyShuttle),
                           border: InputBorder.none,
                           suffixIcon: IconButton(
-                            onPressed: (){},
-                            icon: SvgPicture.asset('assets/icon_svg/search.svg', height: 25, width: 25, color: AppColors.greyShuttle,
+                            onPressed: () {},
+                            icon: SvgPicture.asset(
+                              'assets/icon_svg/search.svg',
+                              height: 25,
+                              width: 25,
+                              color: AppColors.greyShuttle,
                             ),
                           ),
-
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20.0,),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
                   const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -215,197 +231,134 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                           'Popular Recipe',
                           textAlign: TextAlign.start,
                           style: TextStyle(
-                            fontFamily: 'Recoleta',
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20
-                          ),
+                              fontFamily: 'Recoleta',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10.0,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(16)),
-                        border: Border.all(
-                          color: AppColors.greyIron
-                        )
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Kari Daging Sapi',
-                                  style: TextStyle(
-                                    fontFamily: 'CeraPro',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                const SizedBox(height: 8.0,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icon_svg/heart.svg',
-                                      color: AppColors.orangeCrusta,
-                                      height: 15,
-                                      width: 15,
-                                    ),
-                                    const SizedBox(width: 10.0,),
-                                    const Text(
-                                      '4.9',
-                                      style: TextStyle(
-                                        fontFamily: 'CeraPro',
-                                        color: AppColors.greyShuttle
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10.0,),
-                                    const Text(
-                                      '|',
-                                      style: TextStyle(
-                                          fontFamily: 'CeraPro',
-                                          color: AppColors.greyShuttle
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10.0,),
-                                    const Text(
-                                      '103',
-                                      style: TextStyle(
-                                          fontFamily: 'CeraPro',
-                                          color: AppColors.greyShuttle
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10.0,),
-                                    const Text(
-                                      'Reviews',
-                                      style: TextStyle(
-                                          fontFamily: 'CeraPro',
-                                          color: AppColors.greyShuttle
-                                      ),
-                                    ),
-
-                                  ],
-                                ),
-                                const SizedBox(height: 20,),
-                                Row(
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icon_svg/clock.svg',
-                                      height: 16,
-                                      width: 16,
-                                      color: AppColors.greyBombay,
-                                    ),
-                                    const SizedBox(width: 10.0,),
-                                    const Text(
-                                      '40',
-                                      style: TextStyle(
-                                        fontFamily: 'CeraPro',
-                                        fontSize: 14,
-                                        color: AppColors.greyShuttle
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8.0,),
-                                    const Text(
-                                      'mins',
-                                      style: TextStyle(
-                                        fontFamily: 'CeraPro',
-                                        fontSize: 14, color: AppColors.greyShuttle
-
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10.0,),
-                                    SvgPicture.asset(
-                                      'assets/icon_svg/dinner.svg',
-                                      height: 16,
-                                      width: 16,
-                                      color: AppColors.greyBombay,
-                                    ),
-                                    const SizedBox(width: 10.0,),
-                                    const Text(
-                                      'Easy',
-                                      style: TextStyle(
-                                        fontFamily: 'CeraPro',
-                                        fontSize: 14,
-                                          color: AppColors.greyShuttle
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                            Container(
-                              height: 100,
-                              width: 100,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  image: AssetImage('assets/images/background_1.jpg'),
-                                  fit: BoxFit.cover
-                                ),
-                                borderRadius: BorderRadius.all(Radius.circular(16.0))
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
+                  const SizedBox(
+                    height: 10.0,
                   ),
-
-                  const SizedBox(height: 20.0,),
+                  Consumer<RecipeProvider>(
+                    builder: (context, recipeProvider, _) {
+                      return FutureBuilder(
+                        future: recipeProvider.getRecipe(cookbook
+                            .recipes[cookbook.popularRecipeIndex] as String),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const SizedBox(
+                                height: 150,
+                                child:
+                                    Center(child: CircularProgressIndicator()));
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            final recipe = snapshot.data;
+                            return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                      RouteGenerator.recipedetailScreen,
+                                      arguments: recipe.key);
+                                },
+                                child: PopularRecipe(recipe: recipe!));
+                          }
+                        },
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          'All Recipe (7)',
+                        Text(
+                          'All Recipe (${cookbook.recipes.length.toString()})',
                           textAlign: TextAlign.start,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'Recoleta',
                               fontWeight: FontWeight.w700,
-                              fontSize: 20
-                          ),
+                              fontSize: 20),
                         ),
-
-                        SvgPicture.asset(
-                          'assets/icon_svg/sort-alpha-down.svg',
-                          height: 24,
-                          width: 24,
-                          color: AppColors.greyBombay,
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isAbs = !isAbs;
+                            });
+                          },
+                          child: SvgPicture.asset(
+                            isAbs
+                                ? 'assets/icon_svg/sort-alpha-down.svg'
+                                : 'assets/icon_svg/sort-alpha-up.svg',
+                            height: 24,
+                            width: 24,
+                            color: AppColors.greyBombay,
+                          ),
                         )
-
-
                       ],
                     ),
                   ),
-
-
                   SizedBox(
                     height: 500,
-                    child: ListView(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      children: [
-                        RecipeItemPublishedWidget(recipeItemPublished: RecipeItemPublished('Ayam Kecap Manis', 4.9, 109, 'assets/images/background_1.jpg'),),
-                        RecipeItemPublishedWidget(recipeItemPublished: RecipeItemPublished('Ayam Kecap Manis', 4.9, 109, 'assets/images/background_1.jpg'),),
-                        RecipeItemPublishedWidget(recipeItemPublished: RecipeItemPublished('Ayam Kecap Manis', 4.9, 109, 'assets/images/background_1.jpg'),),
-
-                        RecipeItemUnPublishedWidget(recipeItemUnPublished: RecipeItemUnPublished('Nasi Magelangan', 40, 'Easy', 'assets/images/background_splash_1.jpg')),
-                        RecipeItemUnPublishedWidget(recipeItemUnPublished: RecipeItemUnPublished('Nasi Magelangan', 40, 'Easy', 'assets/images/background_splash_1.jpg')),
-                        RecipeItemUnPublishedWidget(recipeItemUnPublished: RecipeItemUnPublished('Nasi Magelangan', 40, 'Easy', 'assets/images/background_splash_1.jpg')),
-
-                      ],
+                    child: Consumer<RecipeProvider>(
+                      builder: (context, recipeProvider, _) {
+                        return FutureBuilder<List<Recipe>>(
+                          future: recipeProvider
+                              .getListRecipeByListID(cookbook.recipes),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  CircularProgressIndicator(),
+                                ],
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              final recipes = snapshot.data;
+                              if (isAbs) {
+                                recipes!
+                                    .sort((a, b) => a.name.compareTo(b.name));
+                              } else {
+                                recipes!
+                                    .sort((a, b) => b.name.compareTo(a.name));
+                              }
+                              return ListView.builder(
+                                itemCount: recipes!.length,
+                                itemBuilder: (context, index) {
+                                  final Recipe recipe = recipes![index];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                          RouteGenerator.recipedetailScreen,
+                                          arguments: recipe.key);
+                                    },
+                                    child: RecipeItemUnPublishedWidget(
+                                        recipe: recipe),
+                                  );
+                                },
+                              );
+                            }
+                          },
+                        );
+                      },
+                      // child: ListView.builder(
+                      //   itemCount: cookbook.recipes.length,
+                      //   shrinkWrap: true,
+                      //   scrollDirection: Axis.vertical,
+                      //   itemBuilder: (context, index){
+                      //
+                      //   },
                     ),
-                  )
-
-
+                  ),
                 ],
               ),
             )

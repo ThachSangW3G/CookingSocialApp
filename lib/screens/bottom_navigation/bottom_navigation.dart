@@ -1,4 +1,6 @@
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/screens/calendar/calendar_screen.dart';
+import 'package:cooking_social_app/screens/grocery/grocery_screen.dart';
 import 'package:cooking_social_app/screens/home/home_screen.dart';
 import 'package:cooking_social_app/screens/search_recipe/search_recipe_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +19,8 @@ class _BottomNavigationState extends State<BottomNavigation> {
   final List<Widget> screens = [
     const HomeScreen(),
     const SearchRecipeScreen(),
-    const HomeScreen(),
-    const HomeScreen(),
+    const GroceryScreen(),
+    const CalendarScreen(),
 
   ];
 
@@ -94,7 +96,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   minWidth: 40,
                   onPressed: (){
                     setState(() {
-                      currentScreen = const HomeScreen();
+                      currentScreen = const GroceryScreen();
                       currentTab = 2;
 
                     });
@@ -110,7 +112,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
                   minWidth: 40,
                   onPressed: (){
                     setState(() {
-                      currentScreen = const HomeScreen();
+                      currentScreen = const CalendarScreen();
                       currentTab = 3;
 
                     });

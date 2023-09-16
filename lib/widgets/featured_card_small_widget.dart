@@ -1,4 +1,5 @@
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -7,8 +8,10 @@ import '../models/featured.dart';
 
 class FeaturedCardSmallWidget extends StatelessWidget {
   final Featured featured;
+  final VoidCallback like;
+  final bool liked;
   const FeaturedCardSmallWidget({
-    super.key, required this.featured,
+    super.key, required this.featured, required this.like, required this.liked,
   });
 
   @override
@@ -20,19 +23,22 @@ class FeaturedCardSmallWidget extends StatelessWidget {
           height: 180,
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage(featured.image),
+                  image: CachedNetworkImageProvider(featured.image),
                   fit: BoxFit.cover
               ),
               borderRadius: const BorderRadius.all(Radius.circular(16.0))
           ),
-          child: Container(
-            alignment: Alignment.bottomRight,
-            padding: const EdgeInsets.all(10.0),
-            child: SvgPicture.asset(
-              'assets/icon_svg/heart.svg',
-              height: 30,
-              width: 30,
-              color: AppColors.white,
+          child: GestureDetector(
+            onTap: like,
+            child: Container(
+              alignment: Alignment.bottomRight,
+              padding: const EdgeInsets.all(10.0),
+              child: SvgPicture.asset(
+                liked ? 'assets/icon_svg/heart_orange.svg' : 'assets/icon_svg/heart.svg',
+                height: 30,
+                width: 30,
+                color: liked ? AppColors.orangeCrusta : AppColors.white,
+              ),
             ),
           ),
         ),
@@ -61,7 +67,7 @@ class FeaturedCardSmallWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
-                        image: AssetImage(featured.avatar)
+                        image: CachedNetworkImageProvider(featured.avatar)
                     )
                 ),
               ),
@@ -69,15 +75,20 @@ class FeaturedCardSmallWidget extends StatelessWidget {
               Expanded(
                 child: Column(
                   children: [
-                    Text(
-                      featured.nameUser,
-                      overflow: TextOverflow.clip,
-                      maxLines: 1,
-                      style: const TextStyle(
-                          fontFamily: 'CeraPro',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          featured.nameUser,
+                          overflow: TextOverflow.clip,
+                          maxLines: 1,
+                          style: const TextStyle(
+                              fontFamily: 'CeraPro',
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500
+                          ),
+                        ),
+                      ],
                     ),
                     Row(
                       children: [

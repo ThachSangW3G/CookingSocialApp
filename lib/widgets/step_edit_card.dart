@@ -121,36 +121,36 @@ class StepEditCard extends StatelessWidget {
   }
 
   Widget _buildOptionItem(String option) {
-    IconData icon;
+    Widget icon;
     String text;
     switch (option) {
       case 'Edit':
-        icon = Icons.edit;
+        icon = SvgPicture.asset('assets/icon_svg/pencil.svg', height: 20, width: 20,);
         text = 'Edit';
         break;
       case 'Add item above':
-        icon = Icons.add;
+        icon = SvgPicture.asset('assets/icon_svg/chevron-circle-up.svg', height: 20, width: 20,);
         text = 'Add item above';
         break;
       case 'Add item below':
-        icon = Icons.add;
+        icon = SvgPicture.asset('assets/icon_svg/chevron-circle-down.svg', height: 20, width: 20,);
         text = 'Add item below';
         break;
       case 'Set as header':
-        icon = Icons.check;
+        icon = SvgPicture.asset('assets/icon_svg/flag-alt.svg', height: 20, width: 20,);
         text = 'Set as header';
         break;
       case 'Delete':
-        icon = Icons.delete;
+        icon = SvgPicture.asset('assets/icon_svg/trash.svg', height: 20, width: 20,);
         text = 'Delete';
         break;
       default:
-        icon = Icons.error;
+        icon = SvgPicture.asset('assets/icon_svg/pencil.svg', height: 20, width: 20,);
         text = 'Lỗi';
     }
 
     return ListTile(
-      leading: Icon(icon),
+      leading: icon,
       title: Text(text),
       onTap: () {
         // Xử lý khi tùy chọn được chọn

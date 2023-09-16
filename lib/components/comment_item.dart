@@ -1,37 +1,42 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/models/review.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class CommentItem extends StatelessWidget {
-  final String name;
-  final String time;
-  final String content;
-  final bool check;
-  const CommentItem(
-      {super.key,
-      required this.name,
-      required this.time,
-      required this.content,
-      required this.check});
+class CommentItem extends StatefulWidget {
+  final Review review;
+  const CommentItem({super.key, required this.review});
+
+  @override
+  State<CommentItem> createState() => _CommentItemState();
+}
+
+class _CommentItemState extends State<CommentItem> {
+  Review? review;
+
+  @override
+  void initState() {
+    review = widget.review;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15, bottom: 15, right: 15),
+      padding: const EdgeInsets.only(left: 25, bottom: 15, right: 25, top: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            height: 30,
-            width: 30,
+            height: 33,
+            width: 33,
             padding: const EdgeInsets.only(top: 5),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
-                    image: AssetImage('assets/images/avatar.jpg'),
-                    fit: BoxFit.contain)),
+                    image: NetworkImage(review!.avatar), fit: BoxFit.fill)),
           ),
           const SizedBox(
             width: 10,
@@ -42,44 +47,60 @@ class CommentItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  name,
+                  review!.name,
                   style: const TextStyle(
                       color: Colors.black,
                       fontFamily: "CeraPro",
                       fontWeight: FontWeight.bold,
-                      fontSize: 15),
+                      fontSize: 16),
                 ),
                 Text(
-                  time,
+                  review!.time,
                   style: kLabelTextStyle,
                 ),
                 Text(
-                  content,
+                  review!.description,
                   style: kReviewLabelTextStyle,
                 )
               ],
             ),
           ),
-          IconButton(
-              onPressed: () {},
-              icon: check == false
-                  ? const Icon(
-                      Icons.favorite_border_outlined,
-                      color: AppColors.greyBombay,
-                      size: 30,
+          Container(
+            padding: EdgeInsets.zero,
+            child: Row(children: [
+              review!.check == false
+                  ? GestureDetector(
+                      onTap: () {},
+                      child: SvgPicture.asset(
+                        'assets/icon_svg/heart.svg',
+                        colorFilter: const ColorFilter.mode(
+                            AppColors.greyBombay, BlendMode.srcIn),
+                        height: 24,
+                        width: 24,
+                      ),
                     )
-                  : const Icon(
-                      Icons.favorite_sharp,
-                      color: Colors.red,
-                      size: 30,
-                    )),
-          SvgPicture.asset(
-            'assets/icon_svg/options.svg',
-            colorFilter:
-                const ColorFilter.mode(AppColors.greyBombay, BlendMode.srcIn),
-            height: 24,
-            width: 24,
-          )
+                  : GestureDetector(
+                      onTap: () {},
+                      child: SvgPicture.asset(
+                        'assets/icon_svg/heart_orange.svg',
+                        colorFilter: const ColorFilter.mode(
+                            AppColors.orangeCrusta, BlendMode.srcIn),
+                        height: 24,
+                        width: 24,
+                      ),
+                    ),
+              const SizedBox(
+                width: 10,
+              ),
+              SvgPicture.asset(
+                'assets/icon_svg/options.svg',
+                colorFilter: const ColorFilter.mode(
+                    AppColors.greyBombay, BlendMode.srcIn),
+                height: 24,
+                width: 24,
+              ),
+            ]),
+          ),
         ],
       ),
     );

@@ -1,18 +1,63 @@
 import 'package:cooking_social_app/components/ingredient_item.dart';
+import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/models/recipe.dart';
 import 'package:flutter/material.dart';
 
-class TabContentIntro extends StatelessWidget {
-  const TabContentIntro({super.key});
+class TabContentIntro extends StatefulWidget {
+  final Recipe? recipe;
+  const TabContentIntro({Key? key, required this.recipe}) : super(key: key);
+
+  @override
+  State<TabContentIntro> createState() => _TabContentIntroState();
+}
+
+class _TabContentIntroState extends State<TabContentIntro> {
+  String? _description;
+  String? _source;
+
+  @override
+  void initState() {
+    _description = widget.recipe?.description;
+    _source = widget.recipe?.source;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      children: const [
-        IngredientItemComponents(ingredientItem: '1 buah wortel, potong-potong')
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _description!,
+            style: const TextStyle(
+                color: Colors.black, fontFamily: 'CeraPro', fontSize: 16),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          const Text(
+            'Source',
+            style: TextStyle(
+                fontSize: 20,
+                fontFamily: 'CeraPro',
+                fontWeight: FontWeight.w600,
+                color: Colors.black),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Text(
+            _source!,
+            style: const TextStyle(
+                fontFamily: 'CeraPro',
+                fontSize: 16,
+                color: AppColors.greyBombay),
+          )
+        ],
+      ),
     );
   }
 }
