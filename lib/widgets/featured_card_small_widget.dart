@@ -8,8 +8,10 @@ import '../models/featured.dart';
 
 class FeaturedCardSmallWidget extends StatelessWidget {
   final Featured featured;
+  final VoidCallback like;
+  final bool liked;
   const FeaturedCardSmallWidget({
-    super.key, required this.featured,
+    super.key, required this.featured, required this.like, required this.liked,
   });
 
   @override
@@ -26,14 +28,17 @@ class FeaturedCardSmallWidget extends StatelessWidget {
               ),
               borderRadius: const BorderRadius.all(Radius.circular(16.0))
           ),
-          child: Container(
-            alignment: Alignment.bottomRight,
-            padding: const EdgeInsets.all(10.0),
-            child: SvgPicture.asset(
-              'assets/icon_svg/heart.svg',
-              height: 30,
-              width: 30,
-              color: AppColors.white,
+          child: GestureDetector(
+            onTap: like,
+            child: Container(
+              alignment: Alignment.bottomRight,
+              padding: const EdgeInsets.all(10.0),
+              child: SvgPicture.asset(
+                liked ? 'assets/icon_svg/heart_orange.svg' : 'assets/icon_svg/heart.svg',
+                height: 30,
+                width: 30,
+                color: liked ? AppColors.orangeCrusta : AppColors.white,
+              ),
             ),
           ),
         ),
