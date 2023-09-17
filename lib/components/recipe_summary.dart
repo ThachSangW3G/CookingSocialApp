@@ -464,7 +464,7 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                         onTap: () {
                                           Navigator.pushNamed(context,
                                               RouteGenerator.reviewScreen,
-                                              arguments: recipe.key);
+                                              arguments: recipe);
                                         },
                                         child: const Text(
                                           'READ ALL',

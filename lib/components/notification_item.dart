@@ -1,5 +1,6 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/models/recipe_cookbook.dart';
 import 'package:cooking_social_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -10,9 +11,10 @@ class NotificationItem extends StatelessWidget {
   final NotificationModel notification;
   final UserModel userOwner;
   final UserModel userGuest;
+  final Recipe? recipe;
   const NotificationItem(
       {super.key,
-        required this.notification, required this.userOwner, required this.userGuest
+        required this.notification, required this.userOwner, required this.userGuest, required this.recipe
       });
 
   @override
@@ -39,10 +41,12 @@ class NotificationItem extends StatelessWidget {
       contextDescription = "";
       iconData = 'assets/icon_svg/heart.svg';
     }
-    // if (notification.type == 'newReview') {
-    //   title = 'New Review';
-    //   iconData = 'assets/icon_svg/comment-square.svg';
-    // }
+    else if (notification.type == 'newReview') {
+      title = 'New Review';
+      contextTitle = 'New review on ${recipe!.name} recipe';
+      contextDescription = '${userGuest.name} write a review "${notification.title}" to your recipe';
+      iconData = 'assets/icon_svg/comment-square.svg';
+    }
     // if (type == 'ReviewLiked') {
     //   title = 'Review Liked';
     //   iconData = 'assets/icon_svg/thumb-up.svg';
@@ -90,6 +94,8 @@ class NotificationItem extends StatelessWidget {
                       Text(
                         contextTitle!,
                         style: kLabelTextStyleBigDark,
+                        maxLines: 2,
+                        overflow: TextOverflow.clip,
                       ),
                       const SizedBox(
                         height: 5,
@@ -101,13 +107,14 @@ class NotificationItem extends StatelessWidget {
                     ],
                   ),
                 ),
+
               ],
             ),
           ),
-          // Text(
-          //   time,
-          //   style: kLabelTextStyle,
-          // ),
+          Text(
+            'timee',
+            style: kLabelTextStyle,
+          ),
         ],
       ),
     );

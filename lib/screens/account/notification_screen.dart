@@ -62,16 +62,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
       body: FutureBuilder(
         future: notificationProvider.init(),
         builder: (context, snapshot){
-
+         // print(notificationProvider.notifications);
           return ListView.builder(
             itemCount: notificationProvider.notifications.length,
             shrinkWrap: true,
             itemBuilder: (context, index) {
               final dataNotification = notificationProvider.notifications[index];
-
+              final notificationUpdate = dataNotification['notification'] as NotificationModel;
               return GestureDetector(
                 onTap: (){
-                  final notificationUpdate = dataNotification['notification'] as NotificationModel;
+
                   notificationUpdate.read = true;
 
                   notificationProvider.updateNotification(notificationUpdate);
@@ -80,6 +80,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     Navigator.of(context).pushNamed(
                         RouteGenerator.recipedetailScreen,
                         arguments: notificationUpdate.idRecipe);
+                  }else if(notificationUpdate.type == 'newFollower') {
+                    Navigator.of(context).pushNamed(
+                        RouteGenerator.accountpersonScreen,
+                        arguments: notificationUpdate.idUserGuest);
                   }
 
                 },
@@ -87,7 +91,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   notification: dataNotification['notification'],
                   userGuest: dataNotification['userGuest'],
                   userOwner: dataNotification['userOwner'],
-
+                  recipe: notificationUpdate.idRecipe != "" ? dataNotification['recipe'] : null,
                 ),
               );
               // NotificationItem(
