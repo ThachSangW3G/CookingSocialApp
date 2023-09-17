@@ -1,6 +1,8 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
+import '../../routes/app_routes.dart';
+
 class RecipeAddScreen extends StatefulWidget {
   const RecipeAddScreen({super.key});
 
@@ -137,8 +139,10 @@ class _RecipeAddState extends State<RecipeAddScreen> {
                   //FILLOUT BUTTON
                   Center(
                     child: TextButton(                    
-                      onPressed: () { 
-
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(
+                          RouteGenerator.recipeeditScreen,
+                        );
                         //check value ở link url có hợp lệ chưa bằng hàm showValidationError
                        },                      
                       child: const Text(

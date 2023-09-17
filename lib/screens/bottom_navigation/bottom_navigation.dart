@@ -6,6 +6,8 @@ import 'package:cooking_social_app/screens/search_recipe/search_recipe_screen.da
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../routes/app_routes.dart';
+
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
 
@@ -41,7 +43,11 @@ class _BottomNavigationState extends State<BottomNavigation> {
         foregroundColor: AppColors.whitePorcelain,
         shape: const CircleBorder(),
         child: const Icon(Icons.add, size: 25, ),
-        onPressed: (){},
+        onPressed: (){
+          Navigator.of(context).pushNamed(
+              RouteGenerator.recipeaddScreen,
+              );
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
