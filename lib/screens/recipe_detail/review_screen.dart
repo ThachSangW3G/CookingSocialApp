@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/comment_item.dart';
 import 'package:cooking_social_app/components/line_row.dart';
+import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:cooking_social_app/models/review.dart';
 import 'package:cooking_social_app/providers/like_provider.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
+import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,6 +57,9 @@ class _ReViewScreenState extends State<ReViewScreen> {
         ),
         leading: IconButton(
             onPressed: () {
+              // Navigator.pushReplacementNamed(
+              //     context, RouteGenerator.recipedetailScreen,
+              //     arguments: keyRecipe);
               Navigator.pop(context);
             },
             icon: const Icon(
@@ -70,20 +75,30 @@ class _ReViewScreenState extends State<ReViewScreen> {
         body: FutureBuilder<List<Review>>(
           future: reviewProvider.fetchReview(keyRecipe!),
           builder: (context, snapshot) {
-            final listReview = snapshot.data;
-            return listReview == null
-                ? const Center(child: CircularProgressIndicator())
-                : Padding(
-                    padding: const EdgeInsets.all(0),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: listReview.length,
-                      itemBuilder: (context, index) {
-                        return CommentItem(review: listReview[index]);
-                      },
-                    ),
-                  );
+            if (snapshot.hasError) {
+              // Hiển thị widget khi có lỗi xảy ra
+              return const Center(
+                child: Text(
+                  "Don't have review",
+                  style: kReviewLabelTextStyle,
+                ),
+              );
+            } else {
+              final listReview = snapshot.data;
+              return listReview == null
+                  ? const Center(child: CircularProgressIndicator())
+                  : Padding(
+                      padding: const EdgeInsets.all(0),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: listReview.length,
+                        itemBuilder: (context, index) {
+                          return CommentItem(review: listReview[index]);
+                        },
+                      ),
+                    );
+            }
           },
         ),
       ),
