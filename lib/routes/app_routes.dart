@@ -1,5 +1,6 @@
 import 'package:cooking_social_app/blocs/blocs/authentication_bloc.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
+import 'package:cooking_social_app/models/recipe.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/bottom_navigation/bottom_navigation.dart';
@@ -142,12 +143,12 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
       case reviewScreen:
-        String keyRecipe = args as String;
+        Recipe recipe = args as Recipe;
         return PageTransition(
           child: SafeArea(
               child: SafeArea(
                   child: ReViewScreen(
-            keyRecipe: keyRecipe,
+            recipe: recipe,
           ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),

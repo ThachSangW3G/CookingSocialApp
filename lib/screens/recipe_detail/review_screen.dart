@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/comment_item.dart';
 import 'package:cooking_social_app/components/line_row.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/models/recipe.dart';
 import 'package:cooking_social_app/models/review.dart';
 import 'package:cooking_social_app/providers/like_provider.dart';
+import 'package:cooking_social_app/providers/notification_provider.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:flutter/foundation.dart';
@@ -11,10 +13,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../constants/app_color.dart';
+import '../../models/notification_model.dart';
 
 class ReViewScreen extends StatefulWidget {
-  final String keyRecipe;
-  const ReViewScreen({super.key, required this.keyRecipe});
+  final Recipe recipe;
+  const ReViewScreen({super.key, required this.recipe});
 
   @override
   State<ReViewScreen> createState() => _ReViewScreenState();
@@ -26,7 +29,7 @@ class _ReViewScreenState extends State<ReViewScreen> {
   String? _description;
   @override
   void initState() {
-    keyRecipe = widget.keyRecipe;
+    keyRecipe = widget.recipe.key;
     //context.read<ReviewStateProvider>().fetchReview(keyRecipe!);
     super.initState();
   }
@@ -41,6 +44,8 @@ class _ReViewScreenState extends State<ReViewScreen> {
   Widget build(BuildContext context) {
     final ReviewStateProvider reviewProvider =
         Provider.of<ReviewStateProvider>(context);
+    final NotificationProvider notificationProvider =
+    Provider.of<NotificationProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -139,6 +144,21 @@ class _ReViewScreenState extends State<ReViewScreen> {
                 if (_description != null) {
                   reviewProvider.addReview(_description!, keyRecipe!);
                   _textEditingController.clear();
+
+                  NotificationModel notification = NotificationModel(
+                      id: DateTime.now().toIso8601String(),
+                      idUserGuest: FirebaseAuth.instance.currentUser!.uid,
+                      idUserOwner: widget.recipe.uidUser,
+                      time: Timestamp.now(),
+                      type: 'newReview',
+                      read: false,
+                      title: _description!,
+                      idRecipe: keyRecipe!
+                  );
+
+                  notificationProvider.addNotification(notification);
+
+
                 }
               },
               child: const Text(

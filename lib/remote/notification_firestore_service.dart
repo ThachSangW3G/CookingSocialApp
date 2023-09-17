@@ -20,11 +20,11 @@ class NotificationFirestoreService implements NotificationDataService{
         .get().then((QuerySnapshot querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         notificationList.add(NotificationModel.fromJson(doc.data() as Map<String, dynamic>));
-        //print(recipeList.length);
+        //print(notificationList.length);
       });
     });
 
-
+    //print(notificationList.length);
 
     return Future.value(notificationList);
   }
