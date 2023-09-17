@@ -1,6 +1,7 @@
 import 'package:cooking_social_app/components/ingredient_item.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/recipe.dart';
+import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class TabContentIntro extends StatefulWidget {
@@ -49,12 +50,18 @@ class _TabContentIntroState extends State<TabContentIntro> {
           const SizedBox(
             height: 15,
           ),
-          Text(
-            _source!,
-            style: const TextStyle(
-                fontFamily: 'CeraPro',
-                fontSize: 16,
-                color: AppColors.greyBombay),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, RouteGenerator.webviewScreen,
+                  arguments: _source!);
+            },
+            child: Text(
+              _source!,
+              style: const TextStyle(
+                  fontFamily: 'CeraPro',
+                  fontSize: 16,
+                  color: AppColors.greyBombay),
+            ),
           )
         ],
       ),
