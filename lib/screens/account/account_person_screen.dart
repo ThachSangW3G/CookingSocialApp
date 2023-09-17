@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cooking_social_app/components/line_row.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/models/follow_model.dart';
 import 'package:cooking_social_app/models/user_model.dart';
+import 'package:cooking_social_app/providers/follow_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/widgets/post_widget.dart';
 import 'package:cooking_social_app/widgets/reviews_widget.dart';
@@ -39,11 +41,13 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
   }
 
   final user = FirebaseAuth.instance.currentUser!;
+  String iconFollow = 'assets/icon_svg/user-follow.svg';
 
 
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
+    final FollowProvider followProvider = Provider.of<FollowProvider>(context);
     final bool isOwner = user.uid ==  widget.idUser;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -103,33 +107,51 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                               ),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              if(isOwner){
-                                Navigator.pushNamed(
-                                    context, RouteGenerator.editprofileScreen);
-                              }else{
+                          FutureBuilder<FollowModel>(
+                            future: followProvider.followExist(userModel!.uid, user.uid),
+                            builder: (context, snapshot){
+                              final existFollow = snapshot.data;
+                              return GestureDetector(
+                                onTap: () {
+                                  if(isOwner){
+                                    Navigator.pushNamed(
+                                        context, RouteGenerator.editprofileScreen);
+                                  }else{
 
-                              }
-                            },
-                            child: Container(
-                              height: 50,
-                              width: 50,
-                              decoration: const BoxDecoration(
-                                  color: AppColors.white,
-                                  shape: BoxShape.circle),
-                              child: Center(
-                                  child: Container(
-                                    height: 25,
-                                    width: 25,
-                                    child: SvgPicture.asset(
-                                      isOwner ? 'assets/icon_svg/pencil.svg' : 'assets/icon_svg/user-follow.svg',
-                                      height: 25,
-                                      width: 25,
-                                      color: AppColors.greyShuttle,
-                                    ),
-                                  )),
-                            ),
+                                    if(existFollow == null){
+                                      FollowModel follow = FollowModel(
+                                          id: DateTime.now().toIso8601String(),
+                                          idUserOwner: userModel!.uid,
+                                          idUserFollower: user.uid
+                                      );
+                                      followProvider.addFollow(follow);
+                                    }else {
+                                      followProvider.deleteFollow(existFollow);
+                                    }
+
+
+                                  }
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: const BoxDecoration(
+                                      color: AppColors.white,
+                                      shape: BoxShape.circle),
+                                  child: Center(
+                                      child: Container(
+                                        height: 25,
+                                        width: 25,
+                                        child: SvgPicture.asset(
+                                          isOwner ? 'assets/icon_svg/pencil.svg' : existFollow == null ? 'assets/icon_svg/user-follow.svg' : 'assets/icon_svg/group.svg',
+                                          height: 25,
+                                          width: 25,
+                                          color: AppColors.greyShuttle,
+                                        ),
+                                      )),
+                                ),
+                              );
+                            }
                           )
                         ],
                       ),
