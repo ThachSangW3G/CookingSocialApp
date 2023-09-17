@@ -24,7 +24,7 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
-    context.read<RecipeStateProvider>().fetchRecipe(widget.keyRecipe);
+    //context.read<RecipeStateProvider>().fetchRecipe(widget.keyRecipe);
     super.initState();
   }
 
