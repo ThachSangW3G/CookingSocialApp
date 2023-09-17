@@ -59,9 +59,8 @@ class ReviewStateProvider extends ChangeNotifier {
           check: check);
       fetchedReview.add(review);
     }
-    _review.clear();
     _review = fetchedReview;
-    notifyListeners();
+    //notifyListeners();
     //print(_review.length.toString() + "hddddddddddddddddd");
     return Future.value(_review);
     // } catch (e) {
@@ -87,6 +86,58 @@ class ReviewStateProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> addReview(String description, String keyRecipe) async {
+    // Khởi tạo Firestore instance
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    // Tạo một document reference và lấy ra ID ngẫu nhiên
+    CollectionReference reviewRef = firestore.collection('reviews');
+    // Tạo một map chứa thông tin review
+    Map<String, dynamic> reviewData = {
+      'uidUser':
+          FirebaseAuth.instance.currentUser?.uid, // Giá trị uidUser (String)
+      'time': Timestamp.now(), // Giá trị time (Timestamp)
+      'key': DateTime.now().toIso8601String(), // Giá trị key (String)
+      'keyRecipe': keyRecipe,
+      'description': description
+    };
+    // Thêm review vào Firestore
+    await reviewRef.doc(DateTime.now().toIso8601String()).set(reviewData);
+    //Get so luong hien tai
+    DocumentSnapshot snapshot =
+        await firestore.collection('recipes').doc(keyRecipe).get();
+    int currentReviewCount = snapshot['numberReview'];
+    // Cập nhật số lượng review của công thức
+    DocumentReference recipeRef =
+        firestore.collection('recipes').doc(keyRecipe);
+    firestore.runTransaction((transaction) async {
+      transaction.update(recipeRef, {'numberReview': currentReviewCount + 1});
+    });
+    //
+    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .get();
+
+    String name = userSnapshot['name'];
+    String avatar = userSnapshot['avatar'];
+    //
+    DateTime dateTime = Timestamp.now().toDate();
+
+    // Sử dụng DateTime và timeago để hiển thị khoảng thời gian
+    String timeAgo = calculateTimeAgo(dateTime);
+    Review review = Review(
+        uidUser: FirebaseAuth.instance.currentUser!.uid,
+        description: description,
+        key: recipeRef.id,
+        avatar: avatar,
+        name: name,
+        time: timeAgo,
+        keyRecipe: keyRecipe,
+        check: false);
+    _review.add(review);
+    notifyListeners();
+  }
+
   Future<void> update(Review review) async {
     try {
       // Cập nhật công thức trong cơ sở dữ liệu (ví dụ: Firestore)
@@ -95,13 +146,11 @@ class ReviewStateProvider extends ChangeNotifier {
           .doc(review.key)
           .update(review
               .toJson()); // Giả sử có phương thức toJson() để chuyển đổi thành Map
-
       // // Cập nhật danh sách công thức sau khi cập nhật
       // int index = _recipes.indexWhere((r) => r.key == recipe.key);
       // if (index != -1) {
       //   _recipes[index] = recipe;
       // }
-
       notifyListeners();
     } catch (error) {
       debugPrint(error as String?);

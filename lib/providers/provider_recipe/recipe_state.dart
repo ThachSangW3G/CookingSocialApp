@@ -19,7 +19,6 @@ class RecipeStateProvider extends ChangeNotifier {
     }
     _recipes.clear();
     _recipes.addAll(fetchedRecipe);
-    notifyListeners();
     return Future.value(_recipes[0]);
     // } catch (e) {
     //   debugPrint(e.toString());
