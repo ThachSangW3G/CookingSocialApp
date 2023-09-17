@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/comment_item.dart';
 import 'package:cooking_social_app/components/line_row.dart';
+import 'package:cooking_social_app/models/review.dart';
+import 'package:cooking_social_app/providers/like_provider.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,13 +19,13 @@ class ReViewScreen extends StatefulWidget {
 }
 
 class _ReViewScreenState extends State<ReViewScreen> {
-  TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController();
   String? keyRecipe;
   String? _description;
   @override
   void initState() {
     keyRecipe = widget.keyRecipe;
-    context.read<ReviewStateProvider>().fetchReview(keyRecipe!);
+    //context.read<ReviewStateProvider>().fetchReview(keyRecipe!);
     super.initState();
   }
 
@@ -35,6 +37,8 @@ class _ReViewScreenState extends State<ReViewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ReviewStateProvider reviewProvider =
+        Provider.of<ReviewStateProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -62,116 +66,78 @@ class _ReViewScreenState extends State<ReViewScreen> {
             preferredSize: Size.fromHeight(16.0), child: LineRow()),
       ),
       resizeToAvoidBottomInset: false,
-      body: Consumer<ReviewStateProvider>(builder: (context, provider, _) {
-        return SingleChildScrollView(
-          child: Scaffold(
-            body: Padding(
-                padding: const EdgeInsets.all(0),
-                child: provider.review.isEmpty
-                    ? const Center(child: CircularProgressIndicator())
-                    : RefreshIndicator(
-                        onRefresh: () async {
-                          context
-                              .read<ReviewStateProvider>()
-                              .fetchReview(keyRecipe!);
-                        },
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: provider.review.length,
-                          itemBuilder: (context, index) {
-                            return CommentItem(review: provider.review[index]);
-                          },
-                        ),
-                      )),
-            bottomNavigationBar: Container(
-              decoration: const BoxDecoration(
-                  border: Border(top: BorderSide(color: AppColors.greyBombay))),
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.whitePorcelain),
-                      child: TextField(
-                        controller: _textEditingController,
-                        onChanged: (value) {
-                          _description = value;
-                        },
-                        onTap: () {},
-                        decoration: const InputDecoration(
-                          hintText: 'Your Review',
-                          hintStyle: TextStyle(
-                              color: AppColors.greyShuttle,
-                              fontFamily: 'CeraPro',
-                              fontWeight: FontWeight.w400),
-                          border: InputBorder.none,
-                        ),
-                      ),
+      body: Scaffold(
+        body: FutureBuilder<List<Review>>(
+          future: reviewProvider.fetchReview(keyRecipe!),
+          builder: (context, snapshot) {
+            final listReview = snapshot.data;
+            return listReview == null
+                ? const Center(child: CircularProgressIndicator())
+                : Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: listReview.length,
+                      itemBuilder: (context, index) {
+                        return CommentItem(review: listReview[index]);
+                      },
                     ),
+                  );
+          },
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+            border: Border(top: BorderSide(color: AppColors.greyBombay))),
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.whitePorcelain),
+                child: TextField(
+                  controller: _textEditingController,
+                  onChanged: (value) {
+                    _description = value;
+                  },
+                  onTap: () {},
+                  decoration: const InputDecoration(
+                    hintText: 'Your Review',
+                    hintStyle: TextStyle(
+                        color: AppColors.greyShuttle,
+                        fontFamily: 'CeraPro',
+                        fontWeight: FontWeight.w400),
+                    border: InputBorder.none,
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      if (_description != null) {
-                        addReview(_description!, keyRecipe!);
-                        context
-                            .read<ReviewStateProvider>()
-                            .fetchReview(keyRecipe!);
-                        _textEditingController.clear();
-                      }
-                    },
-                    child: const Text(
-                      'SUBMIT',
-                      style: TextStyle(
-                          color: AppColors.orangeCrusta,
-                          fontFamily: 'CeraPro',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 17),
-                    ),
-                  )
-                ],
+                ),
               ),
             ),
-          ),
-        );
-      }),
+            const SizedBox(
+              width: 10,
+            ),
+            GestureDetector(
+              onTap: () async {
+                if (_description != null) {
+                  reviewProvider.addReview(_description!, keyRecipe!);
+                  _textEditingController.clear();
+                }
+              },
+              child: const Text(
+                'SUBMIT',
+                style: TextStyle(
+                    color: AppColors.orangeCrusta,
+                    fontFamily: 'CeraPro',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17),
+              ),
+            )
+          ],
+        ),
+      ),
     );
-  }
-}
-
-void addReview(String description, String keyRecipe) async {
-  // Khởi tạo Firestore instance
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  try {
-    // Tạo một document reference và lấy ra ID ngẫu nhiên
-    DocumentReference reviewRef = firestore.collection('reviews').doc();
-
-    // Tạo một map chứa thông tin review
-    Map<String, dynamic> reviewData = {
-      'uidUser':
-          FirebaseAuth.instance.currentUser?.uid, // Giá trị uidUser (String)
-      'time': Timestamp.now(), // Giá trị time (Timestamp)
-      'key': reviewRef.id, // Giá trị key (String)
-      'keyRecipe': keyRecipe,
-      'description': description
-    };
-
-    // Thêm review vào Firestore
-    await reviewRef.set(reviewData);
-
-    if (kDebugMode) {
-      print('Review added successfully!');
-    }
-  } catch (error) {
-    if (kDebugMode) {
-      print('Error adding review: $error');
-    }
   }
 }
