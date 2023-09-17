@@ -1,48 +1,55 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../models/notification_model.dart';
+
 class NotificationItem extends StatelessWidget {
-  final String loaiTB;
-  final String time;
-  final String contextTitle;
-  final String contextDescription;
+  final NotificationModel notification;
+  final UserModel userOwner;
+  final UserModel userGuest;
   const NotificationItem(
       {super.key,
-      required this.loaiTB,
-      required this.time,
-      required this.contextTitle,
-      required this.contextDescription});
+        required this.notification, required this.userOwner, required this.userGuest
+      });
 
   @override
   Widget build(BuildContext context) {
-    String title;
+    String? contextTitle;
+    String? contextDescription;
+    String? title;
     String iconData;
-    title = 'New Follower';
+
     iconData = 'assets/icon_svg/user-follow.svg';
-    if (loaiTB == 'NewFollower') {
+    if (notification.type == 'newFollower') {
       title = 'New Follower';
+      contextTitle = 'Yeay you got new follower!';
+      contextDescription ='${userGuest.name} has follow you';
       iconData = 'assets/icon_svg/user-follow.svg';
     }
-    if (loaiTB == 'Bookmarked') {
-      title = 'Bookmarked';
-      iconData = 'assets/icon_svg/bookmark.svg';
-    }
-    if (loaiTB == 'Liked') {
+    // if (notification.type == 'Bookmarked') {
+    //   title = 'Bookmarked';
+    //   iconData = 'assets/icon_svg/bookmark.svg';
+    // }
+    else if (notification.type == 'liked') {
       title = 'Liked';
+      contextTitle = '${userGuest.name} like your recipe';
+      contextDescription = "";
       iconData = 'assets/icon_svg/heart.svg';
     }
-    if (loaiTB == 'NewReview') {
-      title = 'New Review';
-      iconData = 'assets/icon_svg/comment-square.svg';
-    }
-    if (loaiTB == 'ReviewLiked') {
-      title = 'Review Liked';
-      iconData = 'assets/icon_svg/thumb-up.svg';
-    }
-    return Padding(
+    // if (notification.type == 'newReview') {
+    //   title = 'New Review';
+    //   iconData = 'assets/icon_svg/comment-square.svg';
+    // }
+    // if (type == 'ReviewLiked') {
+    //   title = 'Review Liked';
+    //   iconData = 'assets/icon_svg/thumb-up.svg';
+    // }
+    return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      color: notification.read ? Colors.white12 : AppColors.oldLace,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -70,39 +77,37 @@ class NotificationItem extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10),
-                  child: Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: kLabelTextStyle,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          contextTitle,
-                          style: kLabelTextStyleBigDark,
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          contextDescription,
-                          style: kLabelTextStyleBig,
-                        )
-                      ],
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title!,
+                        style: kLabelTextStyle,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        contextTitle!,
+                        style: kLabelTextStyleBigDark,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        contextDescription!,
+                        style: kLabelTextStyleBig,
+                      )
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          Text(
-            time,
-            style: kLabelTextStyle,
-          ),
+          // Text(
+          //   time,
+          //   style: kLabelTextStyle,
+          // ),
         ],
       ),
     );

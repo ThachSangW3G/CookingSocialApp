@@ -1,0 +1,33 @@
+import 'package:cooking_social_app/repository/notification_repository.dart';
+import 'package:flutter/cupertino.dart';
+
+import '../models/notification_model.dart';
+
+class NotificationProvider extends ChangeNotifier{
+  late NotificationRepository _notificationRepository;
+
+  List<Map<String, dynamic>> _notifications = [];
+
+  List<Map<String, dynamic>> get notifications => _notifications;
+
+  NotificationProvider(){
+    _notificationRepository = NotificationRepositoryImpl();
+
+
+    init();
+  }
+
+  Future<void> init() async {
+
+    _notifications = await _notificationRepository.getListNotification();
+    notifyListeners();
+  }
+
+  Future<void> updateNotification(NotificationModel notificationModel) async {
+    await _notificationRepository.updateNotification(notificationModel);
+
+    init();
+    notifyListeners();
+  }
+
+}
