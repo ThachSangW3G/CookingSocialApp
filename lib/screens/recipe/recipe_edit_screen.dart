@@ -1,5 +1,6 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/widgets/recipe_ingredients_edit_view.dart';
+import 'package:cooking_social_app/widgets/recipe_intro_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_steps_edit_view.dart';
 // import 'package:cooking_social_app/widgets/yes_no_slider.dart';
 import 'package:cooking_social_app/widgets/yes_no_switch.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-enum Choice { A, B, C }
+// enum Choice { A, B, C }
 
 class RecipeEditScreen extends StatefulWidget {
   const RecipeEditScreen({Key? key}) : super(key: key);
@@ -17,11 +18,11 @@ class RecipeEditScreen extends StatefulWidget {
 }
 
 class _RecipeEditScreenState extends State<RecipeEditScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  int _selectedTabIndex = 0;
+  with SingleTickerProviderStateMixin {
+    late TabController _tabController;
+    int _selectedTabIndex = 0;
 
-  Choice selectedChoice = Choice.A;
+  // Choice selectedChoice = Choice.A;
 
   @override
   void initState() {
@@ -93,270 +94,12 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          SingleChildScrollView(
-              child: Container(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const TextField(
-                  decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    labelText: 'Title',
-                    labelStyle: TextStyle(
-                        fontFamily: 'CeraPro',
-                        // fontSize: 14,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ),
-
-                // COOK TIME--------------------------------------------
-                const SizedBox(height: 24),
-                const Text(
-                  'Cooking Time',
-                  style: TextStyle(
-                      fontFamily: 'CeraPro',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
-                ),
-                const SizedBox(height: 5),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 0.0, horizontal: 0.0),
-                            labelText: 'minutes',
-                            labelStyle: TextStyle(
-                                fontFamily: 'CeraPro',
-                                // fontSize: 14,
-                                fontWeight: FontWeight.w400)),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Expanded(
-                      child: TextField(
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 0.0, horizontal: 0.0),
-                          labelText: 'hours',
-                        ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-
-                // IMAGE -------------------------------------
-                const SizedBox(
-                  height: 24,
-                ),
-                ClipRRect(
-                  child: Image.asset(
-                    'assets/images/defaut_food.png',
-                    width: MediaQuery.of(context).size.width,
-                    height: 208,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-
-                // DESCRIPTION -------------------------------
-                const SizedBox(
-                  height: 24,
-                ),
-                TextField(
-                  decoration: const InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                      labelText: 'Description',
-                      labelStyle: TextStyle(
-                          fontFamily: 'CeraPro',
-                          // fontSize: 14,
-                          fontWeight: FontWeight.w400)),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.singleLineFormatter
-                  ],
-                  maxLines: null, // Cho phép hiển thị nhiều dòng văn bản
-                  keyboardType:
-                      TextInputType.multiline, // Bàn phím hiển thị dạng đa dòng
-                  textInputAction: TextInputAction.newline,
-                ),
-
-                //-------------------------------------------
-                const SizedBox(
-                  height: 24,
-                ),
-
-                Row(
-                  children: [
-                    Expanded(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Difficulty'),
-                        Container(
-                          width: 160,
-                          child: DropdownButton<Choice>(
-                            value: selectedChoice,
-
-                            // style: const TextStyle(
-                            // fontFamily: 'CeraPro',
-                            // fontSize: 16,
-                            // fontWeight: FontWeight.w400
-                            // ),
-                            underline: const Divider(
-                              thickness: 1.5,
-                              color: AppColors.greyBombay,
-                            ),
-                            isExpanded: true,
-                            alignment: Alignment.bottomCenter,
-                            padding: EdgeInsets.only(top: 8),
-                            icon: Align(
-                              alignment: Alignment.centerRight,
-                              child: SvgPicture.asset(
-                                'assets/icon_svg/chevron-circle-down.svg',
-                                height: 15,
-                                width: 8,
-                              ),
-                            ),
-                            onChanged: (Choice? value) {
-                              setState(() {
-                                selectedChoice = value!;
-                              });
-                            },
-                            items: const [
-                              DropdownMenuItem<Choice>(
-                                value: Choice.A,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('Easy',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'CeraPro',
-                                          fontSize: 16,
-                                        ),
-                                        textAlign: TextAlign.right)),
-                              ),
-                              DropdownMenuItem<Choice>(
-                                value: Choice.B,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('Medium',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'CeraPro',
-                                          fontSize: 16,
-                                        ),
-                                        textAlign: TextAlign.right)),
-                              ),
-                              DropdownMenuItem<Choice>(
-                                value: Choice.C,
-                                child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('Difficult',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'CeraPro',
-                                          fontSize: 16,
-                                        ),
-                                        textAlign: TextAlign.right)),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )),
-                    // const SizedBox(
-                    //   width: 16,
-                    // ),
-                    Expanded(
-                      child: TextField(
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 0.0, horizontal: 0.0),
-                          labelText: 'Serve',
-                        ),
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-
-                //---------------------
-                const SizedBox(
-                  height: 24,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Row(
-                      children: [
-                        const Text(
-                          'Publish to Community?',
-                          style: TextStyle(
-                              fontFamily: 'CeraPro',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        const SizedBox(
-                          width: 200,
-                        ),
-                        Expanded(child: YesNoSwitch()),
-                      ],
-                    )),
-                  ],
-                ),
-
-                //---------------
-                const SizedBox(
-                  height: 24,
-                ),
-                const TextField(
-                  decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                      labelText: 'Source',
-                      labelStyle: TextStyle(
-                          fontFamily: 'CeraPro',
-                          // fontSize: 14,
-                          fontWeight: FontWeight.w400)),
-                ),
-
-                //-----------------
-                const SizedBox(
-                  height: 24,
-                ),
-                const TextField(
-                  decoration: InputDecoration(
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                      labelText: 'URL',
-                      labelStyle: TextStyle(
-                          fontFamily: 'CeraPro',
-                          // fontSize: 14,
-                          fontWeight: FontWeight.w400)),
-                ),
-              ],
-            ),
-          )),
+          const RecipeIntroEdit(),
           Padding(
-            padding: EdgeInsets.only(top: 16, bottom: 30),
+            padding: const EdgeInsets.only(top: 16, bottom: 30),
             child: Stack(
               children: [
-                Column(
+                const Column(
                   children: [
                     RecipeIngredientsEdit(),
                   ],
@@ -380,7 +123,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
             ]),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 16),
+            padding: const EdgeInsets.only(top: 16),
             child: Stack(
               children: [
                 RecipeStepsEdit(),

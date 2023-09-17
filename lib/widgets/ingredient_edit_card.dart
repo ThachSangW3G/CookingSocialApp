@@ -1,8 +1,9 @@
+import 'package:cooking_social_app/screens/recipe/add_grocery_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 
-class IngredientEditCard extends StatelessWidget {
+class IngredientEditCard extends StatefulWidget {
   final String _ingredient;
   // final Function(IngredientItem) onTap;
   // final Function(IngredientItem) onDelete;
@@ -17,6 +18,11 @@ class IngredientEditCard extends StatelessWidget {
   })  : _ingredient = ingredient,
         super(key: key);
 
+  @override
+  State<IngredientEditCard> createState() => _IngredientEditCardState();
+}
+
+class _IngredientEditCardState extends State<IngredientEditCard>{
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -55,7 +61,7 @@ class IngredientEditCard extends StatelessWidget {
             width: 20,
           ),
         ),
-        title: Text(_ingredient),
+        title: Text(widget._ingredient),
         trailing: GestureDetector(
           onTap: () {
             // Hiển thị menu tùy chọn
@@ -104,6 +110,7 @@ class IngredientEditCard extends StatelessWidget {
               _buildOptionItem('Add item above'),
               _buildOptionItem('Add item below'),
               _buildOptionItem('Set as item'),
+              _buildOptionItem('Add item to Grocery'),
               _buildOptionItem('Delete'),
             ],
           ),
@@ -121,42 +128,64 @@ class IngredientEditCard extends StatelessWidget {
   }
 
   Widget _buildOptionItem(String option) {
-    IconData icon;
+    Widget icon;
     String text;
+    VoidCallback actions = () {};
     switch (option) {
       case 'Edit':
-        icon = Icons.edit;
+        icon = SvgPicture.asset('assets/icon_svg/pencil.svg', height: 20, width: 20,);
         text = 'Edit';
+        actions =() {
+          
+        }; 
         break;
       case 'Add item above':
-        icon = Icons.add;
+        icon = SvgPicture.asset('assets/icon_svg/chevron-circle-up.svg', height: 20, width: 20,);
         text = 'Add item above';
+        actions =() {
+          
+        }; 
         break;
       case 'Add item below':
-        icon = Icons.add;
+        icon = SvgPicture.asset('assets/icon_svg/chevron-circle-down.svg', height: 20, width: 20,);
         text = 'Add item below';
+        actions =() {
+          
+        }; 
         break;
       case 'Set as item':
-        icon = Icons.check;
-        text = 'Set as item';
+        icon = SvgPicture.asset('assets/icon_svg/flag-alt.svg', height: 20, width: 20,);
+        text = 'Set as header';
+        actions =() {
+          
+        }; 
+        break;
+      case 'Add item to Grocery':
+        icon = SvgPicture.asset('assets/icon_svg/cart.svg', height: 20, width: 20,);
+        text = 'Add item to Grocery';
+         actions = () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AddGroceryScreen(key: null,)),
+        );
+      };
         break;
       case 'Delete':
-        icon = Icons.delete;
+        icon = SvgPicture.asset('assets/icon_svg/trash.svg', height: 20, width: 20,);
         text = 'Delete';
+        actions =() {
+          
+        }; 
         break;
       default:
-        icon = Icons.error;
+        icon = SvgPicture.asset('assets/icon_svg/pencil.svg', height: 20, width: 20,);
         text = 'Lỗi';
     }
 
     return ListTile(
-      leading: Icon(icon),
+      leading: icon,
       title: Text(text),
-      onTap: () {
-        // Xử lý khi tùy chọn được chọn
-        _handleOptionSelection(option) {}
-        ;
-      },
+      onTap: actions
     );
   }
 }

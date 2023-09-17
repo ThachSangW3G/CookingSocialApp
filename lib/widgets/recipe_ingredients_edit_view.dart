@@ -10,34 +10,36 @@ class RecipeIngredientsEdit extends StatefulWidget {
 }
 
 class _RecipeIngredientsEditState extends State<RecipeIngredientsEdit>{
+  List<String> ingredients = ['Ingredients A', 'Ingredients B', 'Ingredients C', 'Ingredients D', 'Ingredients E', 'Ingredients H'];
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: ListView(
+      child: ReorderableListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         shrinkWrap: true,
         physics: AlwaysScrollableScrollPhysics(),
         // physics: const NeverScrollableScrollPhysics(),
-        children: const [
-          IngredientEditCard(ingredient: 'Noolde, potong-potong',),
-          IngredientEditCard(ingredient: 'Recipe B, potong-potong',),
-          IngredientEditCard(ingredient: 'Ca Chua, potong-potong',),
-          IngredientEditCard(ingredient: 'Chicken, potong-potong',),
-          IngredientEditCard(ingredient: 'Noolde, potong-potong',),
-          IngredientEditCard(ingredient: 'Recipe B, potong-potong',),
-          IngredientEditCard(ingredient: 'Ca Chua, potong-potong',),
-          IngredientEditCard(ingredient: 'Chicken, potong-potong',),
-          IngredientEditCard(ingredient: 'Noolde, potong-potong',),
-          IngredientEditCard(ingredient: 'Recipe B, potong-potong',),
-          IngredientEditCard(ingredient: 'Ca Chua, potong-potong',),
-          IngredientEditCard(ingredient: 'Chicken, potong-potong',),
-          IngredientEditCard(ingredient: 'Noolde, potong-potong',),
-          IngredientEditCard(ingredient: 'Recipe B, potong-potong',),
-          IngredientEditCard(ingredient: 'Ca Chua, potong-potong',),
-          IngredientEditCard(ingredient: 'Chicken, potong-potong',),
-          // Text('aaaaa'),
-          // Text('dsefe')
-        ],
+        onReorder: (int oldIndex, int newIndex) { 
+           setState(() {
+            if (newIndex > oldIndex) newIndex -= 1;
+            final String step = ingredients.removeAt(oldIndex);
+            ingredients.insert(newIndex, step);
+          });
+        },
+        children: ingredients
+            .asMap()
+            .map((index, step) {
+              return MapEntry(
+                index,
+                IngredientEditCard(
+                  key: ValueKey(index),
+                  ingredient: step,
+                ),
+              );
+            })
+            .values
+            .toList(),
       ),
     );
   }

@@ -73,7 +73,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       onGenerateRoute: RouteGenerator.generatorRoute,
-      // home: const RecipeEditScreen(),
       home: authenticationStateProvider.isLoggedIn
           ? const HomeScreen()
           : const LoginScreen(),
