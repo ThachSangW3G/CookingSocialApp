@@ -62,6 +62,7 @@ class ReviewStateProvider extends ChangeNotifier {
     _review = fetchedReview;
     //notifyListeners();
     //print(_review.length.toString() + "hddddddddddddddddd");
+    print(_review[0].description);
     return Future.value(_review);
     // } catch (e) {
     //   debugPrint(e as String?);
