@@ -26,6 +26,7 @@ class NotificationRepositoryImpl implements NotificationRepository{
 
     List<NotificationModel> notifications = await _notificationFirestoreService.getListNotification();
 
+    notifications.sort((b, a) => a.time.compareTo(b.time));
 
     for(var notification in notifications){
       UserModel userOwner = await

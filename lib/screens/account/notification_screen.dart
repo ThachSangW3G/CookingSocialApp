@@ -80,6 +80,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     Navigator.of(context).pushNamed(
                         RouteGenerator.recipedetailScreen,
                         arguments: notificationUpdate.idRecipe);
+                  }else if(notificationUpdate.type == 'newFollower') {
+                    Navigator.of(context).pushNamed(
+                        RouteGenerator.accountpersonScreen,
+                        arguments: notificationUpdate.idUserGuest);
                   }
 
                 },

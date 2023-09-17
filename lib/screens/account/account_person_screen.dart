@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/line_row.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:cooking_social_app/models/follow_model.dart';
 import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/follow_provider.dart';
+import 'package:cooking_social_app/providers/notification_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/widgets/post_widget.dart';
 import 'package:cooking_social_app/widgets/reviews_widget.dart';
@@ -14,6 +16,7 @@ import 'package:provider/provider.dart';
 
 import '../../constants/app_color.dart';
 import '../../models/featured.dart';
+import '../../models/notification_model.dart';
 import '../../providers/user_provider.dart';
 import '../../widgets/featured_card_widget.dart';
 
@@ -28,9 +31,11 @@ class AccountPerSonScreen extends StatefulWidget {
 class _AccountPerSonScreenState extends State<AccountPerSonScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  late Future<UserModel> _userModelFuture;
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+    _userModelFuture = Provider.of<UserProvider>(context, listen: false).getUser(widget.idUser);
     super.initState();
   }
 
@@ -48,12 +53,13 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     final FollowProvider followProvider = Provider.of<FollowProvider>(context);
+    final NotificationProvider notificationProvider = Provider.of<NotificationProvider>(context);
     final bool isOwner = user.uid ==  widget.idUser;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: FutureBuilder<UserModel>(
-          future: userProvider.getUser(widget.idUser),
+          future: _userModelFuture,
           builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot){
 
             if(snapshot.connectionState == ConnectionState.waiting){
@@ -125,6 +131,20 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                           idUserFollower: user.uid
                                       );
                                       followProvider.addFollow(follow);
+
+                                      NotificationModel notification = NotificationModel(
+                                          id: DateTime.now().toIso8601String(),
+                                          idUserGuest: user.uid,
+                                          idUserOwner: userModel.uid,
+                                          time: Timestamp.now(),
+                                          type: 'newFollower',
+                                          read: false,
+                                          title: "",
+                                          idRecipe: ""
+                                      );
+
+                                      notificationProvider.addNotification(notification);
+
                                     }else {
                                       followProvider.deleteFollow(existFollow);
                                     }
@@ -296,12 +316,12 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                   .size
                                   .height,
                               width: double.infinity,
-                              child: TabBarView(
-                                  controller: _tabController,
-                                  children: const [
-                                    PostWidget(),
-                                    ReviewWidget()
-                                  ]),
+                              // child: TabBarView(
+                              //     controller: _tabController,
+                              //     children: const [
+                              //       //PostWidget(),
+                              //       //ReviewWidget()
+                              //     ]),
                             )
                           ],
                         )

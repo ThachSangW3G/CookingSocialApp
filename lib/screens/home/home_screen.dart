@@ -133,11 +133,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ],
                               ),
-                              Container(
-                                margin: const EdgeInsets.only(right: 10),
-                                child: const Icon(
-                                  Icons.notifications_outlined,
-                                  size: 30,
+                              GestureDetector(
+                                onTap: (){
+                                  Navigator.pushNamed(
+                                      context, RouteGenerator.notificationScreen);},
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: const Icon(
+                                    Icons.notifications_outlined,
+                                    size: 30,
+                                  ),
                                 ),
                               ),
                             ],
