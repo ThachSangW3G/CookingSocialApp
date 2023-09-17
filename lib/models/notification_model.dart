@@ -8,19 +8,21 @@ class NotificationModel{
   final String title;
   final Timestamp time;
   bool read;
+  final String idRecipe;
 
-  NotificationModel({required this.id, required this.idUserOwner, required this.idUserGuest, required this.type,
-      required this.title, required this.time, required this.read});
+  NotificationModel( {required this.id, required this.idUserOwner, required this.idUserGuest, required this.type,
+      required this.title, required this.time, required this.read, required this.idRecipe,});
 
   factory NotificationModel.fromJson(Map<String, dynamic> json){
     return NotificationModel(
-      id: json['id'],
-      idUserOwner: json['idUserOwner'],
-      idUserGuest: json['idUserGuest'],
-      time: json['time'],
+      id: json['id'] ?? "",
+      idUserOwner: json['idUserOwner'] ?? "",
+      idUserGuest: json['idUserGuest'] ?? "",
+      time: json['time'] ?? "",
       title: json['title'] ?? "",
-      type: json['type'],
-      read: json['read']
+      type: json['type'] ?? "",
+      read: json['read'] ?? "",
+      idRecipe: json['idRecipe'] ?? ""
     );
   }
 
@@ -32,7 +34,8 @@ class NotificationModel{
       'time': time,
       'title': title,
       'type': type,
-      'read': read
+      'read': read,
+      'idRecipe': idRecipe
     };
   }
 }

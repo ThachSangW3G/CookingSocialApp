@@ -34,7 +34,8 @@ class FeatureRepositoryImpl implements FeatureRepository {
         likeCount: recipe.numberLike,
         reviewCount: recipe.numberView,
         category: recipe.category,
-        cookTime: recipe.cookTime
+        cookTime: recipe.cookTime,
+        idUser: recipe.uidUser
     );
 
     return Future.value(featured);
@@ -57,7 +58,8 @@ class FeatureRepositoryImpl implements FeatureRepository {
         nameUser: userModel.name,
         likeCount: recipe.numberLike,
         reviewCount: recipe.numberView, category: recipe.category,
-        cookTime: recipe.cookTime
+        cookTime: recipe.cookTime,
+        idUser: recipe.uidUser
       );
       listFeature.add(featured);
       // print(listFeature.length);

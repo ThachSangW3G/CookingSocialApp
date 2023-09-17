@@ -30,4 +30,8 @@ class NotificationProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  Future<void> addNotification(NotificationModel notificationModel) async {
+    await _notificationRepository.addNotification(notificationModel);
+    notifyListeners();
+  }
 }

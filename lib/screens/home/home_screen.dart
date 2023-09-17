@@ -4,10 +4,12 @@ import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/category.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/models/like_model.dart';
+import 'package:cooking_social_app/models/notification_model.dart';
 import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/providers/like_provider.dart';
+import 'package:cooking_social_app/providers/notification_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/providers/user_provider.dart';
 import 'package:cooking_social_app/repository/recipe_repository.dart';
@@ -47,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<CookbookProvider>(context);
 
     final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
+    final NotificationProvider notificationProvider = Provider.of<NotificationProvider>(context);
     //final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     //final userCurrent = await userProvider.getUser(FirebaseAuth.instance.currentUser!.uid);
@@ -291,6 +294,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                       time: Timestamp.now()
                                   );
                                   likeProvider.addLike(likeModel);
+
+                                  NotificationModel notification = NotificationModel(
+                                    id: DateTime.now().toIso8601String(),
+                                    idUserGuest: user.uid,
+                                    idUserOwner: featured.idUser,
+                                    time: Timestamp.now(),
+                                    type: 'liked',
+                                    read: false,
+                                    title: "",
+                                    idRecipe: featured.id
+                                  );
+
+                                  notificationProvider.addNotification(notification);
+
                                 }else {
                                   likeProvider.deleteLike(liked);
                                 }
