@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class NotificationDataService{
   Future<List<NotificationModel>> getListNotification();
   Future<void> updateNotification(NotificationModel notificationModel);
+  Future<void> addNotification(NotificationModel notificationModel);
 }
 
 class NotificationFirestoreService implements NotificationDataService{
@@ -32,6 +33,11 @@ class NotificationFirestoreService implements NotificationDataService{
         .doc(notificationModel.id)
         .update(notificationModel.toJson())
         .then((value) => print('notification updated'));
+  }
+
+  @override
+  Future<void> addNotification(NotificationModel notificationModel) {
+    return notifications.doc(notificationModel.id).set(notificationModel.toJson()).then((value) => print('notification add'));
   }
 
 }

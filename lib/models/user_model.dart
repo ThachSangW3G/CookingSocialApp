@@ -5,16 +5,18 @@ class UserModel {
   String avatar;
   String email;
   String name;
+  String bio;
 
-  UserModel({required this.uid, required this.avatar, required this.name, required this.email});
+  UserModel({required this.uid, required this.avatar, required this.name, required this.email, required this.bio});
 
 
   factory UserModel.fromJson(Map<String, dynamic> json){
     return UserModel(
-      uid: json['uid'],
-      avatar: json["avatar"],
-      email: json["email"],
-      name: json["name"],
+      uid: json['uid'] ?? "",
+      avatar: json["avatar"] ?? "",
+      email: json["email"] ?? "",
+      name: json["name"] ?? "",
+      bio: json['bio'] ?? ""
     );
   }
 }

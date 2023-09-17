@@ -1,12 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cooking_social_app/blocs/blocs/authentication_bloc.dart';
 import 'package:cooking_social_app/blocs/states/authentication_state.dart';
 import 'package:cooking_social_app/components/icon_content.dart';
 import 'package:cooking_social_app/components/row_content.dart';
 import 'package:cooking_social_app/components/row_content_not_icon.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/provider_authentication/authentication_state.dart';
+import 'package:cooking_social_app/providers/user_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/services/auth_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -22,10 +26,12 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  final AuthService _authService = AuthService();
+
+  final user = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
     final AuthenticationStateProvider _authenticationStateProvider = Provider.of<AuthenticationStateProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
@@ -56,33 +62,53 @@ class _AccountScreenState extends State<AccountScreen> {
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Nararaya Kiana',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                                fontFamily: "CeraPro"),
-                          ),
-                          Text('trungtinh1620@gmail.com', style: kLabelTextStyle)
-                        ],
-                      ),
-                      Container(
-                        height: 60,
-                        width: 60,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: AssetImage('assets/images/avatar.jpg'),
-                                fit: BoxFit.contain)),
-                      ),
-                    ],
+                  FutureBuilder<UserModel>(
+                    future: userProvider.getUser(user.uid),
+                    builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot)
+                    {
+
+                      final userModel = snapshot.data;
+
+                      return GestureDetector(
+                        onTap: (){
+                          Navigator.of(context).pushNamed(
+                              RouteGenerator.accountpersonScreen,
+                            arguments: user.uid
+                              );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userModel!.name,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: "CeraPro"),
+                                ),
+                                Text(userModel.email, style: kLabelTextStyle)
+                              ],
+                            ),
+                            Container(
+                              height: 60,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: CachedNetworkImageProvider(userModel.avatar),
+                                      fit: BoxFit.contain)),
+                            ),
+                          ],
+                        ),
+                      );
+
+
+                    },
+
                   ),
                   const SizedBox(
                     height: 15,

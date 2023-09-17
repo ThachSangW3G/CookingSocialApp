@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../components/line_row.dart';
 import '../../constants/app_color.dart';
+import '../../routes/app_routes.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -74,6 +75,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   notificationUpdate.read = true;
 
                   notificationProvider.updateNotification(notificationUpdate);
+
+                  if(notificationUpdate.type == 'liked'){
+                    Navigator.of(context).pushNamed(
+                        RouteGenerator.recipedetailScreen,
+                        arguments: notificationUpdate.idRecipe);
+                  }
+
                 },
                 child: NotificationItem(
                   notification: dataNotification['notification'],

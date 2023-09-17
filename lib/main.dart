@@ -2,6 +2,7 @@
 // import 'package:cooking_social_app/screens/recipe/add_grocery_screen.dart';
 import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/providers/cookbook_provider.dart';
+import 'package:cooking_social_app/providers/follow_provider.dart';
 import 'package:cooking_social_app/providers/like_provider.dart';
 import 'package:cooking_social_app/providers/notification_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/authentication_state.dart';
@@ -54,6 +55,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => RecentSearchProvider(FirebaseAuth.instance.currentUser!.uid)),
       ChangeNotifierProvider(create: (_) => LikeProvider()),
       ChangeNotifierProvider(create: (_) => NotificationProvider()),
+      ChangeNotifierProvider(create: (_) => FollowProvider()),
     ],
     child: const MyApp(),
   ));

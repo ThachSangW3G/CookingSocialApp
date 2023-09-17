@@ -7,6 +7,7 @@ import '../remote/user_firestore_service.dart';
 abstract class NotificationRepository{
   Future<List<Map<String, dynamic>>> getListNotification();
   Future<void> updateNotification(NotificationModel notificationModel);
+  Future<void> addNotification(NotificationModel notificationModel);
 }
 
 class NotificationRepositoryImpl implements NotificationRepository{
@@ -48,6 +49,11 @@ class NotificationRepositoryImpl implements NotificationRepository{
   @override
   Future<void> updateNotification(NotificationModel notificationModel) {
     return _notificationFirestoreService.updateNotification(notificationModel);
+  }
+
+  @override
+  Future<void> addNotification(NotificationModel notificationModel) {
+    return _notificationFirestoreService.addNotification(notificationModel);
   }
 
 }
