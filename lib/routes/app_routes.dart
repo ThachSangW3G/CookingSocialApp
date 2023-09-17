@@ -12,6 +12,7 @@ import 'package:cooking_social_app/screens/home/home_screen.dart';
 import 'package:cooking_social_app/screens/recipe/add_grocery_screen.dart';
 import 'package:cooking_social_app/screens/recipe/recipe_add_screen.dart';
 import 'package:cooking_social_app/screens/recipe/recipe_edit_screen.dart';
+import 'package:cooking_social_app/screens/recipe_detail/webview_screen.dart';
 import 'package:cooking_social_app/screens/splash/splash_screen.dart';
 
 import 'package:cooking_social_app/screens/account/account_person_screen.dart';
@@ -142,6 +143,13 @@ class RouteGenerator {
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
+      case webviewScreen:
+        String url = args as String;
+        return PageTransition(
+          child: SafeArea(child: SafeArea(child: NewsWebViewPage(url: url))),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
       case reviewScreen:
         Recipe recipe = args as Recipe;
         return PageTransition(
@@ -159,35 +167,26 @@ class RouteGenerator {
           child: const SafeArea(
               child: SafeArea(
                   child: RecipeEditScreen(
-              // keyRecipe: keyRecipe,
-          ))),
+                      // keyRecipe: keyRecipe,
+                      ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
       case recipeaddgroceryScreen:
         return PageTransition(
-          child: const SafeArea(
-              child: SafeArea(
-                  child: AddGroceryScreen(
-          ))),
+          child: const SafeArea(child: SafeArea(child: AddGroceryScreen())),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
       case recipeaddScreen:
         return PageTransition(
-          child: const SafeArea(
-              child: SafeArea(
-                  child: RecipeAddScreen(
-          ))),
+          child: const SafeArea(child: SafeArea(child: RecipeAddScreen())),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
       case calendarScreen:
         return PageTransition(
-          child: const SafeArea(
-              child: SafeArea(
-                  child: CalendarScreen(
-          ))),
+          child: const SafeArea(child: SafeArea(child: CalendarScreen())),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
@@ -219,7 +218,8 @@ class RouteGenerator {
   // RECIPE DETAILS
   static const recipedetailScreen = '/recipedetail';
   static const reviewScreen = '/review';
-  
+  static const webviewScreen = '/webview';
+
   //RECIPE EDIT
   static const recipeeditScreen = '/recipededit';
   static const recipeaddgroceryScreen = '/recipeeditaddgrocery';
