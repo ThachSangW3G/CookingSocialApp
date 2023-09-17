@@ -6,7 +6,9 @@ import 'package:cooking_social_app/components/icon_content_orange.dart';
 import 'package:cooking_social_app/components/line_row.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
+import 'package:cooking_social_app/models/like_model.dart';
 import 'package:cooking_social_app/models/review.dart';
+import 'package:cooking_social_app/providers/like_provider.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cooking_social_app/models/recipe.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class RecipeSummary extends StatefulWidget {
@@ -26,11 +29,12 @@ class RecipeSummary extends StatefulWidget {
 class _RecipeSummaryState extends State<RecipeSummary> {
   Recipe? recipe;
   bool check = false;
+  bool first = true;
   @override
   void initState() {
     recipe = widget.recipe;
     context.read<ReviewStateProvider>().fetchReview(recipe!.key);
-    _getLikeData();
+    // _getLikeData();
     super.initState();
   }
 
@@ -39,21 +43,23 @@ class _RecipeSummaryState extends State<RecipeSummary> {
   //   //context.read<ReviewStateProvider>().fetchReview(recipe!.key);
   //   super.didChangeDependencies();
   // }
-  _getLikeData() async {
-    QuerySnapshot snapshot = await FirebaseFirestore.instance
-        .collection('recipelike')
-        .where('keyRecipe', isEqualTo: recipe!.key)
-        .get();
-    for (var element in snapshot.docs) {
-      if (element['uidUser'] == FirebaseAuth.instance.currentUser?.uid) {
-        check = true;
-        break;
-      }
-    }
-  }
+  // _getLikeData() async {
+  //   QuerySnapshot snapshot = await FirebaseFirestore.instance
+  //       .collection('recipelike')
+  //       .where('keyRecipe', isEqualTo: recipe!.key)
+  //       .get();
+  //   for (var element in snapshot.docs) {
+  //     if (element['uidUser'] == FirebaseAuth.instance.currentUser?.uid) {
+  //       check = true;
+  //       break;
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
+    final String? uid = FirebaseAuth.instance.currentUser?.uid;
     return Consumer<ReviewStateProvider>(builder: (context, provider, _) {
       return Expanded(
         child: Container(
@@ -66,102 +72,127 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                 color: AppColors.whitePorcelain,
               ),
               Container(
-                height: 400,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                  image: CachedNetworkImageProvider(recipe!.url),
-                  fit: BoxFit.cover,
-                )),
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0, vertical: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                              color: AppColors.white, shape: BoxShape.circle),
-                          child: const Center(
-                            child: Icon(
-                              Icons.arrow_back_ios_new,
-                              color: AppColors.black,
-                              size: 25,
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          if (!check) {
-                            setState(() {
-                              check = !check;
-                            });
-                            // Thêm dữ liệu vào Firestore
-                            await FirebaseFirestore.instance
-                                .collection('recipelike')
-                                .add({
-                              'uidUser': FirebaseAuth.instance.currentUser?.uid,
-                              'keyRecipe': recipe!.key,
-                              // Thêm các trường dữ liệu khác của bạn nếu cần
-                            });
-                          } else {
-                            setState(() {
-                              check = !check;
-                            });
-                            QuerySnapshot snapshot = await FirebaseFirestore
-                                .instance
-                                .collection('recipelike')
-                                .where('keyRecipe', isEqualTo: recipe!.key)
-                                .get();
-                            // Xóa dữ liệu khỏi Firestore
-                            for (var element in snapshot.docs) {
-                              if (element['uidUser'] ==
-                                  FirebaseAuth.instance.currentUser?.uid) {
-                                await element.reference.delete();
-                              }
-                            }
-                          }
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: const BoxDecoration(
-                              color: AppColors.white, shape: BoxShape.circle),
-                          child: check == false
-                              ? Center(
-                                  child: SvgPicture.asset(
-                                    'assets/icon_svg/heart.svg',
-                                    colorFilter: const ColorFilter.mode(
-                                        AppColors.orangeCrusta,
-                                        BlendMode.srcIn),
-                                    height: 24,
-                                    width: 24,
-                                  ),
-                                )
-                              : Center(
-                                  child: SvgPicture.asset(
-                                    'assets/icon_svg/heart_orange.svg',
-                                    colorFilter: const ColorFilter.mode(
-                                        AppColors.orangeCrusta,
-                                        BlendMode.srcIn),
-                                    height: 24,
-                                    width: 24,
+                  height: 400,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                    image: CachedNetworkImageProvider(recipe!.url),
+                    fit: BoxFit.cover,
+                  )),
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 30),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                decoration: const BoxDecoration(
+                                    color: AppColors.white,
+                                    shape: BoxShape.circle),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.arrow_back_ios_new,
+                                    color: AppColors.black,
+                                    size: 25,
                                   ),
                                 ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+                              ),
+                            ),
+                            FutureBuilder<LikeModel>(
+                                future:
+                                    likeProvider.likeExist(recipe!.key, uid!),
+                                builder: (context, snapshot) {
+                                  final LikeModel? liked = snapshot.data;
+                                  if (liked != null && first) {
+                                    check = true;
+                                    first = false;
+                                    print(
+                                        "Toi Dang Sua Lai Check Ne jjjjjjjjjjj");
+                                  }
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      if (!check) {
+                                        setState(() {
+                                          check = true;
+                                          LikeModel likeModel = LikeModel(
+                                              id: DateTime.now()
+                                                  .toIso8601String(),
+                                              idRecipe: recipe!.key,
+                                              idUser: uid,
+                                              time: Timestamp.now());
+                                          likeProvider.addLike(likeModel);
+                                        });
+                                        // Thêm dữ liệu vào Firestore
+                                        // await FirebaseFirestore.instance
+                                        //     .collection('recipelike')
+                                        //     .add({
+                                        //   'uidUser': FirebaseAuth
+                                        //       .instance.currentUser?.uid,
+                                        //   'keyRecipe': recipe!.key,
+                                        //   // Thêm các trường dữ liệu khác của bạn nếu cần
+                                        // });
+                                      } else {
+                                        await likeProvider.deleteLike(liked!);
+                                        setState(() {
+                                          check = false;
+                                        });
+                                        // QuerySnapshot snapshot =
+                                        //     await FirebaseFirestore
+                                        //         .instance
+                                        //         .collection('recipelike')
+                                        //         .where('keyRecipe',
+                                        //             isEqualTo: recipe!.key)
+                                        //         .get();
+                                        // // Xóa dữ liệu khỏi Firestore
+                                        // for (var element in snapshot.docs) {
+                                        //   if (element['uidUser'] ==
+                                        //       FirebaseAuth
+                                        //           .instance.currentUser?.uid) {
+                                        //     await element.reference.delete();
+                                        //   }
+                                        // }
+                                      }
+                                    },
+                                    child: Container(
+                                      height: 50,
+                                      width: 50,
+                                      decoration: const BoxDecoration(
+                                          color: AppColors.white,
+                                          shape: BoxShape.circle),
+                                      child: check == false
+                                          ? Center(
+                                              child: SvgPicture.asset(
+                                                'assets/icon_svg/heart.svg',
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                        AppColors.orangeCrusta,
+                                                        BlendMode.srcIn),
+                                                height: 24,
+                                                width: 24,
+                                              ),
+                                            )
+                                          : Center(
+                                              child: SvgPicture.asset(
+                                                'assets/icon_svg/heart_orange.svg',
+                                                colorFilter:
+                                                    const ColorFilter.mode(
+                                                        AppColors.orangeCrusta,
+                                                        BlendMode.srcIn),
+                                                height: 24,
+                                                width: 24,
+                                              ),
+                                            ),
+                                    ),
+                                  );
+                                })
+                          ]))),
               Container(
                   margin: const EdgeInsets.only(top: 290),
                   child: Column(children: [
