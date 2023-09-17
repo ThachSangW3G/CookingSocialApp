@@ -112,8 +112,9 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
       case accountpersonScreen:
+        String idUser = args as String;
         return PageTransition(
-          child: const SafeArea(child: SafeArea(child: AccountPerSonScreen())),
+          child: SafeArea(child: SafeArea(child: AccountPerSonScreen(idUser: idUser,))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );

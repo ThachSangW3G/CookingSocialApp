@@ -7,9 +7,10 @@ import '../models/featured.dart';
 class FeaturedCard extends StatelessWidget {
   final Featured featured;
   final VoidCallback like;
+  final VoidCallback viewProfile;
   final bool liked;
   const FeaturedCard({
-    super.key, required this.featured, required this.like, required this.liked,
+    super.key, required this.featured, required this.like, required this.liked, required this.viewProfile,
   });
 
   @override
@@ -61,28 +62,34 @@ class FeaturedCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              image: CachedNetworkImageProvider(featured.avatar),
-                              fit: BoxFit.contain
-                          )
-                      ),
+                    GestureDetector(
+                      onTap: viewProfile,
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: CachedNetworkImageProvider(featured.avatar),
+                                fit: BoxFit.contain
+                            )
+                        ),
 
+                      ),
                     ),
                     const SizedBox(width: 10,),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          featured.nameUser,
-                          style: const TextStyle(
-                              fontFamily: 'CeraPro',
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500
+                        GestureDetector(
+                          onTap: viewProfile,
+                          child: Text(
+                            featured.nameUser,
+                            style: const TextStyle(
+                                fontFamily: 'CeraPro',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500
+                            ),
                           ),
                         ),
                         Row(

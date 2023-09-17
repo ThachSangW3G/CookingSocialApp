@@ -312,7 +312,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   likeProvider.deleteLike(liked);
                                 }
 
-                              }, liked: liked != null,);
+                              }, liked: liked != null,
+                              viewProfile: (){
+                                Navigator.of(context).pushNamed(
+                                    RouteGenerator.accountpersonScreen,
+                                    arguments: featured.idUser
+                                );
+                              },
+                              );
                             }
                           ));
                     },

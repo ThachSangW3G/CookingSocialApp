@@ -21,13 +21,13 @@ class _PostWidgetState extends State<PostWidget> {
 
       children: [
         FeaturedCard(
-          featured: listFeatured[0], like: (){}, liked: true,
+          featured: listFeatured[0], like: (){}, liked: true, viewProfile: (){},
         ),
         FeaturedCard(
-          featured: listFeatured[1], like: (){}, liked: true,
+          featured: listFeatured[1], like: (){}, liked: true, viewProfile: (){},
         ),
         FeaturedCard(
-          featured: listFeatured[2], like: (){}, liked: true,
+          featured: listFeatured[2], like: (){}, liked: true, viewProfile: (){},
         ),
       ],
     );
