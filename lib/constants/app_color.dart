@@ -33,4 +33,5 @@ class AppColors {
   static const Color blueBondi = Color.fromRGBO(0, 159, 179, 1);
   static const Color blueCornflower = Color.fromRGBO(133, 202, 228, 1);
   static const Color transparentColor = Color(0x00FFFFFF);
+  static const Color oldLace = Color.fromRGBO(253, 246, 234, 1);
 }
