@@ -5,6 +5,8 @@ abstract class FollowDataService{
   Future<void> addFollow(FollowModel followModel);
   Future<FollowModel> followExist(String idUserOwner, String idUserFollower);
   Future<void> deleteFollow(FollowModel followModel);
+  Future<int> getFollower(String idUser);
+  Future<int> getFollowing(String idUser);
 }
 
 class FollowFirestoreService implements FollowDataService{
@@ -29,6 +31,26 @@ class FollowFirestoreService implements FollowDataService{
   @override
   Future<void> deleteFollow(FollowModel followModel) {
     return follows.doc(followModel.id).delete().then((value) => print('deleted follow'));
+  }
+
+  @override
+  Future<int> getFollower(String idUser) async {
+    QuerySnapshot querySnapshot = await follows
+        .where('idUserOwner', isEqualTo: idUser)
+        .get();
+
+    int count = querySnapshot.size;
+    return count;
+  }
+
+  @override
+  Future<int> getFollowing(String idUser) async {
+    QuerySnapshot querySnapshot = await follows
+        .where('idUserFollower', isEqualTo: idUser)
+        .get();
+
+    int count = querySnapshot.size;
+    return count;
   }
 
 }
