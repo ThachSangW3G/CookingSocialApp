@@ -491,7 +491,6 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                             ),
                                           );
                                         } else {
-                                          //print(recipe.key + "jdddddddd");
                                           final review = snapshotReview.data;
                                           return review == null
                                               ? const Center()

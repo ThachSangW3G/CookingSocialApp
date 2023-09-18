@@ -62,7 +62,7 @@ class ReviewStateProvider extends ChangeNotifier {
     _review = fetchedReview;
     //notifyListeners();
     //print(_review.length.toString() + "hddddddddddddddddd");
-    print(_review[0].description);
+    //print(_review[0].description);
     return Future.value(_review);
     // } catch (e) {
     //   debugPrint(e as String?);
@@ -93,16 +93,17 @@ class ReviewStateProvider extends ChangeNotifier {
     // Tạo một document reference và lấy ra ID ngẫu nhiên
     CollectionReference reviewRef = firestore.collection('reviews');
     // Tạo một map chứa thông tin review
+    String time = DateTime.now().toIso8601String();
     Map<String, dynamic> reviewData = {
       'uidUser':
           FirebaseAuth.instance.currentUser?.uid, // Giá trị uidUser (String)
       'time': Timestamp.now(), // Giá trị time (Timestamp)
-      'key': DateTime.now().toIso8601String(), // Giá trị key (String)
+      'key': time, // Giá trị key (String)
       'keyRecipe': keyRecipe,
       'description': description
     };
     // Thêm review vào Firestore
-    await reviewRef.doc(DateTime.now().toIso8601String()).set(reviewData);
+    await reviewRef.doc(time).set(reviewData);
     //Get so luong hien tai
     DocumentSnapshot snapshot =
         await firestore.collection('recipes').doc(keyRecipe).get();
@@ -141,17 +142,17 @@ class ReviewStateProvider extends ChangeNotifier {
 
   Future<void> update(Review review) async {
     try {
-      // Cập nhật công thức trong cơ sở dữ liệu (ví dụ: Firestore)
-      await FirebaseFirestore.instance
-          .collection('reviews')
-          .doc(review.key)
-          .update(review
-              .toJson()); // Giả sử có phương thức toJson() để chuyển đổi thành Map
-      // // Cập nhật danh sách công thức sau khi cập nhật
-      // int index = _recipes.indexWhere((r) => r.key == recipe.key);
-      // if (index != -1) {
-      //   _recipes[index] = recipe;
-      // }
+      // // Cập nhật công thức trong cơ sở dữ liệu (ví dụ: Firestore)
+      // await FirebaseFirestore.instance
+      //     .collection('reviews')
+      //     .doc(review.key)
+      //     .update(review
+      //         .toJson()); // Giả sử có phương thức toJson() để chuyển đổi thành Map
+      // // // Cập nhật danh sách công thức sau khi cập nhật
+      int index = _review.indexWhere((r) => r.key == review.key);
+      if (index != -1) {
+        _review[index] = review;
+      }
       notifyListeners();
     } catch (error) {
       debugPrint(error as String?);
