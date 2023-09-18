@@ -9,7 +9,8 @@ abstract class LikeReviewService {
 }
 
 class LikeReviewFirestoreService implements LikeReviewService {
-  CollectionReference likes = FirebaseFirestore.instance.collection('likes');
+  CollectionReference likes =
+      FirebaseFirestore.instance.collection('reviewlike');
 
   @override
   Future<void> addLike(LikeReview likeModel) {

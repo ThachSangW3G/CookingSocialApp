@@ -32,8 +32,8 @@ class _CommentItemState extends State<CommentItem> {
   Widget build(BuildContext context) {
     final LikeReviewProvider reviewLikeProvider =
         Provider.of<LikeReviewProvider>(context);
-    final ReviewStateProvider reviewProvider =
-        Provider.of<ReviewStateProvider>(context);
+    //final ReviewStateProvider reviewProvider =
+    //Provider.of<ReviewStateProvider>(context);
     final String? uid = FirebaseAuth.instance.currentUser?.uid;
     return Padding(
       padding: const EdgeInsets.only(left: 25, bottom: 15, right: 25, top: 10),
@@ -77,51 +77,66 @@ class _CommentItemState extends State<CommentItem> {
               ],
             ),
           ),
-          Container(
-            padding: EdgeInsets.zero,
-            child: Row(children: [
-              GestureDetector(
-                onTap: () {
-                  if (!review!.check) {
-                    setState(() {
-                      LikeReview likeReview = LikeReview(
-                          id: DateTime.now().toIso8601String(),
-                          idUser: uid!,
-                          idReview: review!.key,
-                          time: Timestamp.now());
-                      reviewLikeProvider.addLike(likeReview);
-                      //reviewProvider.update(review);
-                    });
-                  } else {}
-                },
-                child: review!.check == false
-                    ? SvgPicture.asset(
-                        'assets/icon_svg/heart.svg',
-                        colorFilter: const ColorFilter.mode(
-                            AppColors.greyBombay, BlendMode.srcIn),
-                        height: 24,
-                        width: 24,
-                      )
-                    : SvgPicture.asset(
-                        'assets/icon_svg/heart_orange.svg',
-                        colorFilter: const ColorFilter.mode(
-                            AppColors.orangeCrusta, BlendMode.srcIn),
-                        height: 24,
-                        width: 24,
-                      ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              SvgPicture.asset(
-                'assets/icon_svg/options.svg',
-                colorFilter: const ColorFilter.mode(
-                    AppColors.greyBombay, BlendMode.srcIn),
-                height: 24,
-                width: 24,
-              ),
-            ]),
-          ),
+          FutureBuilder<LikeReview>(
+              future: reviewLikeProvider.likeExist(review!.key, uid!),
+              builder: (context, snapshot) {
+                final LikeReview? liked = snapshot.data;
+                if (liked != null && first) {
+                  check = true;
+                  first = false;
+                }
+                return Container(
+                  padding: EdgeInsets.zero,
+                  child: Row(children: [
+                    GestureDetector(
+                      onTap: () async {
+                        if (!check) {
+                          setState(() {
+                            check = true;
+                            LikeReview likeReview = LikeReview(
+                                id: DateTime.now().toIso8601String(),
+                                idUser: uid,
+                                idReview: review!.key,
+                                time: Timestamp.now());
+                            reviewLikeProvider.addLike(likeReview);
+                            //reviewProvider.update(review);
+                          });
+                        } else {
+                          await reviewLikeProvider.deleteLike(liked!);
+                          setState(() {
+                            check = false;
+                          });
+                        }
+                      },
+                      child: check == false
+                          ? SvgPicture.asset(
+                              'assets/icon_svg/heart.svg',
+                              colorFilter: const ColorFilter.mode(
+                                  AppColors.greyBombay, BlendMode.srcIn),
+                              height: 24,
+                              width: 24,
+                            )
+                          : SvgPicture.asset(
+                              'assets/icon_svg/heart_orange.svg',
+                              colorFilter: const ColorFilter.mode(
+                                  AppColors.orangeCrusta, BlendMode.srcIn),
+                              height: 24,
+                              width: 24,
+                            ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    SvgPicture.asset(
+                      'assets/icon_svg/options.svg',
+                      colorFilter: const ColorFilter.mode(
+                          AppColors.greyBombay, BlendMode.srcIn),
+                      height: 24,
+                      width: 24,
+                    ),
+                  ]),
+                );
+              }),
         ],
       ),
     );
