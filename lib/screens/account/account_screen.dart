@@ -64,50 +64,54 @@ class _AccountScreenState extends State<AccountScreen> {
                 children: [
                   FutureBuilder<UserModel>(
                     future: userProvider.getUser(user.uid),
-                    builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot)
-                    {
+                    builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        final userModel = snapshot.data;
 
-                      final userModel = snapshot.data;
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                                RouteGenerator.accountpersonScreen,
+                                arguments: user.uid
+                            );
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    userModel!.name,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "CeraPro"),
+                                  ),
+                                  Text(userModel.email, style: kLabelTextStyle)
+                                ],
+                              ),
+                              Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image: CachedNetworkImageProvider(
+                                            userModel.avatar),
+                                        fit: BoxFit.contain)),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
 
-                      return GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).pushNamed(
-                              RouteGenerator.accountpersonScreen,
-                            arguments: user.uid
-                              );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  userModel!.name,
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: "CeraPro"),
-                                ),
-                                Text(userModel.email, style: kLabelTextStyle)
-                              ],
-                            ),
-                            Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: CachedNetworkImageProvider(userModel.avatar),
-                                      fit: BoxFit.contain)),
-                            ),
-                          ],
-                        ),
-                      );
-
-
-                    },
+                    }
 
                   ),
                   const SizedBox(

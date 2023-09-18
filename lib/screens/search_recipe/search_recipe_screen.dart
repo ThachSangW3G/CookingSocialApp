@@ -42,7 +42,8 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                       fontWeight: FontWeight.w700,
                       fontSize: 20
                   ),
-                )
+                ),
+
               ],
             ),
           ),
@@ -119,6 +120,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
             fontWeight: FontWeight.w800
           ),
         ),
+        leading: Container(),
         centerTitle: true,
         bottom:  PreferredSize(
           preferredSize: const Size.fromHeight(1),
