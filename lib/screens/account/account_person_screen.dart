@@ -228,30 +228,47 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                           mainAxisAlignment: MainAxisAlignment
                                               .center,
                                           children: [
-                                            Text('24', style: kLabelTextStyle),
-                                            SizedBox(
+                                            FutureBuilder<int>(future: followProvider.getFollower(userModel.uid), builder: (context, snapshot){
+
+                                              if(snapshot.connectionState == ConnectionState.waiting){
+                                                return const Text('0', style: kLabelTextStyle);
+                                              }else {
+                                                final follower = snapshot.data;
+                                                return Text(follower.toString(), style: kLabelTextStyle);
+                                              }
+                                            }),
+
+                                            const SizedBox(
                                               width: 5.0,
                                             ),
-                                            Text('Followers',
+                                            const Text('Followers',
                                                 style: kLabelTextStyle),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 5.0,
                                             ),
-                                            Text(
+                                            const Text(
                                               '|',
                                               style: TextStyle(
                                                   fontFamily: 'CeraPro',
                                                   fontSize: 30,
                                                   color: AppColors.greyIron),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 5.0,
                                             ),
-                                            Text('8', style: kLabelTextStyle),
-                                            SizedBox(
+                                            FutureBuilder<int>(future: followProvider.getFollowing(userModel.uid), builder: (context, snapshot){
+
+                                              if(snapshot.connectionState == ConnectionState.waiting){
+                                                return const Text('0', style: kLabelTextStyle);
+                                              }else {
+                                                final follower = snapshot.data;
+                                                return Text(follower.toString(), style: kLabelTextStyle);
+                                              }
+                                            }),
+                                            const SizedBox(
                                               width: 5.0,
                                             ),
-                                            Text('Following',
+                                            const Text('Following',
                                                 style: kLabelTextStyle)
                                           ],
                                         ),

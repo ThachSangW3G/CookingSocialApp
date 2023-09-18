@@ -25,5 +25,13 @@ class FollowProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  Future<int> getFollower(String idUser){
+    return _followRepository.getFollower(idUser);
+  }
+
+  Future<int> getFollowing(String idUser){
+    return _followRepository.getFollowing(idUser);
+  }
+
 
 }

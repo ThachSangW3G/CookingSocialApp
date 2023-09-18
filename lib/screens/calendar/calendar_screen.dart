@@ -15,7 +15,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Calendar',
           style: TextStyle(
             fontFamily: 'Recoleta',
@@ -23,6 +23,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        leading: Container(),
         centerTitle: true,
       ),
       body: Container(

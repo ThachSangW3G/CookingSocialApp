@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
     final NotificationProvider notificationProvider = Provider.of<NotificationProvider>(context);
+    final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
     //final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     //final userCurrent = await userProvider.getUser(FirebaseAuth.instance.currentUser!.uid);
@@ -67,89 +68,90 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Consumer<UserProvider>(
-                  builder: (context, userProvider, _) {
-                    return FutureBuilder<UserModel>(
-                      future: userProvider
-                          .getUser(FirebaseAuth.instance.currentUser!.uid),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          // Hiển thị widget khi có lỗi xảy ra
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          // Hiển thị widget khi dữ liệu đã được tải thành công
-                          final userCurrent = snapshot.data;
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                FutureBuilder<UserModel>(
+                  future: userProvider
+                      .getUser(FirebaseAuth.instance.currentUser!.uid),
+                  builder: (context, snapshot) {
+                    if(snapshot.connectionState == ConnectionState.waiting){
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    else if (snapshot.hasError) {
+                      // Hiển thị widget khi có lỗi xảy ra
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      // Hiển thị widget khi dữ liệu đã được tải thành công
+                      final userCurrent = snapshot.data;
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
                             children: [
-                              Row(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        RouteGenerator.accountScreen,
-                                      );
-                                    },
-                                    child: Container(
-                                      height: 60,
-                                      width: 60,
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(50),
-                                        child: CachedNetworkImage(
-                                          imageUrl: userCurrent!.avatar,
-                                          fit: BoxFit.contain,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Hi ${userCurrent!.name}',
-                                        style: const TextStyle(
-                                          fontFamily: 'CeraPro',
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                      const Text(
-                                        'Why are you cooking today?',
-                                        style: TextStyle(
-                                          fontFamily: 'CeraPro',
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
                               GestureDetector(
-                                onTap: (){
+                                onTap: () {
                                   Navigator.pushNamed(
-                                      context, RouteGenerator.notificationScreen);},
+                                    context,
+                                    RouteGenerator.accountScreen,
+                                  );
+                                },
                                 child: Container(
-                                  margin: const EdgeInsets.only(right: 10),
-                                  child: const Icon(
-                                    Icons.notifications_outlined,
-                                    size: 30,
+                                  height: 60,
+                                  width: 60,
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(50),
+                                    child: CachedNetworkImage(
+                                      imageUrl: userCurrent!.avatar,
+                                      fit: BoxFit.contain,
+                                    ),
                                   ),
                                 ),
                               ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Hi ${userCurrent!.name}',
+                                    style: const TextStyle(
+                                      fontFamily: 'CeraPro',
+                                      fontSize: 20.0,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const Text(
+                                    'Why are you cooking today?',
+                                    style: TextStyle(
+                                      fontFamily: 'CeraPro',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
-                          );
-                        }
-                      },
-                    );
+                          ),
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.pushNamed(
+                                  context, RouteGenerator.notificationScreen);},
+                            child: Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              child: const Icon(
+                                Icons.notifications_outlined,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
                   },
                 ),
                 const SizedBox(

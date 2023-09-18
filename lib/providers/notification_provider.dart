@@ -17,6 +17,18 @@ class NotificationProvider extends ChangeNotifier{
     init();
   }
 
+  Future<void> markAllRead() async {
+    print('Sang');
+    for(var notification in notifications){
+      final noti = notification['notification'] as NotificationModel;
+      noti.read = true;
+
+
+      await updateNotification(noti);
+
+    }
+  }
+
   Future<void> init() async {
 
     _notifications = await _notificationRepository.getListNotification();

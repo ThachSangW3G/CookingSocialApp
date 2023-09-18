@@ -4,6 +4,7 @@ import 'package:cooking_social_app/models/recipe_cookbook.dart';
 import 'package:cooking_social_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import '../models/notification_model.dart';
 
@@ -119,10 +120,11 @@ class NotificationItem extends StatelessWidget {
               ),
             ),
           ),
-          const Flexible(
+          Flexible(
             flex: 1,
             child: Text(
-              "timem",
+              calculateTimeAgo(notification.time.toDate()),
+              textAlign: TextAlign.end,
               style: kLabelTextStyle,
             ),
           ),
@@ -130,4 +132,9 @@ class NotificationItem extends StatelessWidget {
       ),
     );
   }
+}
+
+String calculateTimeAgo(DateTime dateTime) {
+  DateTime now = DateTime.now();
+  return timeago.format(now.subtract(now.difference(dateTime)));
 }

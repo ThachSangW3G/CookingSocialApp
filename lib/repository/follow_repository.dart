@@ -5,6 +5,8 @@ abstract class FollowRepository{
   Future<void> addFollow(FollowModel followModel);
   Future<FollowModel> followExist(String idUserOwner, String idUserFollower);
   Future<void> deleteFollow(FollowModel followModel);
+  Future<int> getFollower(String idUser);
+  Future<int> getFollowing(String idUser);
 }
 
 class FollowRepositoryImpl implements FollowRepository{
@@ -27,6 +29,16 @@ class FollowRepositoryImpl implements FollowRepository{
   @override
   Future<void> deleteFollow(FollowModel followModel) {
     return _firestoreService.deleteFollow(followModel);
+  }
+
+  @override
+  Future<int> getFollower(String idUser) {
+    return _firestoreService.getFollower(idUser);
+  }
+
+  @override
+  Future<int> getFollowing(String idUser) {
+    return _firestoreService.getFollowing(idUser);
   }
 
 

@@ -35,6 +35,7 @@ class _GroceryScreenState extends State<GroceryScreen> {
               fontWeight: FontWeight.w800
           ),
         ),
+        leading: Container(),
         centerTitle: true,
         actions: [
           GestureDetector(

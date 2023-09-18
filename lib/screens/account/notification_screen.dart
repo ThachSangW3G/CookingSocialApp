@@ -85,6 +85,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         RouteGenerator.accountpersonScreen,
                         arguments: notificationUpdate.idUserGuest);
                   }
+                  // else if(notificationUpdate.type == 'newReview'){
+                  //   Navigator.of(context).pushNamed(
+                  //       RouteGenerator.reviewScreen,
+                  //       arguments: dataNotification['recipe'] as Recipe);
+                  // }
 
                 },
                 child: NotificationItem(
@@ -126,7 +131,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
         height: 40,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: AppColors.appYellow),
-          onPressed: () {},
+          onPressed: () {
+            notificationProvider.markAllRead();
+            print('Sang');
+          },
           child: const Center(
             child: Text(
               'Mark all as Read',
