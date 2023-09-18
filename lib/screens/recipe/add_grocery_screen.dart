@@ -35,6 +35,7 @@ class _AddGroceryState extends State<AddGroceryScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             _showGobackPopup(context);
+            // Navigator.of(context).pop();
           },
         ),
         actions: [
@@ -103,13 +104,17 @@ class _AddGroceryState extends State<AddGroceryScreen> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                
+                print('Go back successfully');
               },
               child: const Text('OK'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                print('Go back UNsuccessfully');
+
               },
               child: const Text('Cancle'),
             ),

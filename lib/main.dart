@@ -18,7 +18,10 @@ import 'package:cooking_social_app/providers/user_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
+import 'package:cooking_social_app/screens/calendar/calendar_screen.dart';
+import 'package:cooking_social_app/screens/grocery/grocery_screen.dart';
 import 'package:cooking_social_app/screens/home/home_screen.dart';
+import 'package:cooking_social_app/screens/recipe/recipe_add_screen.dart';
 import 'package:cooking_social_app/screens/recipe/recipe_edit_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/recipe_details_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -81,9 +84,10 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       onGenerateRoute: RouteGenerator.generatorRoute,
-      home: authenticationStateProvider.isLoggedIn
-          ? const HomeScreen()
-          : const LoginScreen(),
+      // home: authenticationStateProvider.isLoggedIn
+      //     ? const HomeScreen()
+      //     : const LoginScreen(),
+        home: RecipeEditScreen(),
     );
   }
 }
