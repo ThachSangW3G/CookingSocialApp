@@ -11,7 +11,7 @@ class RecipeStateProvider extends ChangeNotifier {
     //try {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('recipes')
-        .where('key', isEqualTo: key)
+        .where('id', isEqualTo: key)
         .get();
     List<Recipe> fetchedRecipe = [];
     for (var doc in snapshot.docs) {
