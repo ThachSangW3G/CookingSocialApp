@@ -1,12 +1,16 @@
+import 'dart:io';
+
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/widgets/recipe_ingredients_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_intro_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_steps_edit_view.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:cooking_social_app/widgets/yes_no_slider.dart';
-import 'package:cooking_social_app/widgets/yes_no_switch.dart';
+//import 'package:cooking_social_app/widgets/yes_no_switch.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:path/path.dart' as path;
+//import 'package:flutter/services.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 
 // enum Choice { A, B, C }
 
@@ -18,11 +22,92 @@ class RecipeEditScreen extends StatefulWidget {
 }
 
 class _RecipeEditScreenState extends State<RecipeEditScreen>
-  with SingleTickerProviderStateMixin {
-    late TabController _tabController;
-    int _selectedTabIndex = 0;
+    with SingleTickerProviderStateMixin {
+  final GlobalKey<RecipeIntroEditState> tab1Key =
+      GlobalKey<RecipeIntroEditState>();
+  final GlobalKey<RecipeIngredientsEditState> tab2Key =
+      GlobalKey<RecipeIngredientsEditState>();
+  final GlobalKey<RecipeStepsEditState> tab3Key =
+      GlobalKey<RecipeStepsEditState>();
+  String? _name;
+  String? _url;
+  int? _cookTime;
+  String? _description;
+  String? _difficult;
+  bool? _isPublic;
+  int? _server;
+  String? _source;
+  //List<String>? _steps;
+
+  late TabController _tabController;
+  int _selectedTabIndex = 0;
 
   // Choice selectedChoice = Choice.A;
+
+  void getDataFromTabs() async {
+    //get Data tab intro
+    String name = tab1Key.currentState?.getName() ?? '';
+    String? source = tab1Key.currentState?.getUrl() ?? '';
+    int? cookTime = tab1Key.currentState?.getCookTime() ?? 0;
+    String? description = tab1Key.currentState?.getDescription() ?? '';
+    String? difficult = tab1Key.currentState?.getDifficult() ?? '';
+    bool? isPublic = tab1Key.currentState?.isPublic() ?? false;
+    int? server = tab1Key.currentState?.getServes() ?? 0;
+    File? getFile = tab1Key.currentState?.getFile();
+    String? url = await upLoadFileToFirebase(getFile!);
+    print(name);
+    //print(url);
+    print(cookTime);
+    print(description);
+    print(difficult);
+    print(isPublic.toString());
+    print(server);
+    print(url);
+    setState(() {
+      _name = name;
+      _source = source;
+      _cookTime = cookTime;
+      _description = description;
+      _difficult = difficult;
+      _isPublic = isPublic;
+      _server = server;
+      _url = url;
+    });
+  }
+
+  Future<String> upLoadFileToFirebase(File file) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      // Tạo tham chiếu đến vị trí lưu trữ trên Firebase Storage
+      String fileName = path.basename(file.path);
+      Reference ref = storage.ref().child(
+          'images/$fileName'); // Thay đổi 'images/image.jpg' thành đường dẫn bạn muốn lưu trữ tệp tin
+
+      // Tải lên tệp tin lên Firebase Storage
+      UploadTask uploadTask = ref.putFile(file);
+
+      // Lắng nghe sự kiện tiến trình tải lên
+      uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+        print('Progress: ${snapshot.bytesTransferred}/${snapshot.totalBytes}');
+      }, onError: (Object e) {
+        // Xử lý lỗi nếu có
+        //print('Upload error: $e');
+      });
+
+      // Đợi cho đến khi quá trình tải lên hoàn thành
+      await uploadTask.whenComplete(() {
+        //print('Upload complete');
+      });
+
+      // Lấy URL của tệp tin đã tải lên
+      String downloadURL = await ref.getDownloadURL();
+      print('Download URL: $downloadURL');
+      return downloadURL;
+    } catch (e) {
+      print('Error uploading file: $e');
+      return "https://anestisxasapotaverna.gr/wp-content/uploads/2021/12/ARTICLE-1.jpg";
+    }
+  }
 
   @override
   void initState() {
@@ -57,6 +142,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         actions: [
           TextButton(
             onPressed: () {
+              getDataFromTabs();
               // Xử lý sự kiện khi người dùng nhấn vào nút
             },
             child: const Text(
@@ -94,56 +180,58 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          const RecipeIntroEdit(),
+          RecipeIntroEdit(key: tab1Key),
           Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 30),
-            child: Stack(
-              children: [
-                const Column(
-                  children: [
-                    RecipeIngredientsEdit(),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        // Xử lý khi nút được nhấn
-                      },
-                      child: Icon(Icons.add),
-                      backgroundColor: AppColors.orangeCrusta,
-                      foregroundColor: AppColors.white,
-                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                    
-                    ),
+            child: Stack(children: [
+              Column(
+                children: [
+                  RecipeIngredientsEdit(
+                    key: tab2Key,
+                  ),
+                ],
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      // Xử lý khi nút được nhấn
+                    },
+                    child: const Icon(Icons.add),
+                    backgroundColor: AppColors.orangeCrusta,
+                    foregroundColor: AppColors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
                   ),
                 ),
+              ),
             ]),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 16),
-            child: Stack(
-              children: [
-                RecipeStepsEdit(),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        // Xử lý khi nút được nhấn
-                      },
-                      child: Icon(Icons.add),                      
-                      backgroundColor: AppColors.orangeCrusta,
-                      foregroundColor: AppColors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                    ),
+            child: Stack(children: [
+              RecipeStepsEdit(
+                key: tab3Key,
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      // Xử lý khi nút được nhấn
+                    },
+                    child: Icon(Icons.add),
+                    backgroundColor: AppColors.orangeCrusta,
+                    foregroundColor: AppColors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
                   ),
                 ),
-              ]
               ),
+            ]),
           ),
         ],
       ),

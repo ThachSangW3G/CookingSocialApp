@@ -2,15 +2,21 @@ import 'package:cooking_social_app/widgets/ingredient_edit_card.dart';
 import 'package:flutter/material.dart';
 
 class RecipeIngredientsEdit extends StatefulWidget {
-  const RecipeIngredientsEdit({super.key});
+  const RecipeIngredientsEdit({Key? key}) : super(key: key);
 
   @override
-  State<RecipeIngredientsEdit> createState() => _RecipeIngredientsEditState();
-
+  State<RecipeIngredientsEdit> createState() => RecipeIngredientsEditState();
 }
 
-class _RecipeIngredientsEditState extends State<RecipeIngredientsEdit>{
-  List<String> ingredients = ['Ingredients A', 'Ingredients B', 'Ingredients C', 'Ingredients D', 'Ingredients E', 'Ingredients H'];
+class RecipeIngredientsEditState extends State<RecipeIngredientsEdit> {
+  List<String> ingredients = [
+    'Ingredients A',
+    'Ingredients B',
+    'Ingredients C',
+    'Ingredients D',
+    'Ingredients E',
+    'Ingredients H'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +26,8 @@ class _RecipeIngredientsEditState extends State<RecipeIngredientsEdit>{
         shrinkWrap: true,
         physics: AlwaysScrollableScrollPhysics(),
         // physics: const NeverScrollableScrollPhysics(),
-        onReorder: (int oldIndex, int newIndex) { 
-           setState(() {
+        onReorder: (int oldIndex, int newIndex) {
+          setState(() {
             if (newIndex > oldIndex) newIndex -= 1;
             final String step = ingredients.removeAt(oldIndex);
             ingredients.insert(newIndex, step);
