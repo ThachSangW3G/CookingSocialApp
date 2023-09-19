@@ -22,7 +22,6 @@ class RecipeStepsEditState extends State<RecipeStepsEdit> {
             : ReorderableListView(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   for (int index = 0;
                       index < itemProvider.items.length;

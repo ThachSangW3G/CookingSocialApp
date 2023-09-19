@@ -92,7 +92,13 @@ class StepEditCard extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Option'),
+          contentTextStyle: const TextStyle(
+            fontFamily: 'CeraPro',
+          ),
+          title: const Text('Option',
+              style: TextStyle(
+                fontFamily: 'CeraPro',
+              )),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -171,7 +177,12 @@ class StepEditCard extends StatelessWidget {
 
     return ListTile(
       leading: icon,
-      title: Text(text),
+      title: Text(
+        text,
+        style: const TextStyle(
+          fontFamily: 'CeraPro',
+        ),
+      ),
       onTap: () {
         // Xử lý khi tùy chọn được chọn
         _handleOptionSelection(option, context);
@@ -205,7 +216,7 @@ class StepEditCard extends StatelessWidget {
               onUpdateItem: (updatedItemName) {
                 Provider.of<StepsProvider>(context, listen: false)
                     .updateItem(step.id, updatedItemName);
-                Navigator.pop(context);
+                //Navigator.pop(context);
               });
         }));
     // Xử lý khi tùy chọn "Edit" được chọn
