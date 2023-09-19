@@ -19,4 +19,30 @@ class UserModel {
       bio: json['bio'] ?? ""
     );
   }
+
+   Map<String, dynamic> toJson(){
+    return {
+      'uid': uid,
+      'avatar': avatar,
+      'email': email,
+      'name': name,
+      'bio': bio,
+    };
+  }
+
+   set _avatar(String value) {
+    avatar = value;
+  }
+
+  set _email(String value) {
+    email = value;
+  }
+
+  set _name(String value) {
+    name = value;
+  }
+
+  set _bio(String value) {
+    bio = value;
+  }
 }

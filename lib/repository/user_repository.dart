@@ -5,6 +5,7 @@ import 'package:cooking_social_app/remote/user_firestore_service.dart';
 abstract class UserRepository {
   Future<UserModel> getUser(String uid);
   Future<List<UserModel>> getAllUsers();
+  Future<void> updateUser(UserModel userModel);
 }
 
 class UserRepositoryImpl implements UserRepository{
@@ -21,6 +22,11 @@ class UserRepositoryImpl implements UserRepository{
   @override
   Future<List<UserModel>> getAllUsers() {
     return _userFirestoreService.getAllUsers();
+  }
+  
+  @override
+  Future<void> updateUser(UserModel userModel) {
+    return _userFirestoreService.updateUser(userModel);
   }
 
 }

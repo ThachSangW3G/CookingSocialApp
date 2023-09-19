@@ -4,6 +4,7 @@ import 'package:cooking_social_app/models/user_model.dart';
 abstract class UserDataService{
   Future<UserModel> getUser(String uid);
   Future<List<UserModel>> getAllUsers();
+  Future<void> updateUser(UserModel user);
 }
 
 class UserFirestoreService implements UserDataService{
@@ -34,6 +35,10 @@ class UserFirestoreService implements UserDataService{
     return Future.value(userList);
   }
 
+  @override
+  Future<void> updateUser(UserModel userModel) {
+    return users.doc(userModel.uid).update(userModel.toJson()).then((value) => print(''));
+  }
 
 
 }

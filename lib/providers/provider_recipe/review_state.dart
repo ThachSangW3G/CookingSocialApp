@@ -8,6 +8,9 @@ class ReviewStateProvider extends ChangeNotifier {
   List<Review> _review = [];
   List<Review> get review => _review;
 
+  List<Review> _reviewByUser = [];
+  List<Review> get reviewByUser => _reviewByUser;
+
   Future<List<Review>> fetchReview(String key) async {
     // try {
     List<Review> fetchedReview = [];
@@ -60,6 +63,68 @@ class ReviewStateProvider extends ChangeNotifier {
       fetchedReview.add(review);
     }
     _review = fetchedReview;
+    //notifyListeners();
+    //print(_review.length.toString() + "hddddddddddddddddd");
+    //print(_review[0].description);
+    return Future.value(_review);
+    // } catch (e) {
+    //   debugPrint(e as String?);
+    // }
+    // return null;
+  }
+
+  Future<List<Review>> fetchReviewByUser(String userUid) async {
+    // try {
+    List<Review> fetchedReviewByUser = [];
+    //
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('reviews')
+        .where('uidUser', isEqualTo: userUid)
+        .get();
+    for (var doc in snapshot.docs) {
+      String uidUser = doc['uidUser'];
+      String description = doc['description'];
+      String key = doc['key'];
+      Timestamp timestamp = doc['time'];
+      String keyRecipe = doc['keyRecipe'];
+
+      //
+      DateTime dateTime = timestamp.toDate();
+
+      // Sử dụng DateTime và timeago để hiển thị khoảng thời gian
+      String timeAgo = calculateTimeAgo(dateTime);
+      //
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uidUser)
+          .get();
+
+      String name = userSnapshot['name'];
+      String avatar = userSnapshot['avatar'];
+      //
+      QuerySnapshot snapshotLike = await FirebaseFirestore.instance
+          .collection('reviewlike')
+          .where('keyReview', isEqualTo: key)
+          .get();
+      bool check = false;
+      for (var docs in snapshotLike.docs) {
+        if (docs['uidUser'] == FirebaseAuth.instance.currentUser?.uid) {
+          check = true;
+          break;
+        }
+      }
+      Review review = Review(
+          uidUser: uidUser,
+          description: description,
+          key: key,
+          avatar: avatar,
+          name: name,
+          time: timeAgo,
+          keyRecipe: keyRecipe,
+          check: check);
+      fetchedReviewByUser.add(review);
+    }
+    _review = fetchedReviewByUser;
     //notifyListeners();
     //print(_review.length.toString() + "hddddddddddddddddd");
     //print(_review[0].description);
