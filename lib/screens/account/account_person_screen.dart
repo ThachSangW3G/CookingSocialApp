@@ -7,6 +7,7 @@ import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/follow_provider.dart';
 import 'package:cooking_social_app/providers/notification_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:cooking_social_app/widgets/list_cookbook_widget.dart';
 import 'package:cooking_social_app/widgets/post_widget.dart';
 import 'package:cooking_social_app/widgets/reviews_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,7 +35,7 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
   late Future<UserModel> _userModelFuture;
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _userModelFuture = Provider.of<UserProvider>(context, listen: false).getUser(widget.idUser);
     super.initState();
   }
@@ -310,6 +311,20 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                     ),
                                   ),
 
+                                  Tab(
+                                    child: Container(
+                                      width: 280,
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Cookbooks',
+                                        style: TextStyle(
+                                            fontFamily: 'CeraPro',
+                                            fontSize: 15),
+                                      ),
+                                    ),
+                                  ),
+
+
                                   // second tab [you can add an icon using the icon property]
                                   Tab(
                                     child: Container(
@@ -333,12 +348,13 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                   .size
                                   .height,
                               width: double.infinity,
-                              // child: TabBarView(
-                              //     controller: _tabController,
-                              //     children: const [
-                              //       //PostWidget(),
-                              //       //ReviewWidget()
-                              //     ]),
+                              child: TabBarView(
+                                  controller: _tabController,
+                                  children: const [
+                                    PostWidget(),
+                                    ListCookbookWidget(),
+                                    ReviewWidget()
+                                  ]),
                             )
                           ],
                         )

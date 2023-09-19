@@ -28,10 +28,14 @@ class RecipeProvider extends ChangeNotifier {
 
   String get sort => _sort;
 
+  List<int> selected = [];
+  List<int> unSelected = [];
+
   RecipeProvider() {
     _recipeRepository = RecipeRepositoryImpl();
     _featureRepository = FeatureRepositoryImpl();
     init();
+    initSelect();
   }
 
   init() async {
@@ -137,6 +141,29 @@ class RecipeProvider extends ChangeNotifier {
     }else{
       return false;
     }
+  }
+
+
+   initSelect(){
+    selected = [];
+    unSelected = List<int>.generate(recipes.length, (index) => index);
+
+    notifyListeners();
+  }
+
+   addSelected(int index){
+    selected.add(index);
+    unSelected.remove(index);
+
+
+    notifyListeners();
+  }
+
+   removeSelected(int index){
+    unSelected.add(index);
+    selected.remove(index);
+
+    notifyListeners();
   }
 
 
