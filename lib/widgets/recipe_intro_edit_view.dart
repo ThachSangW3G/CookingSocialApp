@@ -1,13 +1,15 @@
 import 'dart:io';
 import 'dart:math';
-
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/providers/adddata_provider/intro_provider.dart';
 import 'package:cooking_social_app/widgets/yes_no_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 enum Difficulty { Difficult, Medium, Easy }
 
@@ -18,67 +20,73 @@ class RecipeIntroEdit extends StatefulWidget {
 }
 
 class RecipeIntroEditState extends State<RecipeIntroEdit> {
+  //final TextEditingController _textEditingController = TextEditingController();
   //Data
-  String? _name;
-  String? _url;
-  int _cookTime = 0;
-  String? _description;
-  bool? _isPublic = false;
-  int? _server;
-  //String? _source;
-  Difficulty selectedDifficulty = Difficulty.Difficult;
-  File? _file;
+  // String? _name;
+  // String? _url;
+  // int _cookTime = 0;
+  // // String? _description;
+  // bool _isPublic = false;
+  // // int? _server;
+  // // //String? _source;
+  // Difficulty selectedDifficulty = Difficulty.Difficult;
+
+  // File? _file;
   //Get data
-  String? getName() {
-    return _name;
-  }
+  // String? getName() {
+  //   return _name;
+  // }
 
-  String? getUrl() {
-    return _url;
-  }
+  // String? getUrl() {
+  //   return _url;
+  // }
 
-  int? getCookTime() {
-    return _cookTime;
-  }
+  // int? getCookTime() {
+  //   return _cookTime;
+  // }
 
-  String? getDescription() {
-    return _description;
-  }
+  // String? getDescription() {
+  //   return _description;
+  // }
 
-  String? getDifficult() {
-    return selectedDifficulty.name;
-  }
+  // String? getDifficult() {
+  //   return selectedDifficulty.name;
+  // }
 
-  bool? isPublic() {
-    return _isPublic;
-  }
+  // bool? isPublic() {
+  //   return _isPublic;
+  // }
 
-  int? getServes() {
-    return _server;
-  }
+  // int? getServes() {
+  //   return _server;
+  // }
 
-  File? getFile() {
-    return _file;
-  }
+  // File? getFile() {
+  //   return _file;
+  // }
 
-  Future<void> _pickImageFromGallery() async {
-    try {
-      XFile? pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        File file = File(pickedFile.path);
-        setState(() {
-          _file = file;
-        });
-        // Thực hiện các thao tác tiếp theo với file...
-      }
-    } catch (e) {
-      print('Error picking image: $e');
-    }
-  }
+  // Future<void> _pickImageFromGallery() async {
+  //   try {
+  //     XFile? pickedFile =
+  //         await ImagePicker().pickImage(source: ImageSource.gallery);
+  //     if (pickedFile != null) {
+  //       File file = File(pickedFile.path);
+
+  //       setState(() {
+  //         _file = file;
+  //         Provider.of<IntroProvider>(context).updateIntro(file: file);
+  //       });
+  //       // Thực hiện các thao tác tiếp theo với file...
+  //     }
+  //   } catch (e) {
+  //     print('Error picking image: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final introProvider = Provider.of<IntroProvider>(context);
+    final intro = introProvider.intro;
     return SingleChildScrollView(
         child: Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
@@ -86,14 +94,23 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextField(
+          TextFormField(
+            initialValue: intro.name,
+            validator: (value) =>
+                (value?.isEmpty ?? true) ? 'Title is required' : null,
             onChanged: (value) {
-              _name = value;
+              setState(() {
+                introProvider.updateIntro(name: value);
+              });
             },
+            //controller: _textEditingController,
             decoration: const InputDecoration(
               contentPadding:
                   EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
               labelText: 'Title',
+              // errorText: _textEditingController.text.isEmpty
+              //     ? 'Giá trị không được để trống'
+              //     : null,
               labelStyle: TextStyle(
                   fontFamily: 'CeraPro',
                   // fontSize: 14,
@@ -114,9 +131,11 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
           Row(
             children: [
               Expanded(
-                child: TextField(
+                child: TextFormField(
+                  initialValue:
+                      intro.cookTime == null ? '' : intro.cookTime.toString(),
                   onChanged: (value) {
-                    _cookTime += int.parse(value);
+                    introProvider.updateIntro(cookTime: int.parse(value));
                   },
                   decoration: const InputDecoration(
                       contentPadding:
@@ -133,15 +152,21 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                 width: 16,
               ),
               Expanded(
-                child: TextField(
+                child: TextFormField(
+                  initialValue: intro.cookTimeHour == null
+                      ? ''
+                      : intro.cookTimeHour.toString(),
                   onChanged: (value) {
-                    _cookTime += int.parse(value) * 60;
+                    introProvider.updateIntro(cookTime: int.parse(value));
                   },
                   decoration: const InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    labelText: 'hours',
-                  ),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                      labelText: 'hours',
+                      labelStyle: TextStyle(
+                          fontFamily: 'CeraPro',
+                          // fontSize: 14,
+                          fontWeight: FontWeight.w400)),
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
@@ -154,9 +179,9 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
           ),
           Stack(children: [
             ClipRRect(
-              child: _file != null
+              child: intro.file != null
                   ? Image.file(
-                      _file!,
+                      intro.file!,
                       width: MediaQuery.of(context).size.width,
                       height: 208,
                       fit: BoxFit.cover,
@@ -172,7 +197,19 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
               top: 16.0,
               right: 16.0,
               child: InkWell(
-                onTap: _pickImageFromGallery,
+                onTap: () async {
+                  try {
+                    XFile? pickedFile = await ImagePicker()
+                        .pickImage(source: ImageSource.gallery);
+                    if (pickedFile != null) {
+                      File file = File(pickedFile.path);
+                      introProvider.updateIntro(file: file);
+                      // Thực hiện các thao tác tiếp theo với file...
+                    }
+                  } catch (e) {
+                    print('Error picking image: $e');
+                  }
+                },
                 child: Container(
                   height: 40,
                   width: 40,
@@ -197,9 +234,10 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
           const SizedBox(
             height: 24,
           ),
-          TextField(
+          TextFormField(
+            initialValue: intro.description,
             onChanged: (value) {
-              _description = value;
+              introProvider.updateIntro(description: value);
             },
             decoration: const InputDecoration(
                 contentPadding:
@@ -227,12 +265,14 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Difficulty'),
+                  const Text(
+                    'Difficulty',
+                    style: TextStyle(fontFamily: "CeraPro"),
+                  ),
                   SizedBox(
                     width: 160,
-                    child: DropdownButton<Difficulty>(
-                      value: selectedDifficulty,
-
+                    child: DropdownButton<String>(
+                      value: intro.difficult,
                       // style: const TextStyle(
                       // fontFamily: 'CeraPro',
                       // fontSize: 16,
@@ -253,16 +293,14 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                           width: 8,
                         ),
                       ),
-                      onChanged: (Difficulty? value) {
-                        setState(() {
-                          selectedDifficulty = value!;
-                        });
+                      onChanged: (String? value) {
+                        introProvider.updateIntro(difficult: value);
                       },
                       items: const [
-                        DropdownMenuItem<Difficulty>(
-                          value: Difficulty.Easy,
+                        DropdownMenuItem<String>(
+                          value: "Easy",
                           child: Align(
-                              alignment: Alignment.centerLeft,
+                              alignment: Alignment.center,
                               child: Text('Easy',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -271,10 +309,10 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                                   ),
                                   textAlign: TextAlign.right)),
                         ),
-                        DropdownMenuItem<Difficulty>(
-                          value: Difficulty.Medium,
+                        DropdownMenuItem<String>(
+                          value: 'Medium',
                           child: Align(
-                              alignment: Alignment.centerLeft,
+                              alignment: Alignment.center,
                               child: Text('Medium',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -283,10 +321,10 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                                   ),
                                   textAlign: TextAlign.right)),
                         ),
-                        DropdownMenuItem<Difficulty>(
-                          value: Difficulty.Difficult,
+                        DropdownMenuItem<String>(
+                          value: 'Difficult',
                           child: Align(
-                              alignment: Alignment.centerLeft,
+                              alignment: Alignment.center,
                               child: Text('Difficult',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w400,
@@ -304,9 +342,11 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
               //   width: 16,
               // ),
               Expanded(
-                child: TextField(
+                child: TextFormField(
+                  initialValue:
+                      intro.server == null ? '' : intro.server.toString(),
                   onChanged: (value) {
-                    _server = int.parse(value);
+                    introProvider.updateIntro(server: int.parse(value));
                   },
                   decoration: const InputDecoration(
                     contentPadding:
@@ -340,11 +380,9 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                   ),
                   Expanded(
                     child: Switch(
-                      value: _isPublic!,
+                      value: intro.isPublic!,
                       onChanged: (bool newValue) {
-                        setState(() {
-                          _isPublic = newValue;
-                        });
+                        introProvider.updateIntro(isPublic: newValue);
                       },
                       activeColor: AppColors.orangeCrusta,
                       inactiveTrackColor: AppColors.greyDark,
@@ -363,9 +401,10 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
           const SizedBox(
             height: 24,
           ),
-          TextField(
+          TextFormField(
+            initialValue: intro.source,
             onChanged: (value) {
-              //_source = value;
+              introProvider.updateIntro(source: value);
             },
             decoration: const InputDecoration(
                 contentPadding:
@@ -381,9 +420,10 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
           const SizedBox(
             height: 24,
           ),
-          TextField(
+          TextFormField(
+            initialValue: intro.url,
             onChanged: (value) {
-              _url = value;
+              introProvider.updateIntro(url: value);
             },
             decoration: const InputDecoration(
                 contentPadding:
