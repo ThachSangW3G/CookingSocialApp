@@ -33,7 +33,7 @@ class Recipe {
 
   factory Recipe.fromJson(Map<String, dynamic> json) {
     return Recipe(
-        key: json['key'] as String,
+        key: json['id'] as String,
         url: json['URL'] as String,
         name: json['name'] as String,
         cookTime: json['cookTime'] as int,

@@ -1,12 +1,23 @@
+import 'dart:io';
+
+import 'package:cooking_social_app/components/additem_dialog.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/providers/adddata_provider/material_provider.dart';
+import 'package:cooking_social_app/providers/adddata_provider/spice_provder.dart';
+import 'package:cooking_social_app/providers/adddata_provider/steps_provider.dart';
+import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/widgets/recipe_ingredients_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_intro_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_steps_edit_view.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:cooking_social_app/widgets/yes_no_slider.dart';
-import 'package:cooking_social_app/widgets/yes_no_switch.dart';
+//import 'package:cooking_social_app/widgets/yes_no_switch.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
+//import 'package:flutter/services.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 
 // enum Choice { A, B, C }
 
@@ -18,11 +29,92 @@ class RecipeEditScreen extends StatefulWidget {
 }
 
 class _RecipeEditScreenState extends State<RecipeEditScreen>
-  with SingleTickerProviderStateMixin {
-    late TabController _tabController;
-    int _selectedTabIndex = 0;
+    with SingleTickerProviderStateMixin {
+  final GlobalKey<RecipeIntroEditState> tab1Key =
+      GlobalKey<RecipeIntroEditState>();
+  final GlobalKey<RecipeIngredientsEditState> tab2Key =
+      GlobalKey<RecipeIngredientsEditState>();
+  final GlobalKey<RecipeStepsEditState> tab3Key =
+      GlobalKey<RecipeStepsEditState>();
+  String? _name;
+  String? _url;
+  int? _cookTime;
+  String? _description;
+  String? _difficult;
+  bool? _isPublic;
+  int? _server;
+  String? _source;
+  //List<String>? _steps;
+
+  late TabController _tabController;
+  int _selectedTabIndex = 0;
 
   // Choice selectedChoice = Choice.A;
+
+  void getDataFromTabs() async {
+    //get Data tab intro
+    String name = tab1Key.currentState?.getName() ?? '';
+    String? source = tab1Key.currentState?.getUrl() ?? '';
+    int? cookTime = tab1Key.currentState?.getCookTime() ?? 0;
+    String? description = tab1Key.currentState?.getDescription() ?? '';
+    String? difficult = tab1Key.currentState?.getDifficult() ?? '';
+    bool? isPublic = tab1Key.currentState?.isPublic() ?? false;
+    int? server = tab1Key.currentState?.getServes() ?? 0;
+    File? getFile = tab1Key.currentState?.getFile();
+    String? url = await upLoadFileToFirebase(getFile!);
+    print(name);
+    //print(url);
+    print(cookTime);
+    print(description);
+    print(difficult);
+    print(isPublic.toString());
+    print(server);
+    print(url);
+    setState(() {
+      _name = name;
+      _source = source;
+      _cookTime = cookTime;
+      _description = description;
+      _difficult = difficult;
+      _isPublic = isPublic;
+      _server = server;
+      _url = url;
+    });
+  }
+
+  Future<String> upLoadFileToFirebase(File file) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      // Tạo tham chiếu đến vị trí lưu trữ trên Firebase Storage
+      String fileName = path.basename(file.path);
+      Reference ref = storage.ref().child(
+          'images/$fileName'); // Thay đổi 'images/image.jpg' thành đường dẫn bạn muốn lưu trữ tệp tin
+
+      // Tải lên tệp tin lên Firebase Storage
+      UploadTask uploadTask = ref.putFile(file);
+
+      // Lắng nghe sự kiện tiến trình tải lên
+      uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+        print('Progress: ${snapshot.bytesTransferred}/${snapshot.totalBytes}');
+      }, onError: (Object e) {
+        // Xử lý lỗi nếu có
+        //print('Upload error: $e');
+      });
+
+      // Đợi cho đến khi quá trình tải lên hoàn thành
+      await uploadTask.whenComplete(() {
+        //print('Upload complete');
+      });
+
+      // Lấy URL của tệp tin đã tải lên
+      String downloadURL = await ref.getDownloadURL();
+      print('Download URL: $downloadURL');
+      return downloadURL;
+    } catch (e) {
+      print('Error uploading file: $e');
+      return "https://anestisxasapotaverna.gr/wp-content/uploads/2021/12/ARTICLE-1.jpg";
+    }
+  }
 
   @override
   void initState() {
@@ -49,7 +141,10 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(
+            Icons.arrow_back_ios_outlined,
+            size: 20,
+          ),
           onPressed: () {
             _showGobackPopup(context);
           },
@@ -57,13 +152,14 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         actions: [
           TextButton(
             onPressed: () {
+              getDataFromTabs();
               // Xử lý sự kiện khi người dùng nhấn vào nút
             },
             child: const Text(
               'Save',
               style: TextStyle(
                 color: AppColors.orangeCrusta,
-                fontSize: 16.0,
+                fontSize: 18.0,
               ),
             ),
           )
@@ -76,12 +172,15 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
             ),
             color: AppColors.orangeCrusta,
           ),
-          labelColor: AppColors.orangeCrusta,
+          //labelColor: AppColors.orangeCrusta,
+          labelColor: AppColors.greyShuttle,
+          unselectedLabelColor: AppColors.greyShuttle,
           labelStyle: const TextStyle(
-              fontFamily: 'CeraPro',
-              fontSize: 18.0,
-              fontWeight: FontWeight.w400,
-              color: AppColors.greyBombay),
+            fontFamily: 'CeraPro',
+            fontSize: 18.0,
+            fontWeight: FontWeight.w400,
+            //color: AppColors.greyBombay),
+          ),
           dividerColor: Colors.white,
           tabs: [
             buildTab(0, 'Intro', 1),
@@ -94,56 +193,84 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       body: TabBarView(
         controller: _tabController,
         children: [
-          const RecipeIntroEdit(),
+          RecipeIntroEdit(key: tab1Key),
           Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 30),
-            child: Stack(
-              children: [
-                const Column(
-                  children: [
-                    RecipeIngredientsEdit(),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        // Xử lý khi nút được nhấn
-                      },
-                      child: Icon(Icons.add),
-                      backgroundColor: AppColors.orangeCrusta,
-                      foregroundColor: AppColors.white,
-                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                    
-                    ),
+            child: Stack(children: [
+              RecipeIngredientsEdit(
+                key: tab2Key,
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      _showOptionMenu(context);
+                    },
+                    backgroundColor: AppColors.orangeCrusta,
+                    foregroundColor: AppColors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    child: const Icon(Icons.add),
                   ),
                 ),
+              ),
             ]),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 16),
-            child: Stack(
-              children: [
-                RecipeStepsEdit(),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: FloatingActionButton(
-                      onPressed: () {
-                        // Xử lý khi nút được nhấn
-                      },
-                      child: Icon(Icons.add),                      
-                      backgroundColor: AppColors.orangeCrusta,
-                      foregroundColor: AppColors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-                    ),
+            child: Stack(children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 35),
+                child: Text(
+                  'Cách Nấu Ăn',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'CeraPro',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black),
+                ),
+              ),
+              Column(
+                children: [
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  RecipeStepsEdit(
+                    key: tab3Key,
+                  ),
+                ],
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AddItemDialog(
+                              onAddItem: (itemName) {
+                                Provider.of<StepsProvider>(context,
+                                        listen: false)
+                                    .addNewItem(itemName);
+                                Navigator.pop(context);
+                              },
+                            );
+                          });
+                      // Xử lý khi nút được nhấn
+                    },
+                    backgroundColor: AppColors.orangeCrusta,
+                    foregroundColor: AppColors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    child: const Icon(Icons.add),
                   ),
                 ),
-              ]
               ),
+            ]),
           ),
         ],
       ),
@@ -158,7 +285,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         });
         _tabController.animateTo(index);
       },
-      child: Container(
+      child: SizedBox(
         height: 36,
         width: (type == 1 ? 103 : 120),
         // color: _selectedTabIndex == index ? AppColors.orangeCrusta : null,
@@ -187,19 +314,143 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                //Navigator.pushNamed(context, RouteGenerator.home);
               },
-              child: const Text('OK'),
+              child: const Text('OK',
+                  style: TextStyle(color: AppColors.orangeCrusta)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancle'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: AppColors.orangeCrusta),
+              ),
             ),
           ],
         );
       },
     );
+  }
+
+  void _showOptionMenu(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentTextStyle: const TextStyle(
+            fontFamily: 'CeraPro',
+          ),
+          title: const Text(
+            'Option',
+            style: TextStyle(
+              fontFamily: 'CeraPro',
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildOptionItem('Spice', context),
+              _buildOptionItem('Material', context),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Đóng',
+                  style: TextStyle(
+                      fontFamily: 'CeraPro', color: AppColors.orangeCrusta)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildOptionItem(String option, BuildContext context) {
+    Widget icon;
+    String text;
+    switch (option) {
+      case 'Spice':
+        icon = SvgPicture.asset(
+          'assets/icon_svg/pencil.svg',
+          height: 20,
+          width: 20,
+        );
+        text = 'Add item Spice';
+        break;
+      case 'Material':
+        icon = SvgPicture.asset(
+          'assets/icon_svg/pencil.svg',
+          height: 20,
+          width: 20,
+        );
+        text = 'Add item Material';
+        break;
+      default:
+        icon = SvgPicture.asset(
+          'assets/icon_svg/pencil.svg',
+          height: 20,
+          width: 20,
+        );
+        text = 'Lỗi';
+    }
+
+    return ListTile(
+      leading: icon,
+      title: Text(
+        text,
+        style: const TextStyle(
+          fontFamily: 'CeraPro',
+        ),
+      ),
+      onTap: () {
+        // Xử lý khi tùy chọn được chọn
+        _handleOptionSelection(option, context);
+      },
+    );
+  }
+
+  void _handleOptionSelection(String option, BuildContext context) {
+    if (option == 'Spice') {
+      Navigator.pop(context);
+      _handleAddSpice(context);
+    } else {
+      if (option == 'Material') {
+        Navigator.pop(context);
+        _handleAddMaterial(context);
+      }
+    }
+  }
+
+  void _handleAddSpice(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: ((context) {
+          return AddItemDialog(onAddItem: (itemName) {
+            Provider.of<SpiceProvider>(context, listen: false)
+                .addNewItem(itemName);
+            Navigator.pop(context);
+          });
+        }));
+    // Xử lý
+    // khi tùy chọn "Edit" được chọn
+  }
+
+  void _handleAddMaterial(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: ((context) {
+          return AddItemDialog(onAddItem: (itemName) {
+            Provider.of<MaterialProvider>(context, listen: false)
+                .addNewItem(itemName);
+            Navigator.pop(context);
+          });
+        }));
+    // Xử lý
+    // khi tùy chọn "Edit" được chọn
   }
 }

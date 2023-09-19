@@ -1,34 +1,96 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/widgets/yes_no_switch.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 enum Difficulty { Difficult, Medium, Easy }
 
 class RecipeIntroEdit extends StatefulWidget {
-  const RecipeIntroEdit({super.key});
-
+  const RecipeIntroEdit({Key? key}) : super(key: key);
   @override
-  State<RecipeIntroEdit> createState() => _RecipeIntroEditState();
-
+  State<RecipeIntroEdit> createState() => RecipeIntroEditState();
 }
 
-class _RecipeIntroEditState extends State<RecipeIntroEdit> {
+class RecipeIntroEditState extends State<RecipeIntroEdit> {
+  //Data
+  String? _name;
+  String? _url;
+  int _cookTime = 0;
+  String? _description;
+  bool? _isPublic = false;
+  int? _server;
+  //String? _source;
   Difficulty selectedDifficulty = Difficulty.Difficult;
+  File? _file;
+  //Get data
+  String? getName() {
+    return _name;
+  }
+
+  String? getUrl() {
+    return _url;
+  }
+
+  int? getCookTime() {
+    return _cookTime;
+  }
+
+  String? getDescription() {
+    return _description;
+  }
+
+  String? getDifficult() {
+    return selectedDifficulty.name;
+  }
+
+  bool? isPublic() {
+    return _isPublic;
+  }
+
+  int? getServes() {
+    return _server;
+  }
+
+  File? getFile() {
+    return _file;
+  }
+
+  Future<void> _pickImageFromGallery() async {
+    try {
+      XFile? pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        File file = File(pickedFile.path);
+        setState(() {
+          _file = file;
+        });
+        // Thực hiện các thao tác tiếp theo với file...
+      }
+    } catch (e) {
+      print('Error picking image: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Container(
-      padding:
-          const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const TextField(
-            decoration: InputDecoration(
+          TextField(
+            onChanged: (value) {
+              _name = value;
+            },
+            decoration: const InputDecoration(
               contentPadding:
                   EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
               labelText: 'Title',
@@ -53,17 +115,18 @@ class _RecipeIntroEditState extends State<RecipeIntroEdit> {
             children: [
               Expanded(
                 child: TextField(
+                  onChanged: (value) {
+                    _cookTime += int.parse(value);
+                  },
                   decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 0.0, horizontal: 0.0),
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                       labelText: 'minutes',
                       labelStyle: TextStyle(
                           fontFamily: 'CeraPro',
                           // fontSize: 14,
                           fontWeight: FontWeight.w400)),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
               const SizedBox(
@@ -71,14 +134,15 @@ class _RecipeIntroEditState extends State<RecipeIntroEdit> {
               ),
               Expanded(
                 child: TextField(
+                  onChanged: (value) {
+                    _cookTime += int.parse(value) * 60;
+                  },
                   decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 0.0, horizontal: 0.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                     labelText: 'hours',
                   ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
             ],
@@ -88,20 +152,55 @@ class _RecipeIntroEditState extends State<RecipeIntroEdit> {
           const SizedBox(
             height: 24,
           ),
-          ClipRRect(
-            child: Image.asset(
-              'assets/images/defaut_food.png',
-              width: MediaQuery.of(context).size.width,
-              height: 208,
-              fit: BoxFit.cover,
+          Stack(children: [
+            ClipRRect(
+              child: _file != null
+                  ? Image.file(
+                      _file!,
+                      width: MediaQuery.of(context).size.width,
+                      height: 208,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/images/image_background.png',
+                      width: MediaQuery.of(context).size.width,
+                      height: 208,
+                      fit: BoxFit.cover,
+                    ),
             ),
-          ),
+            Positioned(
+              top: 16.0,
+              right: 16.0,
+              child: InkWell(
+                onTap: _pickImageFromGallery,
+                child: Container(
+                  height: 40,
+                  width: 40,
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    // shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/icon_svg/pencil.svg',
+                    color: Colors.grey[800],
+                    height: 10,
+                    width: 10,
+                  ),
+                ),
+              ),
+            ),
+          ]),
 
           // DESCRIPTION -------------------------------
           const SizedBox(
             height: 24,
           ),
           TextField(
+            onChanged: (value) {
+              _description = value;
+            },
             decoration: const InputDecoration(
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
@@ -110,9 +209,7 @@ class _RecipeIntroEditState extends State<RecipeIntroEdit> {
                     fontFamily: 'CeraPro',
                     // fontSize: 14,
                     fontWeight: FontWeight.w400)),
-            inputFormatters: [
-              FilteringTextInputFormatter.singleLineFormatter
-            ],
+            inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
             maxLines: null, // Cho phép hiển thị nhiều dòng văn bản
             keyboardType:
                 TextInputType.multiline, // Bàn phím hiển thị dạng đa dòng
@@ -131,7 +228,7 @@ class _RecipeIntroEditState extends State<RecipeIntroEdit> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text('Difficulty'),
-                  Container(
+                  SizedBox(
                     width: 160,
                     child: DropdownButton<Difficulty>(
                       value: selectedDifficulty,
@@ -146,8 +243,8 @@ class _RecipeIntroEditState extends State<RecipeIntroEdit> {
                         color: AppColors.greyBombay,
                       ),
                       isExpanded: true,
-                      alignment: Alignment.bottomCenter,
-                      padding: EdgeInsets.only(top: 8),
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.only(top: 8),
                       icon: Align(
                         alignment: Alignment.centerRight,
                         child: SvgPicture.asset(
@@ -208,14 +305,15 @@ class _RecipeIntroEditState extends State<RecipeIntroEdit> {
               // ),
               Expanded(
                 child: TextField(
+                  onChanged: (value) {
+                    _server = int.parse(value);
+                  },
                   decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                        vertical: 0.0, horizontal: 0.0),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                     labelText: 'Serve',
                   ),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
             ],
@@ -225,23 +323,37 @@ class _RecipeIntroEditState extends State<RecipeIntroEdit> {
           const SizedBox(
             height: 24,
           ),
-          const Row(
+          Row(
             children: [
               Expanded(
                   child: Row(
                 children: [
-                  Text(
+                  const Text(
                     'Publish to Community?',
                     style: TextStyle(
                         fontFamily: 'CeraPro',
                         fontSize: 14,
                         fontWeight: FontWeight.w400),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 180,
                   ),
-                  Expanded(child: YesNoSwitch()),
-                  SizedBox(width: 20,)
+                  Expanded(
+                    child: Switch(
+                      value: _isPublic!,
+                      onChanged: (bool newValue) {
+                        setState(() {
+                          _isPublic = newValue;
+                        });
+                      },
+                      activeColor: AppColors.orangeCrusta,
+                      inactiveTrackColor: AppColors.greyDark,
+                      inactiveThumbColor: AppColors.white,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  )
                 ],
               )),
             ],
@@ -251,8 +363,11 @@ class _RecipeIntroEditState extends State<RecipeIntroEdit> {
           const SizedBox(
             height: 24,
           ),
-          const TextField(
-            decoration: InputDecoration(
+          TextField(
+            onChanged: (value) {
+              //_source = value;
+            },
+            decoration: const InputDecoration(
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                 labelText: 'Source',
@@ -266,8 +381,11 @@ class _RecipeIntroEditState extends State<RecipeIntroEdit> {
           const SizedBox(
             height: 24,
           ),
-          const TextField(
-            decoration: InputDecoration(
+          TextField(
+            onChanged: (value) {
+              _url = value;
+            },
+            decoration: const InputDecoration(
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                 labelText: 'URL',
