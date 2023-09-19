@@ -1,3 +1,4 @@
+import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:flutter/material.dart';
 
 class UpdateItemDialog extends StatefulWidget {
@@ -33,23 +34,33 @@ class _UpdateItemDialogState extends State<UpdateItemDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Update Item'),
+      title: const Text('Update Item',
+          style: TextStyle(
+            fontFamily: 'CeraPro',
+          )),
       content: TextField(
         controller: _textEditingController,
         decoration: const InputDecoration(
           hintText: 'Enter updated item name',
         ),
         maxLines: null,
+        style: const TextStyle(
+          fontFamily: 'CeraPro',
+        ),
       ),
       actions: [
         TextButton(
-          child: const Text('Cancel'),
+          child: const Text('Cancel',
+              style: TextStyle(
+                  fontFamily: 'CeraPro', color: AppColors.orangeCrusta)),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
         TextButton(
-          child: const Text('Update'),
+          child: const Text('Update',
+              style: TextStyle(
+                  fontFamily: 'CeraPro', color: AppColors.orangeCrusta)),
           onPressed: () {
             final updatedItemName = _textEditingController.text;
             if (updatedItemName.isNotEmpty) {

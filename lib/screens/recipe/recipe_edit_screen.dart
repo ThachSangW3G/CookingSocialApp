@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:cooking_social_app/components/additem_dialog.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/providers/adddata_provider/material_provider.dart';
+import 'package:cooking_social_app/providers/adddata_provider/spice_provder.dart';
 import 'package:cooking_social_app/providers/adddata_provider/steps_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/widgets/recipe_ingredients_edit_view.dart';
@@ -11,6 +13,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:cooking_social_app/widgets/yes_no_slider.dart';
 //import 'package:cooking_social_app/widgets/yes_no_switch.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 //import 'package:flutter/services.dart';
@@ -170,7 +173,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
             color: AppColors.orangeCrusta,
           ),
           //labelColor: AppColors.orangeCrusta,
-          labelColor: Colors.white,
+          labelColor: AppColors.greyShuttle,
           unselectedLabelColor: AppColors.greyShuttle,
           labelStyle: const TextStyle(
             fontFamily: 'CeraPro',
@@ -202,7 +205,9 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      _showOptionMenu(context);
+                    },
                     backgroundColor: AppColors.orangeCrusta,
                     foregroundColor: AppColors.white,
                     shape: RoundedRectangleBorder(
@@ -327,5 +332,125 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         );
       },
     );
+  }
+
+  void _showOptionMenu(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentTextStyle: const TextStyle(
+            fontFamily: 'CeraPro',
+          ),
+          title: const Text(
+            'Option',
+            style: TextStyle(
+              fontFamily: 'CeraPro',
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildOptionItem('Spice', context),
+              _buildOptionItem('Material', context),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Đóng',
+                  style: TextStyle(
+                      fontFamily: 'CeraPro', color: AppColors.orangeCrusta)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildOptionItem(String option, BuildContext context) {
+    Widget icon;
+    String text;
+    switch (option) {
+      case 'Spice':
+        icon = SvgPicture.asset(
+          'assets/icon_svg/pencil.svg',
+          height: 20,
+          width: 20,
+        );
+        text = 'Add item Spice';
+        break;
+      case 'Material':
+        icon = SvgPicture.asset(
+          'assets/icon_svg/pencil.svg',
+          height: 20,
+          width: 20,
+        );
+        text = 'Add item Material';
+        break;
+      default:
+        icon = SvgPicture.asset(
+          'assets/icon_svg/pencil.svg',
+          height: 20,
+          width: 20,
+        );
+        text = 'Lỗi';
+    }
+
+    return ListTile(
+      leading: icon,
+      title: Text(
+        text,
+        style: const TextStyle(
+          fontFamily: 'CeraPro',
+        ),
+      ),
+      onTap: () {
+        // Xử lý khi tùy chọn được chọn
+        _handleOptionSelection(option, context);
+      },
+    );
+  }
+
+  void _handleOptionSelection(String option, BuildContext context) {
+    if (option == 'Spice') {
+      Navigator.pop(context);
+      _handleAddSpice(context);
+    } else {
+      if (option == 'Material') {
+        Navigator.pop(context);
+        _handleAddMaterial(context);
+      }
+    }
+  }
+
+  void _handleAddSpice(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: ((context) {
+          return AddItemDialog(onAddItem: (itemName) {
+            Provider.of<SpiceProvider>(context, listen: false)
+                .addNewItem(itemName);
+            Navigator.pop(context);
+          });
+        }));
+    // Xử lý
+    // khi tùy chọn "Edit" được chọn
+  }
+
+  void _handleAddMaterial(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: ((context) {
+          return AddItemDialog(onAddItem: (itemName) {
+            Provider.of<MaterialProvider>(context, listen: false)
+                .addNewItem(itemName);
+            Navigator.pop(context);
+          });
+        }));
+    // Xử lý
+    // khi tùy chọn "Edit" được chọn
   }
 }
