@@ -24,7 +24,7 @@ class RecipeIngredientsEditState extends State<RecipeIngredientsEdit> {
       child: ReorderableListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         shrinkWrap: true,
-        physics: AlwaysScrollableScrollPhysics(),
+        physics: const AlwaysScrollableScrollPhysics(),
         // physics: const NeverScrollableScrollPhysics(),
         onReorder: (int oldIndex, int newIndex) {
           setState(() {
