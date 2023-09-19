@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:cooking_social_app/components/additem_dialog.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/providers/adddata_provider/steps_provider.dart';
+import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/widgets/recipe_ingredients_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_intro_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_steps_edit_view.dart';
@@ -9,6 +12,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 //import 'package:cooking_social_app/widgets/yes_no_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 //import 'package:flutter/services.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
 
@@ -134,7 +138,10 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(
+            Icons.arrow_back_ios_outlined,
+            size: 20,
+          ),
           onPressed: () {
             _showGobackPopup(context);
           },
@@ -149,7 +156,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
               'Save',
               style: TextStyle(
                 color: AppColors.orangeCrusta,
-                fontSize: 16.0,
+                fontSize: 18.0,
               ),
             ),
           )
@@ -162,12 +169,15 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
             ),
             color: AppColors.orangeCrusta,
           ),
-          labelColor: AppColors.orangeCrusta,
+          //labelColor: AppColors.orangeCrusta,
+          labelColor: Colors.white,
+          unselectedLabelColor: AppColors.greyShuttle,
           labelStyle: const TextStyle(
-              fontFamily: 'CeraPro',
-              fontSize: 18.0,
-              fontWeight: FontWeight.w400,
-              color: AppColors.greyBombay),
+            fontFamily: 'CeraPro',
+            fontSize: 18.0,
+            fontWeight: FontWeight.w400,
+            //color: AppColors.greyBombay),
+          ),
           dividerColor: Colors.white,
           tabs: [
             buildTab(0, 'Intro', 1),
@@ -184,10 +194,46 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
           Padding(
             padding: const EdgeInsets.only(top: 16, bottom: 30),
             child: Stack(children: [
+              RecipeIngredientsEdit(
+                key: tab2Key,
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: FloatingActionButton(
+                    onPressed: () {},
+                    backgroundColor: AppColors.orangeCrusta,
+                    foregroundColor: AppColors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
+                    child: const Icon(Icons.add),
+                  ),
+                ),
+              ),
+            ]),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: Stack(children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 35),
+                child: Text(
+                  'Cách Nấu Ăn',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'CeraPro',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black),
+                ),
+              ),
               Column(
                 children: [
-                  RecipeIngredientsEdit(
-                    key: tab2Key,
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  RecipeStepsEdit(
+                    key: tab3Key,
                   ),
                 ],
               ),
@@ -197,37 +243,25 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
                   padding: const EdgeInsets.all(16.0),
                   child: FloatingActionButton(
                     onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AddItemDialog(
+                              onAddItem: (itemName) {
+                                Provider.of<StepsProvider>(context,
+                                        listen: false)
+                                    .addNewItem(itemName);
+                                Navigator.pop(context);
+                              },
+                            );
+                          });
                       // Xử lý khi nút được nhấn
                     },
+                    backgroundColor: AppColors.orangeCrusta,
+                    foregroundColor: AppColors.white,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50)),
                     child: const Icon(Icons.add),
-                    backgroundColor: AppColors.orangeCrusta,
-                    foregroundColor: AppColors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)),
-                  ),
-                ),
-              ),
-            ]),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16),
-            child: Stack(children: [
-              RecipeStepsEdit(
-                key: tab3Key,
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      // Xử lý khi nút được nhấn
-                    },
-                    child: Icon(Icons.add),
-                    backgroundColor: AppColors.orangeCrusta,
-                    foregroundColor: AppColors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)),
                   ),
                 ),
               ),
@@ -246,7 +280,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         });
         _tabController.animateTo(index);
       },
-      child: Container(
+      child: SizedBox(
         height: 36,
         width: (type == 1 ? 103 : 120),
         // color: _selectedTabIndex == index ? AppColors.orangeCrusta : null,
@@ -275,15 +309,19 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                //Navigator.pushNamed(context, RouteGenerator.home);
               },
-              child: const Text('OK'),
+              child: const Text('OK',
+                  style: TextStyle(color: AppColors.orangeCrusta)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancle'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: AppColors.orangeCrusta),
+              ),
             ),
           ],
         );

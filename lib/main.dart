@@ -1,5 +1,6 @@
 // import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 // import 'package:cooking_social_app/screens/recipe/add_grocery_screen.dart';
+import 'package:cooking_social_app/providers/adddata_provider/steps_provider.dart';
 import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/providers/follow_provider.dart';
@@ -62,7 +63,8 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => LikeProvider()),
       ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ChangeNotifierProvider(create: (_) => FollowProvider()),
-      ChangeNotifierProvider(create: (_) => LikeReviewProvider())
+      ChangeNotifierProvider(create: (_) => LikeReviewProvider()),
+      ChangeNotifierProvider(create: (_) => StepsProvider())
     ],
     child: const MyApp(),
   ));
