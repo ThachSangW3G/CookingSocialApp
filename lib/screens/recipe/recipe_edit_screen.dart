@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/additem_dialog.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/providers/adddata_provider/intro_provider.dart';
 import 'package:cooking_social_app/providers/adddata_provider/material_provider.dart';
 import 'package:cooking_social_app/providers/adddata_provider/spice_provder.dart';
 import 'package:cooking_social_app/providers/adddata_provider/steps_provider.dart';
@@ -9,6 +11,7 @@ import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/widgets/recipe_ingredients_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_intro_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_steps_edit_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:cooking_social_app/widgets/yes_no_slider.dart';
 //import 'package:cooking_social_app/widgets/yes_no_switch.dart';
@@ -44,8 +47,10 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
   bool? _isPublic;
   int? _server;
   String? _source;
-  //List<String>? _steps;
-
+  List<Item>? _steps;
+  List<Item>? _materials;
+  List<Item>? _spices;
+  Intro? _intro;
   late TabController _tabController;
   int _selectedTabIndex = 0;
 
@@ -53,23 +58,15 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
 
   void getDataFromTabs() async {
     //get Data tab intro
-    String name = tab1Key.currentState?.getName() ?? '';
-    String? source = tab1Key.currentState?.getUrl() ?? '';
-    int? cookTime = tab1Key.currentState?.getCookTime() ?? 0;
-    String? description = tab1Key.currentState?.getDescription() ?? '';
-    String? difficult = tab1Key.currentState?.getDifficult() ?? '';
-    bool? isPublic = tab1Key.currentState?.isPublic() ?? false;
-    int? server = tab1Key.currentState?.getServes() ?? 0;
-    File? getFile = tab1Key.currentState?.getFile();
+    String? name = _intro?.name;
+    String? source = _intro?.url;
+    int? cookTime = _intro?.cookTime;
+    String? description = _intro?.description;
+    String? difficult = _intro?.difficult;
+    bool? isPublic = _intro?.isPublic;
+    int? server = _intro?.server;
+    File? getFile = _intro?.file;
     String? url = await upLoadFileToFirebase(getFile!);
-    print(name);
-    //print(url);
-    print(cookTime);
-    print(description);
-    print(difficult);
-    print(isPublic.toString());
-    print(server);
-    print(url);
     setState(() {
       _name = name;
       _source = source;
@@ -80,6 +77,41 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       _server = server;
       _url = url;
     });
+    upLoadDataFirestore();
+  }
+
+  void upLoadDataFirestore() async {
+    try {
+      // Khởi tạo Firestore instance
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      // Tạo một document reference và lấy ra ID ngẫu nhiên
+      DocumentReference reviewRef = firestore.collection('reviews').doc();
+
+      List<String> steps = _steps!.map((item) => item.name).toList();
+      List<String> spice = _spices!.map((item) => item.name).toList();
+      List<String> material = _materials!.map((item) => item.name).toList();
+      Map<String, dynamic> recipe = {
+        'id': reviewRef.id,
+        'URL': _url,
+        'cookTime': _cookTime,
+        'description': _description,
+        'difficult': _difficult,
+        'isPublic': _isPublic,
+        'name': _name,
+        'numberLike': 0,
+        'numberReview': 0,
+        'server': _server,
+        'uidUser': FirebaseAuth.instance.currentUser?.uid,
+        'source': _source,
+        'spice': spice,
+        'step': steps,
+        'material': material
+      };
+
+      await reviewRef.set(recipe);
+    } catch (e) {
+      print('Error uploading file: $e');
+    }
   }
 
   Future<String> upLoadFileToFirebase(File file) async {
@@ -152,6 +184,20 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         actions: [
           TextButton(
             onPressed: () {
+              List<Item> steps =
+                  Provider.of<StepsProvider>(context, listen: false).items;
+              List<Item> spices =
+                  Provider.of<SpiceProvider>(context, listen: false).items;
+              List<Item> materials =
+                  Provider.of<MaterialProvider>(context, listen: false).items;
+              Intro intro =
+                  Provider.of<IntroProvider>(context, listen: false).intro;
+              setState(() {
+                _steps = steps;
+                _spices = spices;
+                _materials = materials;
+                _intro = intro;
+              });
               getDataFromTabs();
               // Xử lý sự kiện khi người dùng nhấn vào nút
             },
@@ -159,6 +205,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
               'Save',
               style: TextStyle(
                 color: AppColors.orangeCrusta,
+                fontFamily: "CeraPro",
                 fontSize: 18.0,
               ),
             ),
