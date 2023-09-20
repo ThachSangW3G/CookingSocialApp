@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/app_color.dart';
+import '../providers/provider_authentication/recipe_provider.dart';
 
 class ListCookbookWidget extends StatefulWidget {
   const ListCookbookWidget({super.key});
@@ -18,6 +19,7 @@ class _ListCookbookWidgetState extends State<ListCookbookWidget> {
   @override
   Widget build(BuildContext context) {
     final CookbookProvider cookbookProvider = Provider.of<CookbookProvider>(context);
+    final recipeProvider = Provider.of<RecipeProvider>(context);
     return Container(
       child: Column(
         children: [
@@ -65,7 +67,7 @@ class _ListCookbookWidgetState extends State<ListCookbookWidget> {
                 child: IconButton(
                   onPressed: (){
                     Navigator.pushNamed(context, RouteGenerator.addCookbookScreen);
-
+                    recipeProvider.initSelect();
                   },
                   icon: SvgPicture.asset('assets/icon_svg/playlist-add.svg', height: 35, width: 35, color: AppColors.greyShuttle,
                   ),

@@ -34,8 +34,11 @@ class RecipeProvider extends ChangeNotifier {
   RecipeProvider() {
     _recipeRepository = RecipeRepositoryImpl();
     _featureRepository = FeatureRepositoryImpl();
+
     init();
     initSelect();
+
+
   }
 
   init() async {
@@ -44,6 +47,8 @@ class RecipeProvider extends ChangeNotifier {
     _features = await _featureRepository.getAllFeature(_recipes);
     // print(_recipes.length);
     // print(_recipes.map((recipe) => recipe.name));
+
+    initSelect();
     notifyListeners();
   }
 
@@ -148,6 +153,9 @@ class RecipeProvider extends ChangeNotifier {
     selected = [];
     unSelected = List<int>.generate(recipes.length, (index) => index);
 
+    print(selected);
+    print(unSelected);
+
     notifyListeners();
   }
 
@@ -164,6 +172,15 @@ class RecipeProvider extends ChangeNotifier {
     selected.remove(index);
 
     notifyListeners();
+  }
+
+  List<String> getIdRecipeSelected(){
+    List<String> listId = [];
+    for(var index in selected){
+      listId.add(recipes[index].key);
+    }
+
+    return listId;
   }
 
 

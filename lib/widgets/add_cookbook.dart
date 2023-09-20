@@ -1,10 +1,16 @@
 
+import 'dart:io';
+
+import 'package:cooking_social_app/models/cookbook.dart';
+import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/widgets/edit_information_cookbook.dart';
 import 'package:cooking_social_app/widgets/recipe_item_published_widget.dart';
 import 'package:cooking_social_app/widgets/recipe_select_widget.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as path;
 
 import '../constants/app_color.dart';
 
@@ -20,7 +26,46 @@ class _AddCookbookScreenState extends State<AddCookbookScreen>
   late TabController _tabController;
   int _selectedTabIndex = 0;
 
-  // Choice selectedChoice = Choice.A;
+
+
+  Future<void> getDataFromTabs() async {
+
+  }
+
+  Future<String> upLoadFileToFirebase(File file) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      // Tạo tham chiếu đến vị trí lưu trữ trên Firebase Storage
+      String fileName = path.basename(file.path);
+      Reference ref = storage.ref().child(
+          'images/$fileName'); // Thay đổi 'images/image.jpg' thành đường dẫn bạn muốn lưu trữ tệp tin
+
+      // Tải lên tệp tin lên Firebase Storage
+      UploadTask uploadTask = ref.putFile(file);
+
+      // Lắng nghe sự kiện tiến trình tải lên
+      uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+        print('Progress: ${snapshot.bytesTransferred}/${snapshot.totalBytes}');
+      }, onError: (Object e) {
+        // Xử lý lỗi nếu có
+        //print('Upload error: $e');
+      });
+
+      // Đợi cho đến khi quá trình tải lên hoàn thành
+      await uploadTask.whenComplete(() {
+        //print('Upload complete');
+      });
+
+      // Lấy URL của tệp tin đã tải lên
+      String downloadURL = await ref.getDownloadURL();
+      print('Download URL: $downloadURL');
+      return downloadURL;
+    } catch (e) {
+      print('Error uploading file: $e');
+      return "https://anestisxasapotaverna.gr/wp-content/uploads/2021/12/ARTICLE-1.jpg";
+    }
+  }
+
 
   @override
   void initState() {
@@ -34,13 +79,21 @@ class _AddCookbookScreenState extends State<AddCookbookScreen>
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
 
     final recipeProvider = Provider.of<RecipeProvider>(context);
+    final CookbookProvider cookbookProvider = Provider.of<CookbookProvider>(context);
     final recipes = recipeProvider.recipes;
 
+    print(recipes);
 
     return WillPopScope(
       onWillPop: () async {
@@ -67,8 +120,24 @@ class _AddCookbookScreenState extends State<AddCookbookScreen>
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                // Xử lý sự kiện khi người dùng nhấn vào nút
+              onPressed: () async {
+                //await getDataFromTabs();
+
+                // print(cookbookProvider.file);
+                final CookBook cookbook = CookBook(
+                  id: DateTime.now().toIso8601String(),
+                  title: cookbookProvider.title,
+                  description: cookbookProvider.description,
+                  popularRecipeIndex: 0,
+                  image: await upLoadFileToFirebase(cookbookProvider.file!),
+                  likes: 0,
+                  recipes: recipeProvider.getIdRecipeSelected(),
+
+                );
+
+                cookbookProvider.addCookbook(cookbook);
+
+                Navigator.of(context).pop();
               },
               child: const Text(
                 'Save',
