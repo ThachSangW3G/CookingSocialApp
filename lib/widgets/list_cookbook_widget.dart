@@ -1,6 +1,9 @@
+import 'package:cooking_social_app/models/cookbook.dart';
+import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/widgets/cookbook_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -9,17 +12,28 @@ import '../constants/app_color.dart';
 import '../providers/provider_authentication/recipe_provider.dart';
 
 class ListCookbookWidget extends StatefulWidget {
-  const ListCookbookWidget({super.key});
+
+  final UserModel user;
+  const ListCookbookWidget({super.key, required this.user});
+
+
 
   @override
   State<ListCookbookWidget> createState() => _ListCookbookWidgetState();
 }
 
 class _ListCookbookWidgetState extends State<ListCookbookWidget> {
+
+
+  final userCurrent = FirebaseAuth.instance.currentUser!;
+
   @override
   Widget build(BuildContext context) {
     final CookbookProvider cookbookProvider = Provider.of<CookbookProvider>(context);
     final recipeProvider = Provider.of<RecipeProvider>(context);
+    final bool isOwner = userCurrent.uid ==  widget.user.uid;
+
+
     return Container(
       child: Column(
         children: [
@@ -54,7 +68,7 @@ class _ListCookbookWidgetState extends State<ListCookbookWidget> {
 
                         ),
                         onChanged: (value) {
-
+                          cookbookProvider.search(value, widget.user.uid);
                           //print(recipeProvider!.searchRecipe.length);
                         }
                     ),
@@ -62,7 +76,7 @@ class _ListCookbookWidgetState extends State<ListCookbookWidget> {
                 ),
               ),
 
-              Container(
+              isOwner ? Container(
                 margin: const EdgeInsets.only(right: 10),
                 child: IconButton(
                   onPressed: (){
@@ -72,21 +86,33 @@ class _ListCookbookWidgetState extends State<ListCookbookWidget> {
                   icon: SvgPicture.asset('assets/icon_svg/playlist-add.svg', height: 35, width: 35, color: AppColors.greyShuttle,
                   ),
                 ),
-              )
+              ) : Container()
             ],
           ),
 
           const SizedBox(height: 20,),
 
           Expanded(
-            child: ListView.builder(
-              itemCount: cookbookProvider.cookbooks.length,
-              shrinkWrap: true,
-              //physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index){
-                final cookbook = cookbookProvider.cookbooks[index];
-                return CookBookWidget(cookBook: cookbook);
-              },
+            child: FutureBuilder<List<CookBook>>(
+              future: cookbookProvider.getListCookbookbyIdUser(widget.user.uid),
+              builder: (context, snapshot){
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }else {
+                  final cookbooks = snapshot.data;
+                  return ListView.builder(
+                    itemCount: cookbooks!.length,
+                    shrinkWrap: true,
+                    //physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index){
+                      final cookbook = cookbooks![index];
+                      return CookBookWidget(cookBook: cookbook);
+                    },
+                  );
+                }
+              }
             ),
           )
         ],

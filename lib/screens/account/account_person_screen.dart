@@ -350,10 +350,10 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                               width: double.infinity,
                               child: TabBarView(
                                   controller: _tabController,
-                                  children: const [
-                                    PostWidget(),
-                                    ListCookbookWidget(),
-                                    ReviewWidget()
+                                  children: [
+                                    const PostWidget(),
+                                    ListCookbookWidget(user: userModel,),
+                                    const ReviewWidget()
                                   ]),
                             )
                           ],

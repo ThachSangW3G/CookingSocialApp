@@ -15,6 +15,12 @@ class CookbookProvider extends ChangeNotifier{
   String description = '';
   File? file;
 
+  String searchText = '';
+  List<CookBook> searchCookbook = [];
+
+  int pageCurrent = 1;
+  PageController pageController = PageController();
+
   CookbookProvider(){
     _cookbookRepository = CookbookRepositoryImpl();
     init();
@@ -24,6 +30,10 @@ class CookbookProvider extends ChangeNotifier{
     _cookbooks = await _cookbookRepository.getAllCookbooks();
 
     notifyListeners();
+  }
+
+  Future<List<CookBook>> getListCookbook(){
+    return _cookbookRepository.getAllCookbooks();
   }
 
   addCookbook(CookBook cookBook) async {
@@ -45,4 +55,31 @@ class CookbookProvider extends ChangeNotifier{
     notifyListeners();
 
   }
+
+  setPage(int index){
+    pageCurrent = index;
+    notifyListeners();
+  }
+
+  Future<List<CookBook>> getListCookbookbyIdUser(String idUser) async {
+
+    if (searchText == ""){
+      return _cookbookRepository.getListCookbookbyIdUser(idUser);
+    }
+    else {
+      final cookbooks = await _cookbookRepository.getListCookbookbyIdUser(idUser);
+      return searchCookbook = cookbooks.where((element) => element.title.toLowerCase().contains(searchText)).toList();
+    }
+
+
+  }
+
+  search(String value, String idUser){
+    searchText = value;
+
+    notifyListeners();
+
+  }
+
+
 }

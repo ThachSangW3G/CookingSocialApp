@@ -7,6 +7,7 @@ import 'package:cooking_social_app/providers/provider_authentication/recipe_prov
 import 'package:cooking_social_app/widgets/edit_information_cookbook.dart';
 import 'package:cooking_social_app/widgets/recipe_item_published_widget.dart';
 import 'package:cooking_social_app/widgets/recipe_select_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int _selectedTabIndex = 0;
+
 
 
 
@@ -132,7 +134,7 @@ class _AddCookbookScreenState extends State<AddCookbookScreen>
                   image: await upLoadFileToFirebase(cookbookProvider.file!),
                   likes: 0,
                   recipes: recipeProvider.getIdRecipeSelected(),
-
+                  idUser: FirebaseAuth.instance.currentUser!.uid
                 );
 
                 cookbookProvider.addCookbook(cookbook);
