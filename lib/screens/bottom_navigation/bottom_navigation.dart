@@ -45,7 +45,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         child: const Icon(Icons.add, size: 25, ),
         onPressed: (){
           Navigator.of(context).pushNamed(
-              RouteGenerator.recipeaddScreen,
+              RouteGenerator.recipeeditScreen,
               );
         },
       ),

@@ -67,7 +67,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           'Edit Profile',
           textAlign: TextAlign.center,
           style: TextStyle(
-              color: Colors.black,
+              // color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: 20,
               fontFamily: 'Recoleta'),
@@ -78,7 +78,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             },
             icon: const Icon(
               Icons.arrow_back_ios_outlined,
-              color: Colors.black,
+              // color: Colors.black,
               size: 20,
             )),
         bottom: const PreferredSize(
@@ -163,7 +163,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             children: [
                               TextField(
                                 onChanged: (value) {
-                                  _name = value;
+                                  setState(() {
+                                    _name = value;
+                                  });
                                 },
                                 decoration: InputDecoration(
                                   contentPadding:
@@ -178,7 +180,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               const SizedBox(height: 20, ),
                               TextField(
                                 onChanged: (value) {
-                                  _email = value;
+                                  setState(() {
+                                    _email = value;
+
+                                  });
                                 },
                                 decoration: InputDecoration(
                                   contentPadding:
@@ -193,7 +198,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               const SizedBox(height: 20, ),
                               TextField(
                                 onChanged: (value) {
-                                  _bio = value;
+                                  setState(() {
+                                     _bio = value;
+                                  });
                                 },
                                 decoration: InputDecoration(
                                   contentPadding:
