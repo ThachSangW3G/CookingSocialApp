@@ -1,5 +1,6 @@
 // import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 // import 'package:cooking_social_app/screens/recipe/add_grocery_screen.dart';
+import 'package:cooking_social_app/localization/localization_delegate.dart';
 import 'package:cooking_social_app/providers/adddata_provider/intro_provider.dart';
 import 'package:cooking_social_app/providers/adddata_provider/material_provider.dart';
 import 'package:cooking_social_app/providers/adddata_provider/spice_provder.dart';
@@ -36,6 +37,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -102,6 +104,17 @@ class MyApp extends StatelessWidget {
           // ),
           theme: themeProvider.themeData,
           onGenerateRoute: RouteGenerator.generatorRoute,
+          locale: const Locale("vi"),
+          localizationsDelegates: const [
+            AppLocalizationDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales:const [
+            Locale.fromSubtags(languageCode: "en"),
+            Locale.fromSubtags(languageCode: "vi"),
+          ],
           home: authenticationStateProvider.isLoggedIn
               ? const HomeScreen()
               : const LoginScreen(),
@@ -111,3 +124,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

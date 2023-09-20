@@ -9,6 +9,8 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeData get themeData => _themeData;
 
+  bool get isLightTheme => _themeData.brightness == Brightness.light;
+
   void setThemeData(ThemeData themeData) {
     _themeData = themeData;
     notifyListeners();

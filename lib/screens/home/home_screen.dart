@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/localization/app_localization.dart';
 import 'package:cooking_social_app/models/category.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/models/like_model.dart';
@@ -128,16 +129,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                     CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Hi ${userCurrent!.name}',
+                                    '${context.localize('hi')} ${userCurrent!.name}',
                                     style: const TextStyle(
                                       fontFamily: 'CeraPro',
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
-                                  const Text(
-                                    'Why are you cooking today?',
-                                    style: TextStyle(
+                                  Text(
+                                    context.localize('whatareyoucookingtoday?'),
+                                    // 'whatareyoucookingtoday',
+                                    style: const TextStyle(
                                       fontFamily: 'CeraPro',
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
@@ -170,9 +172,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Cookbooks',
-                      style: TextStyle(
+                    Text(
+                      context.localize('cookBooks'),
+                      style: const TextStyle(
                           fontFamily: 'Recoleta',
                           fontSize: 24,
                           fontWeight: FontWeight.w700),
@@ -211,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 10,
                 ),
                 Container(
-                  color: AppColors.whitePorcelain,
+                  // color: AppColors.whitePorcelain,
                   height: 500,
                   child: PageView.builder(
                     onPageChanged: (index) {
@@ -252,23 +254,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Featured Community Recipes',
+                        context.localize('featuredCommunityRecipes'),
                         textAlign: TextAlign.start,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontFamily: 'Recoleta',
                             fontSize: 24,
                             fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        'Get lots of recipe inspiration from the community',
-                        style: TextStyle(
+                        context.localize('getLotsOfRecipeInspirationFromTheCommunity'),
+                        style: const TextStyle(
                             fontFamily: 'CeraPro',
                             fontSize: 18,
                             color: Colors.grey,
@@ -351,9 +353,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     Navigator.pushNamed(context, RouteGenerator.community);
                   },
-                  child: const Text(
-                    'Show All Recipe by Community',
-                    style: TextStyle(
+                  child:  Text(                    
+                    context.localize('showAllRecipebyCommunity'),
+                    style: const TextStyle(
                         fontFamily: 'CeraPro',
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
