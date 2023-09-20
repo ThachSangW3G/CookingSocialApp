@@ -1,19 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cooking_social_app/components/comment_item.dart';
 import 'package:cooking_social_app/components/line_row.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:cooking_social_app/models/follow_model.dart';
-import 'package:cooking_social_app/models/like_model.dart';
-import 'package:cooking_social_app/models/review.dart';
 import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/follow_provider.dart';
-import 'package:cooking_social_app/providers/like_provider.dart';
-import 'package:cooking_social_app/providers/like_review_provider.dart';
 import 'package:cooking_social_app/providers/notification_provider.dart';
-import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
-import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:cooking_social_app/widgets/list_cookbook_widget.dart';
 import 'package:cooking_social_app/widgets/post_widget.dart';
 import 'package:cooking_social_app/widgets/reviews_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,7 +35,7 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
   late Future<UserModel> _userModelFuture;
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _userModelFuture = Provider.of<UserProvider>(context, listen: false).getUser(widget.idUser);
     super.initState();
   }
@@ -59,9 +53,6 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
-    final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
-    final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
-    final ReviewStateProvider reviewStateProvider = Provider.of<ReviewStateProvider>(context);
     final FollowProvider followProvider = Provider.of<FollowProvider>(context);
     final NotificationProvider notificationProvider = Provider.of<NotificationProvider>(context);
     final bool isOwner = user.uid ==  widget.idUser;
@@ -130,10 +121,8 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                               return GestureDetector(
                                 onTap: () {
                                   if(isOwner){
-                                    Navigator.of(context).pushNamed(
-                                        RouteGenerator.editprofileScreen,
-                                        arguments: widget.idUser
-                                      );
+                                    Navigator.pushNamed(
+                                        context, RouteGenerator.editprofileScreen);
                                   }else{
 
                                     if(existFollow == null){
@@ -322,6 +311,20 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                     ),
                                   ),
 
+                                  Tab(
+                                    child: Container(
+                                      width: 280,
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Cookbooks',
+                                        style: TextStyle(
+                                            fontFamily: 'CeraPro',
+                                            fontSize: 15),
+                                      ),
+                                    ),
+                                  ),
+
+
                                   // second tab [you can add an icon using the icon property]
                                   Tab(
                                     child: Container(
@@ -348,103 +351,9 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                               child: TabBarView(
                                   controller: _tabController,
                                   children: [
-                                    RefreshIndicator(
-                                      onRefresh: () async {
-                                        context.read<RecipeProvider>().init();
-                                      },
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
-                                        itemCount: recipeProvider.features.length,
-                                        itemBuilder: (context, index) {
-                                          final featured = recipeProvider.features[index];
-                                          return GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).pushNamed(
-                                                    RouteGenerator.recipedetailScreen,
-                                                    arguments: featured.id);
-                                              },
-                                              child: FutureBuilder<LikeModel>(
-                                                future: likeProvider.likeExist(featured.id, user.uid),
-                                                builder: (context, snapshot){
-                                                  final LikeModel? liked = snapshot.data;
-                                                  return  FeaturedCard(featured: featured, like: (){
-
-                                                    if(liked == null){
-                                                      LikeModel likeModel = LikeModel(
-                                                          id: DateTime.now().toIso8601String(),
-                                                          idRecipe: featured.id,
-                                                          idUser: user.uid,
-                                                          time: Timestamp.now()
-                                                      );
-                                                      likeProvider.addLike(likeModel);
-
-                                                      NotificationModel notification = NotificationModel(
-                                                        id: DateTime.now().toIso8601String(),
-                                                        idUserGuest: user.uid,
-                                                        idUserOwner: featured.idUser,
-                                                        time: Timestamp.now(),
-                                                        type: 'liked',
-                                                        read: false,
-                                                        title: "",
-                                                        idRecipe: featured.id
-                                                      );
-
-                                                      notificationProvider.addNotification(notification);
-
-                                                    }else {
-                                                      likeProvider.deleteLike(liked);
-                                                    }
-
-                                                  }, liked: liked != null,
-                                                  viewProfile: (){
-                                                    Navigator.of(context).pushNamed(
-                                                        RouteGenerator.accountpersonScreen,
-                                                        arguments: featured.idUser
-                                                    );
-                                                  },
-                                                  );
-                                                }
-                                              ));
-                                        },
-                                      ),
-                                    ),
-                                    RefreshIndicator(
-                                      onRefresh: () async {
-                                        context.read<ReviewStateProvider>;
-                                      },
-                                      child: FutureBuilder<List<Review>>(
-                                        future: reviewStateProvider.fetchReviewByUser(widget.idUser),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.hasError) {
-                                            // Hiển thị widget khi có lỗi xảy ra
-                                            return const Center(
-                                              child: Text(
-                                                "Don't have review",
-                                                style: kReviewLabelTextStyle,
-                                              ),
-                                            );
-                                          } else {
-                                            final listReview = snapshot.data;
-                                            return listReview == null
-                                                ? const Center(child: CircularProgressIndicator())
-                                                : Padding(
-                                                    padding: const EdgeInsets.all(0),
-                                                    child: ListView.builder(
-                                                      shrinkWrap: true,
-                                                      physics: const NeverScrollableScrollPhysics(),
-                                                      itemCount: listReview.length,
-                                                      itemBuilder: (context, index) {
-                                                        return CommentItem(review: listReview[index]);
-                                                      },
-                                                    ),
-                                                  );
-                                          }
-          },
-        ),
-                                    ),
-                                    //PostWidget(),
-                                    //ReviewWidget()
+                                    const PostWidget(),
+                                    ListCookbookWidget(user: userModel,),
+                                    const ReviewWidget()
                                   ]),
                             )
                           ],

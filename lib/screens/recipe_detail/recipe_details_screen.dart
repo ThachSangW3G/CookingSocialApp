@@ -21,6 +21,8 @@ class RecipeDetailsScreen extends StatefulWidget {
 class _MyWidgetState extends State<RecipeDetailsScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
@@ -58,8 +60,11 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
                 return recipe == null
                     ? const Center(child: CircularProgressIndicator())
                     : RefreshIndicator(
+                        key: _refreshIndicatorKey,
                         onRefresh: () async {
-                          recipeProvider.fetchRecipe(widget.keyRecipe);
+                          //recipeProvider.fetchRecipe(widget.keyRecipe);
+                          return Future<void>.delayed(
+                              const Duration(seconds: 3));
                         },
                         child: ListView(
                           children: [

@@ -40,6 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int pageCurrent = 1;
 
+
+  late Future<UserModel> _userModelFuture;
+  @override
+  void initState() {
+
+    super.initState();
+    _userModelFuture = Provider.of<UserProvider>(context, listen: false).getUser(FirebaseAuth.instance.currentUser!.uid);
+  }
+
   @override
   Widget build(BuildContext context) {
     final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
@@ -51,6 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
     final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
     final NotificationProvider notificationProvider = Provider.of<NotificationProvider>(context);
     final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
+
+
     //final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     //final userCurrent = await userProvider.getUser(FirebaseAuth.instance.currentUser!.uid);
@@ -69,8 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 FutureBuilder<UserModel>(
-                  future: userProvider
-                      .getUser(FirebaseAuth.instance.currentUser!.uid),
+                  future: _userModelFuture,
                   builder: (context, snapshot) {
                     if(snapshot.connectionState == ConnectionState.waiting){
                       return const Center(
@@ -186,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          pageCount.toString(),
+                          cookbookProvider.cookbooks.length > 3 ? 3.toString() : cookbookProvider.cookbooks.length.toString(),
                           style: const TextStyle(
                             fontFamily: 'CeraPro',
                             fontSize: 20,
@@ -210,7 +220,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       });
                     },
                     controller: _pageController,
-                    itemCount: cookbookProvider.cookbooks.length,
+                    itemCount: cookbookProvider.cookbooks.length > 3 ? 3 : cookbookProvider.cookbooks.length,
                     itemBuilder: (context, index) {
                       final cookbook = cookbookProvider.cookbooks[index];
                       //print(cookbook);

@@ -3,6 +3,8 @@ import 'package:cooking_social_app/remote/cookbook_firestore_service.dart';
 
 abstract class CookbookRepository {
   Future<List<CookBook>> getAllCookbooks();
+  Future<void> addCookbook(CookBook cookBook);
+  Future<List<CookBook>> getListCookbookbyIdUser(String idUser);
 }
 
 class CookbookRepositoryImpl implements CookbookRepository{
@@ -14,6 +16,16 @@ class CookbookRepositoryImpl implements CookbookRepository{
   @override
   Future<List<CookBook>> getAllCookbooks() {
     return _cookbookFirestoreService.getAllCookbooks();
+  }
+
+  @override
+  Future<void> addCookbook(CookBook cookBook) {
+    return _cookbookFirestoreService.addCookbook(cookBook);
+  }
+
+  @override
+  Future<List<CookBook>> getListCookbookbyIdUser(String idUser) {
+    return _cookbookFirestoreService.getListCookbookbyIdUser(idUser);
   }
 
 }

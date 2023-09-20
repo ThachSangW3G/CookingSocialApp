@@ -34,7 +34,10 @@ class _TabContentIntroState extends State<TabContentIntro> {
           Text(
             _description!,
             style: const TextStyle(
-                color: Colors.black, fontFamily: 'CeraPro', fontSize: 16),
+                color: Colors.black,
+                fontFamily: 'CeraPro',
+                fontSize: 16,
+                fontWeight: FontWeight.w500),
           ),
           const SizedBox(
             height: 15,
@@ -60,6 +63,7 @@ class _TabContentIntroState extends State<TabContentIntro> {
               style: const TextStyle(
                   fontFamily: 'CeraPro',
                   fontSize: 16,
+                  fontWeight: FontWeight.w500,
                   color: AppColors.greyBombay),
             ),
           )

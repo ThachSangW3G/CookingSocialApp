@@ -1,5 +1,8 @@
+import 'package:cooking_social_app/providers/adddata_provider/material_provider.dart';
+import 'package:cooking_social_app/providers/adddata_provider/spice_provder.dart';
 import 'package:cooking_social_app/widgets/ingredient_edit_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class RecipeIngredientsEdit extends StatefulWidget {
   const RecipeIngredientsEdit({Key? key}) : super(key: key);
@@ -20,33 +23,80 @@ class RecipeIngredientsEditState extends State<RecipeIngredientsEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ReorderableListView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        shrinkWrap: true,
-        physics: AlwaysScrollableScrollPhysics(),
-        // physics: const NeverScrollableScrollPhysics(),
-        onReorder: (int oldIndex, int newIndex) {
-          setState(() {
-            if (newIndex > oldIndex) newIndex -= 1;
-            final String step = ingredients.removeAt(oldIndex);
-            ingredients.insert(newIndex, step);
-          });
-        },
-        children: ingredients
-            .asMap()
-            .map((index, step) {
-              return MapEntry(
-                index,
-                IngredientEditCard(
-                  key: ValueKey(index),
-                  ingredient: step,
-                ),
-              );
-            })
-            .values
-            .toList(),
+    return ListView(children: [
+      const Padding(
+        padding: EdgeInsets.only(left: 35),
+        child: Text(
+          'Nguyên liệu',
+          style: TextStyle(
+              fontSize: 18,
+              fontFamily: 'CeraPro',
+              fontWeight: FontWeight.w500,
+              color: Colors.black),
+        ),
       ),
-    );
+      Consumer<MaterialProvider>(
+        builder: (context, itemProvider, _) {
+          return itemProvider.items.isEmpty
+              ? const Center()
+              : ReorderableListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    for (int index = 0;
+                        index < itemProvider.items.length;
+                        index++)
+                      IngredientEditCard(
+                        key: ValueKey(itemProvider.items[index].id),
+                        item: itemProvider.items[index],
+                        check: true,
+                      )
+                  ],
+                  onReorder: (int oldIndex, int newIndex) {
+                    itemProvider.reorderItems(oldIndex, newIndex);
+                  },
+                );
+        },
+      ),
+      const SizedBox(
+        height: 20,
+      ),
+      const Padding(
+        padding: EdgeInsets.only(left: 35),
+        child: Text(
+          'Gia vị',
+          style: TextStyle(
+              fontSize: 18,
+              fontFamily: 'CeraPro',
+              fontWeight: FontWeight.w500,
+              color: Colors.black),
+        ),
+      ),
+      Consumer<SpiceProvider>(
+        builder: (context, itemProvider, _) {
+          return itemProvider.items.isEmpty
+              ? const Center()
+              : ReorderableListView(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    for (int index = 0;
+                        index < itemProvider.items.length;
+                        index++)
+                      IngredientEditCard(
+                        key: ValueKey(itemProvider.items[index].id),
+                        item: itemProvider.items[index],
+                        check: false,
+                      )
+                  ],
+                  onReorder: (int oldIndex, int newIndex) {
+                    itemProvider.reorderItems(oldIndex, newIndex);
+                  },
+                );
+        },
+      )
+    ]);
   }
 }
