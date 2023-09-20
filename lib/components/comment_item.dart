@@ -99,12 +99,19 @@ class _CommentItemState extends State<CommentItem> {
                                 idReview: review!.key,
                                 time: Timestamp.now());
                             reviewLikeProvider.addLike(likeReview);
+                            Provider.of<ReviewStateProvider>(context,
+                                    listen: false)
+                                .updatePropertyById(review!.key, 'check', true);
                             //reviewProvider.update(review);
                           });
                         } else {
                           await reviewLikeProvider.deleteLike(liked!);
                           setState(() {
                             check = false;
+                            Provider.of<ReviewStateProvider>(context,
+                                    listen: false)
+                                .updatePropertyById(
+                                    review!.key, 'check', false);
                           });
                         }
                       },

@@ -1,4 +1,5 @@
 import 'package:cooking_social_app/components/updateitem_dialog.dart';
+import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/providers/adddata_provider/steps_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -72,14 +73,18 @@ class StepEditCard extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Thông tin chi tiết'),
-          content: Text(step.name),
+          title: const Text('Thông tin chi tiết',
+              style: TextStyle(fontFamily: "CeraPro")),
+          content:
+              Text(step.name, style: const TextStyle(fontFamily: "CeraPro")),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Đóng'),
+              child: const Text('Đóng',
+                  style: TextStyle(
+                      fontFamily: "CeraPro", color: AppColors.orangeCrusta)),
             ),
           ],
         );

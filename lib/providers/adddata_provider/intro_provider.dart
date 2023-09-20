@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cooking_social_app/models/category.dart';
 import 'package:flutter/material.dart';
 
 enum Difficulty { Difficult, Medium, Easy }
@@ -12,6 +13,7 @@ class Intro {
   String? description;
   bool? isPublic;
   int? server;
+  Category? category;
   String? difficult;
   File? file;
   String? source;
@@ -24,6 +26,7 @@ class Intro {
       this.description,
       this.isPublic = false,
       this.server,
+      this.category,
       this.difficult,
       this.file,
       this.source});
@@ -42,6 +45,7 @@ class IntroProvider with ChangeNotifier {
       String? description,
       bool? isPublic,
       int? server,
+      Category? category,
       String? difficult,
       File? file,
       String? source}) {
@@ -53,9 +57,16 @@ class IntroProvider with ChangeNotifier {
         description: description ?? _intro.description,
         isPublic: isPublic ?? _intro.isPublic,
         server: server ?? _intro.server,
+        category: category ?? _intro.category,
         difficult: difficult ?? _intro.difficult,
         file: file ?? _intro.file,
         source: source ?? _intro.source);
+    notifyListeners();
+  }
+
+  void clearData() {
+    //Intro intro = Intro();
+    _intro = Intro();
     notifyListeners();
   }
 }
