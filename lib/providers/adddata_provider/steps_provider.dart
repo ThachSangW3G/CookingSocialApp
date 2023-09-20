@@ -58,4 +58,9 @@ class StepsProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void cleardata() {
+    _items.clear();
+    notifyListeners();
+  }
 }

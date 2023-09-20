@@ -35,19 +35,31 @@ class _RecipeAddState extends State<RecipeAddScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_outlined,
+              color: Colors.black,
+              size: 20,
+            )),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [            
-            const Divider(thickness: 1, color: AppColors.greyIron,),
+          children: [
+            const Divider(
+              thickness: 1,
+              color: AppColors.greyIron,
+            ),
             Padding(
-              padding: const EdgeInsets.all(16.0),              
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,                
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
                     height: 8,
@@ -85,20 +97,19 @@ class _RecipeAddState extends State<RecipeAddScreen> {
                   Container(
                     height: 44,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: AppColors.greyIron
-                    ),
+                        borderRadius: BorderRadius.circular(15),
+                        color: AppColors.greyIron),
                     child: TextField(
                       textAlignVertical: TextAlignVertical.center,
                       decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                         labelText: '',
                         labelStyle: TextStyle(
                             fontFamily: 'CeraPro',
                             // fontSize: 14,
                             fontWeight: FontWeight.w400),
                         border: InputBorder.none,
-                        
                       ),
                       onChanged: (value) {
                         if (!isURL(value)) {
@@ -107,55 +118,63 @@ class _RecipeAddState extends State<RecipeAddScreen> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 13,),
-                  const Divider(thickness: 1, color: AppColors.greyIron,),
-                  const SizedBox(height: 24,),
+                  const SizedBox(
+                    height: 13,
+                  ),
+                  const Divider(
+                    thickness: 1,
+                    color: AppColors.greyIron,
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
 
                   //IMPORT BUTTON
-                  TextButton(                    
-                    onPressed: () { 
-                      
-                     },
+                  TextButton(
+                    onPressed: () {},
                     style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))
-                      ),
-                      fixedSize: MaterialStateProperty.all<Size>(Size(MediaQuery.of(context).size.width, 50)),
-                      backgroundColor: MaterialStateProperty.all(AppColors.orangeCrusta),
-                      foregroundColor: MaterialStateProperty.all(AppColors.white)
-                    ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8))),
+                        fixedSize: MaterialStateProperty.all<Size>(
+                            Size(MediaQuery.of(context).size.width, 50)),
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.orangeCrusta),
+                        foregroundColor:
+                            MaterialStateProperty.all(AppColors.white)),
                     child: const Text(
                       'IMPORT',
                       style: TextStyle(
-                        fontFamily: 'CeraPro',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400
-                      ),
-                    ),         
+                          fontFamily: 'CeraPro',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
 
-                  const SizedBox(height: 16,),
+                  const SizedBox(
+                    height: 16,
+                  ),
 
                   //FILLOUT BUTTON
                   Center(
-                    child: TextButton(                    
+                    child: TextButton(
                       onPressed: () {
                         Navigator.of(context).pushNamed(
                           RouteGenerator.recipeeditScreen,
                         );
                         //check value ở link url có hợp lệ chưa bằng hàm showValidationError
-                       },                      
+                      },
                       child: const Text(
                         'or Fill out recipe form',
                         style: TextStyle(
-                          fontFamily: 'CeraPro',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.orangeCrusta
-                        ),
-                      ),         
+                            fontFamily: 'CeraPro',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.orangeCrusta),
+                      ),
                     ),
-                  )                     
+                  )
                 ],
               ),
             ),
@@ -164,24 +183,24 @@ class _RecipeAddState extends State<RecipeAddScreen> {
       ),
     );
   }
-  
+
   void showValidationError(BuildContext context) {
     showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text('Lỗi'),
-        content: Text('Giá trị nhập vào không phải là URL hợp lệ.'),
-        actions: <Widget>[
-          TextButton(
-            child: Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Lỗi'),
+          content: Text('Giá trị nhập vào không phải là URL hợp lệ.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

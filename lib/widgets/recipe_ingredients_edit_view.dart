@@ -31,7 +31,7 @@ class RecipeIngredientsEditState extends State<RecipeIngredientsEdit> {
           style: TextStyle(
               fontSize: 18,
               fontFamily: 'CeraPro',
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
               color: Colors.black),
         ),
       ),
@@ -59,6 +59,9 @@ class RecipeIngredientsEditState extends State<RecipeIngredientsEdit> {
                 );
         },
       ),
+      const SizedBox(
+        height: 20,
+      ),
       const Padding(
         padding: EdgeInsets.only(left: 35),
         child: Text(
@@ -66,7 +69,7 @@ class RecipeIngredientsEditState extends State<RecipeIngredientsEdit> {
           style: TextStyle(
               fontSize: 18,
               fontFamily: 'CeraPro',
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w500,
               color: Colors.black),
         ),
       ),

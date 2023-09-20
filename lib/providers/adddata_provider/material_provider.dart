@@ -51,4 +51,9 @@ class MaterialProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void cleardata() {
+    _items.clear();
+    notifyListeners();
+  }
 }

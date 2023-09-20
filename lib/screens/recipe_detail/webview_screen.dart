@@ -67,7 +67,7 @@ class _NewsWebViewPageState extends State<NewsWebViewPage> {
           children: [
             LinearProgressIndicator(
               value: _progress,
-              color: _progress == 1 ? Colors.transparent : Colors.blue,
+              color: _progress == 1 ? Colors.transparent : Colors.black,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             ),
             Expanded(
@@ -122,7 +122,7 @@ class _NewsWebViewPageState extends State<NewsWebViewPage> {
                 ),
               ),
               ListTile(
-                leading: const Icon(Icons.share),
+                leading: const Icon(Icons.screen_share_outlined),
                 title: const Text("Share"),
                 onTap: () async {
                   try {
@@ -134,7 +134,7 @@ class _NewsWebViewPageState extends State<NewsWebViewPage> {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.open_in_browser),
+                leading: const Icon(Icons.open_in_browser_outlined),
                 title: const Text("Open in browser"),
                 onTap: () async {
                   if (!await launchUrl(Uri.parse(widget.url))) {

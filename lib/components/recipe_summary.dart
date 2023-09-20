@@ -60,9 +60,10 @@ class _RecipeSummaryState extends State<RecipeSummary> {
 
   @override
   Widget build(BuildContext context) {
-    final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
+    final LikeProvider likeProvider =
+        Provider.of<LikeProvider>(context, listen: false);
     final ReviewStateProvider reviewProvider =
-        Provider.of<ReviewStateProvider>(context);
+        Provider.of<ReviewStateProvider>(context, listen: false);
     // final RecipeStateProvider recipeProvider =
     //     Provider.of<RecipeStateProvider>(context);
     final String? uid = FirebaseAuth.instance.currentUser?.uid;
@@ -98,6 +99,12 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                       children: [
                         GestureDetector(
                           onTap: () {
+                            // Navigator.of(context).popUntil((route) =>
+                            //     route.settings.name == '/detailCookbook');
+                            // Navigator.popUntil(context,
+                            //     ModalRoute.withName('/detailCookbook'));
+                            // Navigator.popUntil(
+                            //     context, (route) => route.isFirst);
                             Navigator.pop(context);
                           },
                           child: Container(
@@ -493,7 +500,10 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                         } else {
                                           final review = snapshotReview.data;
                                           return review == null
-                                              ? const Center()
+                                              ? const Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                )
                                               : CommentItemNotOption(
                                                   review: review[0],
                                                 );
