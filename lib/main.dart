@@ -7,6 +7,7 @@ import 'package:cooking_social_app/providers/adddata_provider/steps_provider.dar
 import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/providers/follow_provider.dart';
+import 'package:cooking_social_app/providers/like_cookbook_provider.dart';
 import 'package:cooking_social_app/providers/like_provider.dart';
 import 'package:cooking_social_app/providers/like_review_provider.dart';
 import 'package:cooking_social_app/providers/notification_provider.dart';
@@ -71,6 +72,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => SpiceProvider()),
       ChangeNotifierProvider(create: (_) => MaterialProvider()),
       ChangeNotifierProvider(create: (_) => IntroProvider()),
+      ChangeNotifierProvider(create: (_) => LikeCookbookProvider()),
     ],
     child: const MyApp(),
   ));

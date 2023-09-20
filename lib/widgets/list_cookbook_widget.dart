@@ -108,7 +108,14 @@ class _ListCookbookWidgetState extends State<ListCookbookWidget> {
                     //physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index){
                       final cookbook = cookbooks![index];
-                      return CookBookWidget(cookBook: cookbook);
+                      return GestureDetector(
+                        child: CookBookWidget(cookBook: cookbook),
+                        onTap: (){
+                          Navigator.of(context).pushNamed(
+                              RouteGenerator.detailCookbook,
+                              arguments: cookbook);
+                        },
+                      );
                     },
                   );
                 }
