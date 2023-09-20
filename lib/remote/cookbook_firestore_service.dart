@@ -3,6 +3,7 @@ import 'package:cooking_social_app/models/cookbook.dart';
 
 abstract class CookbookDataService{
   Future<List<CookBook>> getAllCookbooks();
+  Future<void> addCookbook(CookBook cookBook);
 }
 
 class CookbookFirestoreService implements CookbookDataService{
@@ -20,6 +21,11 @@ class CookbookFirestoreService implements CookbookDataService{
     });
 
     return Future.value(cookbookList);
+  }
+
+  @override
+  Future<void> addCookbook(CookBook cookBook) {
+    return cookbooks.doc(cookBook.id).set(cookBook.toJson()).then((value) => print('cookbook add'));
   }
 
 }

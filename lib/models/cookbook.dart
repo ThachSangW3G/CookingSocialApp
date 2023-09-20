@@ -22,6 +22,18 @@ class CookBook {
     );
   }
 
+  Map<String, dynamic> toJson(){
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'likes': likes,
+      'recipes': recipes,
+      'image': image,
+      'popularRecipeIndex': popularRecipeIndex
+    };
+  }
+
 }
 // List<CookBook> cookBookList = [
 //   CookBook(1, 'Buku resep spesial antara', 'Keep it easy with these simple but delicious recipes',
