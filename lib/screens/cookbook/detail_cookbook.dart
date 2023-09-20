@@ -1,10 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
+import 'package:cooking_social_app/models/like_cookbook.dart';
+import 'package:cooking_social_app/providers/like_cookbook_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/widgets/popular_recipe.dart';
 import 'package:cooking_social_app/widgets/recipe_item_unpublished_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +27,13 @@ class DetailCookBookScreen extends StatefulWidget {
 
 class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
   bool isAbs = true;
+
   @override
   Widget build(BuildContext context) {
+
+    final bool isOwner = widget.cookbook!.idUser == FirebaseAuth.instance.currentUser!.uid;
+
+    final LikeCookbookProvider likeCookbookProvider = Provider.of<LikeCookbookProvider>(context);
     final cookbook = widget.cookbook!;
     return Scaffold(
       body: SingleChildScrollView(
@@ -62,20 +71,50 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                         ),
                       ),
                     ),
-                    Container(
-                      height: 48,
-                      width: 48,
-                      decoration: const BoxDecoration(
-                          color: AppColors.white, shape: BoxShape.circle),
-                      child: Center(
+                    FutureBuilder<LikeCookbook>(
+                      future: likeCookbookProvider.likeCookbookExists(cookbook.id, FirebaseAuth.instance.currentUser!.uid),
+                      builder: (context, snapshot){
+
+                        final likeCookbook = snapshot.data;
+
+                        return GestureDetector(
+                          onTap: (){
+                            if(isOwner){
+                              Navigator.pushNamed(context, RouteGenerator.addCookbookScreen);
+                            }else {
+                              if (likeCookbook == null){
+                                LikeCookbook like = LikeCookbook(
+                                  id: DateTime.now().toIso8601String(),
+                                  idCookbook: cookbook.id,
+                                  idUser: FirebaseAuth.instance.currentUser!.uid,
+                                  time: Timestamp.now(),
+                                );
+
+                                likeCookbookProvider.addLikeCookbook(like);
+                              }else {
+                                likeCookbookProvider.deleteLikeCookbook(likeCookbook);
+                              }
+                            }
+                          },
                           child: Container(
-                        height: 25,
-                        width: 25,
-                        decoration: const BoxDecoration(
-                            image: DecorationImage(
-                          image: AssetImage('assets/icons/pencil.png'),
-                        )),
-                      )),
+                            height: 48,
+                            width: 48,
+                            decoration: const BoxDecoration(
+                                color: AppColors.white, shape: BoxShape.circle),
+                            child: Center(
+                                child: Container(
+                                  height: 25,
+                                  width: 25,
+                                  child: SvgPicture.asset(
+                                    isOwner ? 'assets/icon_svg/pencil.svg' : likeCookbook == null ? 'assets/icon_svg/heart.svg' : 'assets/icon_svg/heart_orange.svg',
+                                    height: 25,
+                                    width: 25,
+                                    color: likeCookbook == null ? AppColors.greyShuttle : AppColors.orangeCrusta,
+                                  ),
+                                )),
+                          ),
+                        );
+                      }
                     )
                   ],
                 ),
