@@ -223,4 +223,15 @@ class ReviewStateProvider extends ChangeNotifier {
       debugPrint(error as String?);
     }
   }
+
+  void updatePropertyById(
+      String reviewId, String propertyName, dynamic propertyValue) {
+    final reviewIndex = _review.indexWhere((review) => review.key == reviewId);
+    if (reviewIndex != -1) {
+      _review[reviewIndex].setProperty(propertyName, propertyValue);
+      print("Cap nhat review" + _review[reviewIndex].description);
+      print(_review[reviewIndex].check.toString());
+      notifyListeners();
+    }
+  }
 }

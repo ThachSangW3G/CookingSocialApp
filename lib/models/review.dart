@@ -28,6 +28,13 @@ class Review {
     };
   }
 
+  void setProperty(String propertyName, dynamic propertyValue) {
+    if (propertyName == 'check') {
+      check = propertyValue;
+    }
+    // Thêm các trường hợp xử lý cho các thuộc tính khác (nếu có)
+  }
+
   factory Review.fromJson(Map<String, dynamic> json) {
     return Review(
         key: json['key'],

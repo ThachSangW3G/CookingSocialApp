@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/additem_dialog.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
@@ -21,7 +20,6 @@ import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
 //import 'package:flutter/services.dart';
 //import 'package:flutter_svg/flutter_svg.dart';
-
 // enum Choice { A, B, C }
 
 class RecipeEditScreen extends StatefulWidget {
@@ -42,6 +40,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
   String? _name;
   String? _url;
   int? _cookTime;
+  int? _cookTimeHours;
   String? _description;
   String? _difficult;
   bool? _isPublic;
@@ -51,6 +50,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
   List<Item>? _materials;
   List<Item>? _spices;
   Intro? _intro;
+  String? _category;
   late TabController _tabController;
   int _selectedTabIndex = 0;
 
@@ -61,12 +61,29 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
     String? name = _intro?.name;
     String? source = _intro?.url;
     int? cookTime = _intro?.cookTime;
+    int? cookTimeHours = _intro?.cookTimeHour;
     String? description = _intro?.description;
     String? difficult = _intro?.difficult;
     bool? isPublic = _intro?.isPublic;
     int? server = _intro?.server;
     File? getFile = _intro?.file;
-    String? url = await upLoadFileToFirebase(getFile!);
+    String? category = _intro!.category?.id;
+    if (name == null ||
+        source == null ||
+        _steps == null ||
+        _spices == null ||
+        _materials == null ||
+        cookTime == null ||
+        cookTimeHours == null ||
+        description == null ||
+        difficult == null ||
+        server == null ||
+        category == null ||
+        getFile == null) {
+      _showDetailDialog();
+      return;
+    }
+    String? url = await upLoadFileToFirebase(getFile);
     setState(() {
       _name = name;
       _source = source;
@@ -76,30 +93,33 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       _isPublic = isPublic;
       _server = server;
       _url = url;
+      _category = category;
+      _cookTimeHours = cookTimeHours;
     });
     upLoadDataFirestore();
   }
 
   void upLoadDataFirestore() async {
     try {
-      // Khởi tạo Firestore instance
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-      // Tạo một document reference và lấy ra ID ngẫu nhiên
-      DocumentReference reviewRef = firestore.collection('reviews').doc();
-
       List<String> steps = _steps!.map((item) => item.name).toList();
       List<String> spice = _spices!.map((item) => item.name).toList();
       List<String> material = _materials!.map((item) => item.name).toList();
+      // Khởi tạo Firestore instance
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      // Tạo một document reference và lấy ra ID ngẫu nhiên
+      DocumentReference reviewRef = firestore.collection('recipes').doc();
+      //
       Map<String, dynamic> recipe = {
         'id': reviewRef.id,
         'URL': _url,
-        'cookTime': _cookTime,
+        'cookTime': _cookTime! + _cookTimeHours! * 60,
         'description': _description,
         'difficult': _difficult,
         'isPublic': _isPublic,
         'name': _name,
         'numberLike': 0,
         'numberReview': 0,
+        'category': _category,
         'server': _server,
         'uidUser': FirebaseAuth.instance.currentUser?.uid,
         'source': _source,
@@ -108,7 +128,36 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         'material': material
       };
 
-      await reviewRef.set(recipe);
+      await reviewRef.set(recipe).then((value) => showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Thông báo',
+                  style: TextStyle(fontFamily: "CeraPro")),
+              content: const Text('Thêm Dữ Liệu Thành Công',
+                  style: TextStyle(fontFamily: "CeraPro")),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Provider.of<IntroProvider>(context, listen: false)
+                        .clearData();
+                    Provider.of<StepsProvider>(context, listen: false)
+                        .cleardata();
+                    Provider.of<SpiceProvider>(context, listen: false)
+                        .cleardata();
+                    Provider.of<MaterialProvider>(context, listen: false)
+                        .cleardata();
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'Đóng',
+                    style: TextStyle(
+                        fontFamily: "CeraPro", color: AppColors.orangeCrusta),
+                  ),
+                ),
+              ],
+            );
+          }));
     } catch (e) {
       print('Error uploading file: $e');
     }
@@ -275,7 +324,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
                   style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'CeraPro',
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       color: Colors.black),
                 ),
               ),
@@ -351,6 +400,30 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
     );
   }
 
+  void _showDetailDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Thông tin chi tiết',
+              style: TextStyle(fontFamily: "CeraPro")),
+          content: const Text('Vui lòng nhập đầy đủ thông tin',
+              style: TextStyle(fontFamily: "CeraPro")),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Đóng',
+                  style: TextStyle(
+                      fontFamily: "CeraPro", color: AppColors.orangeCrusta)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showGobackPopup(BuildContext context) {
     showDialog(
       context: context,
@@ -361,7 +434,8 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
           actions: [
             TextButton(
               onPressed: () {
-                //Navigator.pushNamed(context, RouteGenerator.home);
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
               },
               child: const Text('OK',
                   style: TextStyle(color: AppColors.orangeCrusta)),

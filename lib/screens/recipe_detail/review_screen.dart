@@ -45,7 +45,7 @@ class _ReViewScreenState extends State<ReViewScreen> {
     final ReviewStateProvider reviewProvider =
         Provider.of<ReviewStateProvider>(context);
     final NotificationProvider notificationProvider =
-    Provider.of<NotificationProvider>(context);
+        Provider.of<NotificationProvider>(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -153,12 +153,9 @@ class _ReViewScreenState extends State<ReViewScreen> {
                       type: 'newReview',
                       read: false,
                       title: _description!,
-                      idRecipe: keyRecipe!
-                  );
+                      idRecipe: keyRecipe!);
 
                   notificationProvider.addNotification(notification);
-
-
                 }
               },
               child: const Text(

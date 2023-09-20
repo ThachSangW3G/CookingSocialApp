@@ -1,7 +1,9 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/models/category.dart';
 import 'package:cooking_social_app/providers/adddata_provider/intro_provider.dart';
+import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/widgets/yes_no_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +89,8 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
   Widget build(BuildContext context) {
     final introProvider = Provider.of<IntroProvider>(context);
     final intro = introProvider.intro;
+    final categotyProvider = Provider.of<CategoryProvider>(context);
+    final categoty = categotyProvider.categories;
     return SingleChildScrollView(
         child: Container(
       padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
@@ -108,6 +112,15 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
               contentPadding:
                   EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
               labelText: 'Title',
+              enabledBorder: UnderlineInputBorder(
+                // viền dưới khi không có focus
+                borderSide: BorderSide(color: AppColors.greyIron),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                // viền dưới khi có focus
+                borderSide: BorderSide(color: AppColors.greyShuttle),
+              ),
+
               // errorText: _textEditingController.text.isEmpty
               //     ? 'Giá trị không được để trống'
               //     : null,
@@ -138,6 +151,14 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                     introProvider.updateIntro(cookTime: int.parse(value));
                   },
                   decoration: const InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        // viền dưới khi không có focus
+                        borderSide: BorderSide(color: AppColors.greyIron),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        // viền dưới khi có focus
+                        borderSide: BorderSide(color: AppColors.greyShuttle),
+                      ),
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                       labelText: 'minutes',
@@ -157,9 +178,17 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                       ? ''
                       : intro.cookTimeHour.toString(),
                   onChanged: (value) {
-                    introProvider.updateIntro(cookTime: int.parse(value));
+                    introProvider.updateIntro(cookTimeHour: int.parse(value));
                   },
                   decoration: const InputDecoration(
+                      enabledBorder: UnderlineInputBorder(
+                        // viền dưới khi không có focus
+                        borderSide: BorderSide(color: AppColors.greyIron),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        // viền dưới khi có focus
+                        borderSide: BorderSide(color: AppColors.greyShuttle),
+                      ),
                       contentPadding:
                           EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                       labelText: 'hours',
@@ -243,6 +272,14 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                 labelText: 'Description',
+                enabledBorder: UnderlineInputBorder(
+                  // viền dưới khi không có focus
+                  borderSide: BorderSide(color: AppColors.greyIron),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  // viền dưới khi có focus
+                  borderSide: BorderSide(color: AppColors.greyShuttle),
+                ),
                 labelStyle: TextStyle(
                     fontFamily: 'CeraPro',
                     // fontSize: 14,
@@ -273,15 +310,11 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                     width: 160,
                     child: DropdownButton<String>(
                       value: intro.difficult,
-                      // style: const TextStyle(
-                      // fontFamily: 'CeraPro',
-                      // fontSize: 16,
-                      // fontWeight: FontWeight.w400
-                      // ),
                       underline: const Divider(
                         thickness: 1.5,
-                        color: AppColors.greyBombay,
+                        color: AppColors.greyIron,
                       ),
+                      elevation: 16,
                       isExpanded: true,
                       alignment: Alignment.center,
                       padding: const EdgeInsets.only(top: 8),
@@ -349,6 +382,14 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                     introProvider.updateIntro(server: int.parse(value));
                   },
                   decoration: const InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      // viền dưới khi không có focus
+                      borderSide: BorderSide(color: AppColors.greyIron),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      // viền dưới khi có focus
+                      borderSide: BorderSide(color: AppColors.greyShuttle),
+                    ),
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                     labelText: 'Serve',
@@ -367,6 +408,7 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
             children: [
               Expanded(
                   child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
                     'Publish to Community?',
@@ -375,28 +417,75 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                         fontSize: 14,
                         fontWeight: FontWeight.w400),
                   ),
-                  const SizedBox(
-                    width: 180,
+                  Switch(
+                    value: intro.isPublic!,
+                    onChanged: (bool newValue) {
+                      introProvider.updateIntro(isPublic: newValue);
+                    },
+                    activeColor: AppColors.orangeCrusta,
+                    inactiveTrackColor: AppColors.greyDark,
+                    inactiveThumbColor: AppColors.white,
                   ),
-                  Expanded(
-                    child: Switch(
-                      value: intro.isPublic!,
-                      onChanged: (bool newValue) {
-                        introProvider.updateIntro(isPublic: newValue);
-                      },
-                      activeColor: AppColors.orangeCrusta,
-                      inactiveTrackColor: AppColors.greyDark,
-                      inactiveThumbColor: AppColors.white,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  )
+                  // const SizedBox(
+                  //   width: 20,
+                  // )
                 ],
               )),
             ],
           ),
-
+          //---------------
+          const SizedBox(
+            height: 24,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Category',
+                style: TextStyle(fontFamily: "CeraPro"),
+              ),
+              SizedBox(
+                width: 160,
+                child: DropdownButton<Category>(
+                    value: intro.category,
+                    underline: const Divider(
+                      thickness: 1.5,
+                      color: AppColors.greyIron,
+                    ),
+                    elevation: 16,
+                    isExpanded: true,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.only(top: 8),
+                    icon: Align(
+                      alignment: Alignment.centerRight,
+                      child: SvgPicture.asset(
+                        'assets/icon_svg/chevron-circle-down.svg',
+                        height: 15,
+                        width: 8,
+                      ),
+                    ),
+                    onChanged: (Category? value) {
+                      introProvider.updateIntro(category: value);
+                    },
+                    items: [
+                      for (int index = 0; index < categoty.length; index++)
+                        DropdownMenuItem<Category>(
+                          key: ValueKey(categoty[index].id),
+                          value: categoty[index],
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: Text(categoty[index].name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'CeraPro',
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.right)),
+                        ),
+                    ]),
+              ),
+            ],
+          ),
           //---------------
           const SizedBox(
             height: 24,
@@ -407,6 +496,14 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
               introProvider.updateIntro(source: value);
             },
             decoration: const InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  // viền dưới khi không có focus
+                  borderSide: BorderSide(color: AppColors.greyIron),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  // viền dưới khi có focus
+                  borderSide: BorderSide(color: AppColors.greyShuttle),
+                ),
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                 labelText: 'Source',
@@ -426,6 +523,14 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
               introProvider.updateIntro(url: value);
             },
             decoration: const InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  // viền dưới khi không có focus
+                  borderSide: BorderSide(color: AppColors.greyIron),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  // viền dưới khi có focus
+                  borderSide: BorderSide(color: AppColors.greyShuttle),
+                ),
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
                 labelText: 'URL',
