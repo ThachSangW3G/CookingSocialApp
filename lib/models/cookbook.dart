@@ -6,9 +6,10 @@ class CookBook {
   final List<dynamic> recipes;
   final String image;
   final int popularRecipeIndex;
+  final String idUser;
 
   CookBook({
-      required this.id, required this.title, required this.description, required this.likes, required this.recipes, required this.image, required this.popularRecipeIndex});
+      required this.id, required this.title, required this.description, required this.likes, required this.recipes, required this.image, required this.popularRecipeIndex, required this.idUser});
 
   factory CookBook.fromJson(Map<String, dynamic> json){
     return CookBook(
@@ -18,11 +19,12 @@ class CookBook {
       likes: json['likes'],
       recipes: json['recipes'],
       image: json['image'],
-      popularRecipeIndex: json['popularRecipeIndex']
+      popularRecipeIndex: json['popularRecipeIndex'],
+      idUser: json['idUser']
     );
   }
 
-  Map<String, dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'title': title,
@@ -30,7 +32,8 @@ class CookBook {
       'likes': likes,
       'recipes': recipes,
       'image': image,
-      'popularRecipeIndex': popularRecipeIndex
+      'popularRecipeIndex': popularRecipeIndex,
+      'idUser': idUser
     };
   }
 
