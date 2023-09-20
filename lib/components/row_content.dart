@@ -25,7 +25,8 @@ class RowContent extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     fontSize: 17,
                     fontFamily: "CeraPro",
-                    color: Colors.black),
+                    // color: Colors.black
+                  ),
               ),
               SvgPicture.asset(
                 'assets/icon_svg/chevron-circle-right.svg',

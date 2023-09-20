@@ -151,7 +151,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
                   hintStyle: const TextStyle(
                       fontFamily: 'CeraPro',
                       fontSize: 17,
-                      color: AppColors.greyShuttle
+                      // color: AppColors.greyShuttle
                   ),
                   border: InputBorder.none,
                   suffixIcon: IconButton(

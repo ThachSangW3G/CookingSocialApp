@@ -1,6 +1,10 @@
 import 'package:cooking_social_app/blocs/blocs/authentication_bloc.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/models/recipe.dart';
+import 'package:cooking_social_app/screens/account/setting/interface_setting_screen.dart';
+import 'package:cooking_social_app/screens/account/setting/language_setting_screen.dart';
+import 'package:cooking_social_app/screens/account/setting/notification_setting_screen.dart';
+import 'package:cooking_social_app/screens/account/setting/setting_screen.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/bottom_navigation/bottom_navigation.dart';
@@ -113,6 +117,30 @@ class RouteGenerator {
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
+      case settingScreen:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: SettingScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+      case interfacesettingScreen:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: InterfaceSettingScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+      case notisettingScreen:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: NotiSettingScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+      case languagesettingScreen:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: LanguageSettingScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
       case accountpersonScreen:
         String idUser = args as String;
         return PageTransition(
@@ -214,7 +242,12 @@ class RouteGenerator {
   static const accountpersonScreen = '/accountperson';
   static const editprofileScreen = '/editprofile';
   static const likedrecipeScreen = '/likedrecipe';
-  //
+  
+  //SETTINGS
+  static const settingScreen = 'settings';
+  static const interfacesettingScreen = 'interfacesetting';
+  static const notisettingScreen = 'nitificationssetting';
+  static const languagesettingScreen = 'languagesetting';
 
   // RECIPE DETAILS
   static const recipedetailScreen = '/recipedetail';

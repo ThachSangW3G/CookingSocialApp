@@ -12,6 +12,7 @@ import 'package:cooking_social_app/providers/provider_recipe/recipe_state.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:cooking_social_app/providers/provider_theme/theme_provider.dart';
 import 'package:cooking_social_app/providers/recent_search_provider.dart';
 import 'package:cooking_social_app/providers/user_provider.dart';
 
@@ -62,7 +63,8 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => LikeProvider()),
       ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ChangeNotifierProvider(create: (_) => FollowProvider()),
-      ChangeNotifierProvider(create: (_) => LikeReviewProvider())
+      ChangeNotifierProvider(create: (_) => LikeReviewProvider()),
+      ChangeNotifierProvider(create: (_) => ThemeProvider()),
     ],
     child: const MyApp(),
   ));
@@ -76,18 +78,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthenticationStateProvider authenticationStateProvider =
         Provider.of<AuthenticationStateProvider>(context, listen: false);
-    return MaterialApp(
-      title: 'Cooking Social',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
-        useMaterial3: true,
-      ),
-      onGenerateRoute: RouteGenerator.generatorRoute,
-      home: authenticationStateProvider.isLoggedIn
-          ? const HomeScreen()
-          : const LoginScreen(),
-      //home: RecipeEditScreen(),
+    // final ThemeProvider themeProvider = 
+    //   Provider.of<ThemeProvider>(context, listen: true);
+    return Consumer<ThemeProvider>(
+      builder: (BuildContext context, ThemeProvider themeProvider, _) { 
+        return MaterialApp(
+          title: 'Cooking Social',
+          debugShowCheckedModeBanner: false,
+          // theme: ThemeData(
+            // colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
+            // useMaterial3: true,
+          // ),
+          theme: themeProvider.themeData,
+          onGenerateRoute: RouteGenerator.generatorRoute,
+          home: authenticationStateProvider.isLoggedIn
+              ? const HomeScreen()
+              : const LoginScreen(),
+          //home: RecipeEditScreen(),
+        );
+      },
     );
   }
 }
