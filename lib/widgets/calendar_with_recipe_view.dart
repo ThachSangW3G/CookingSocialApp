@@ -1,7 +1,13 @@
-import 'package:cooking_social_app/widgets/calendar_with_recipe_card.dart';
+import 'package:cooking_social_app/models/recipe_calendar.dart';
+import 'package:cooking_social_app/providers/calendar_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:intl/intl.dart';
+
+import '../components/add_calendar_item.dart';
+import 'calendar_with_recipe_card.dart';
 
 class CalendarWithRecipeView extends StatefulWidget {
   final DateTime dateTime;
@@ -19,6 +25,9 @@ class _CalendarWithRecipeViewState extends State<CalendarWithRecipeView> {
   
   @override
   Widget build(BuildContext context) {
+
+    final calendarProvider = Provider.of<CalendarProvider>(context);
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -30,7 +39,7 @@ class _CalendarWithRecipeViewState extends State<CalendarWithRecipeView> {
               children: [
                 Text(
                   // formatDate(widget.dateTime),
-                  'Sat 27',
+                  '${DateFormat.MMMM().format(calendarProvider.dateSelected)} ${calendarProvider.dateSelected.day}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500, fontFamily: 'CeraPro'),
                 ),
                 Row(
@@ -44,7 +53,7 @@ class _CalendarWithRecipeViewState extends State<CalendarWithRecipeView> {
                     IconButton(
                       icon: SvgPicture.asset('assets/icon_svg/Vector.svg', height: 24, width: 24,),
                       onPressed: () {
-                        // Xử lý sự kiện khi nhấn IconButton "delete"
+                        _showAddRecipeCalendarDialog(context);
                       },
                     ),
                   ],
@@ -53,13 +62,32 @@ class _CalendarWithRecipeViewState extends State<CalendarWithRecipeView> {
             ),
           ),
           Container(
-            child: Column(
-              children: const [
-                RecipeCalendarCard(title: "Breakfast", content: "Bo xao long dua",),
-                RecipeCalendarCard(title: "Lunch", content: "Het tien roi, nhin doi!",),
-                // Thêm các CustomCardView khác vào đây
-              ],
-            ),
+            height: 300,
+            child: FutureBuilder<List<RecipeCalendar>>(
+              future: calendarProvider.getRecipeCalendar(calendarProvider.dateSelected),
+              builder: (context, snapshot){
+                print(calendarProvider.dateSelected);
+
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }else {
+                  final calendar = snapshot.data;
+
+                  return ListView.builder(
+                    itemCount: calendar!.length,
+                    itemBuilder: (context, index){
+
+                      final recipeCalendar = calendar![index];
+
+                      return RecipeCalendarCard(recipeCalendar: recipeCalendar);
+                    },
+                  );
+                }
+
+              }
+            )
           ),
         ],
       ),
@@ -72,4 +100,16 @@ class _CalendarWithRecipeViewState extends State<CalendarWithRecipeView> {
     final dayOfMonth = DateFormat.d('vi_VN').format(dateTime);
     return '$weekday, $dayOfMonth';
   }
+}
+
+
+void _showAddRecipeCalendarDialog(BuildContext context){
+  showDialog(
+      context: context,
+      builder: (context){
+        return AddCalendarItem();
+      }
+
+  );
+
 }
