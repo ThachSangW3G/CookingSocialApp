@@ -100,7 +100,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   oldAvatar = userModel.avatar;
                   oldEmail = userModel.email;
                   oldBio = userModel.bio;
-
                   
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,41 +160,50 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              const Text('Profile Name', style: TextStyle(),),
                               TextField(
                                 onChanged: (value) {
                                   setState(() {
                                     _name = value;
                                   });
-                                },
+                                },                               
                                 decoration: InputDecoration(
                                   contentPadding:
                                     const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                                  labelText: 'Profile Name',
+                                  // labelText: 'Profile Name',
                                   labelStyle: kContentTextStyleProfile,                                  
-                                  hintText: userModel!.name
+                                  hintText: userModel!.name,
+                                  border: InputBorder.none
                                   
                                   ),
                                 // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               ),                            
                               const SizedBox(height: 20, ),
+
+                              const Text('Email', style: TextStyle(),),
                               TextField(
+                                // controller: _textEditingController,
                                 onChanged: (value) {
                                   setState(() {
                                     _email = value;
 
                                   });
-                                },
+                                },                                
                                 decoration: InputDecoration(
                                   contentPadding:
                                     const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                                  labelText: 'Email',
+                                  // labelText: 'Email',
                                   labelStyle: kContentTextStyleProfile,                                  
-                                  hintText: userModel!.email
+                                  hintText: userModel!.email,
+                                  border: InputBorder.none,
+                                  fillColor: Colors.amber,
+                                  focusColor: Colors.amber
                                   
                                   ),
                                 // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               ),
                               const SizedBox(height: 20, ),
+                              const Text('Bio', style: TextStyle(),),
                               TextField(
                                 onChanged: (value) {
                                   setState(() {
@@ -205,23 +213,52 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 decoration: InputDecoration(
                                   contentPadding:
                                     const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                                  labelText: 'Bio',
+                                  // labelText: 'Bio',
                                   labelStyle: kContentTextStyleProfile,                                  
-                                  hintText: userModel!.bio
+                                  hintText: userModel!.bio,
+                                  border: InputBorder.none
                                   
                                   ),
                                 // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               ),
-                              const SizedBox(height: 20, ),                              
-                            ],
-                          ),
-                        ),
-                      ),
-                      
-                    ],
+                              const SizedBox(height: 20, ),        
+                              TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Recipe Title, Ingredient',
+                                  hintStyle: const TextStyle(
+                                      fontFamily: 'CeraPro',
+                                      fontSize: 17,
+                                      // color: AppColors.greyShuttle
+                                  ),
+                                  border: InputBorder.none,
+                                  suffixIcon: IconButton(
+                                    onPressed: (){},
+                                    icon: SvgPicture.asset('assets/icon_svg/search.svg', height: 25, width: 25, color: AppColors.greyShuttle,
+                                    ),
+                                  ),
+
+                                ),
+                                onChanged: (value) {
+                                  // setState(() {
+                                  //   if (value.isEmpty){
+                                  //     _isSearch = false;
+                                  //   }else {
+                                  //     _isSearch = true;
+                                  //   }
+                                  // });
+                                  // recipeProvider!.search(value);
+                                  //print(recipeProvider!.searchRecipe.length);
+                                }                                                         
+                                        
+                              ),
+                            ]
+                          )
+                        )
+                      )
+                    ]
                   );
-                }
-              }             
+                }             
+              }
             )
           ],
         ),
