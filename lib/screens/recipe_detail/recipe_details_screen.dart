@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/recipe_summary.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/recipe.dart';
+import 'package:cooking_social_app/models/recipe_calendar.dart';
+import 'package:cooking_social_app/providers/calendar_provider.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 import 'package:cooking_social_app/widgets/tab_content_ingredients.dart';
 import 'package:cooking_social_app/widgets/tab_content_intro.dart';
@@ -23,9 +26,20 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
   late TabController _tabController;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
+
+  late CalendarProvider calendarProvider;
+
+  @override
+  void didChangeDependencies() {
+    calendarProvider =
+        Provider.of<CalendarProvider>(context, listen: true);
+    super.didChangeDependencies();
+  }
+
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
+
     //context.read<RecipeStateProvider>().fetchRecipe(widget.keyRecipe);
     super.initState();
   }
@@ -35,11 +49,143 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
   //   context.read<RecipeStateProvider>().fetchRecipe(widget.keyRecipe);
   //   super.didChangeDependencies();
   // }
+  
+  DateTime date = DateTime.now();
+  String? meal = 'Breakfast';
+
+  _showDatePicker(){
+    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2025)).then((value) {
+      setState(() {
+        date = value!;
+        _showDialogChooseMeal(context);
+
+      });
+    });
+  }
+
+  void _showDialogChooseMeal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('For meal'),
+              content: Container(
+                height: 100,
+                child: DropdownButton<String>(
+                  value: meal,
+                  underline: const Divider(
+                    thickness: 1.5,
+                    color: AppColors.greyBombay,
+                  ),
+                  isExpanded: true,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.only(top: 8),
+                  icon: Align(
+                    alignment: Alignment.centerRight,
+                    child: SvgPicture.asset(
+                      'assets/icon_svg/chevron-circle-down.svg',
+                      height: 15,
+                      width: 8,
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      meal = value;
+                    });
+                  },
+                  items: const [
+                    DropdownMenuItem<String>(
+                      value: "Breakfast",
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Breakfast',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'CeraPro',
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                    ),
+                    DropdownMenuItem<String>(
+                      value: 'Lunch',
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Lunch',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'CeraPro',
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                    ),
+                    DropdownMenuItem<String>(
+                      value: 'Dinner',
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'Dinner',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'CeraPro',
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(color: AppColors.orangeCrusta),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    final RecipeCalendar recipeCalendar = RecipeCalendar(
+                      id: DateTime.now().toIso8601String(),
+                      idRecipe: widget.keyRecipe,
+                      date: Timestamp.fromDate(date),
+                      meal: meal!,
+                    );
+
+                    calendarProvider.addRecipeCalendar(recipeCalendar);
+
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'OK',
+                    style: TextStyle(color: AppColors.orangeCrusta),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final RecipeStateProvider recipeProvider =
         Provider.of<RecipeStateProvider>(context, listen: true);
+
     return Scaffold(
         backgroundColor: AppColors.whitePorcelain,
         body: Padding(
@@ -198,7 +344,9 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  _showDatePicker();
+                },
                 child: SizedBox(
                   height: 30,
                   width: 30,
@@ -210,7 +358,9 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+
+                },
                 child: SizedBox(
                   height: 30,
                   width: 30,
@@ -226,3 +376,4 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
         ));
   }
 }
+
