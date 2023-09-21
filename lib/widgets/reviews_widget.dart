@@ -19,12 +19,12 @@ class _ReviewWidgetState extends State<ReviewWidget> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       children: const [
-        ReviewItem(
-            // name: 'Resep Masakan Lemang Ikan Mas',
-            // content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            // check: true, 
-            // recipeId: null,
-          ),
+        // ReviewItem(
+        //     // name: 'Resep Masakan Lemang Ikan Mas',
+        //     // content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     // check: true, 
+        //     // recipeId: null,
+        //   ),
         // ReviewItem(
         //     name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
         //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
