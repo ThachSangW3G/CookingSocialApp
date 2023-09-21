@@ -4,14 +4,17 @@
 
 import 'package:cooking_social_app/localization/app_localization.dart';
 import 'package:cooking_social_app/models/ingredient_item.dart';
+import 'package:cooking_social_app/providers/grocery_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/app_color.dart';
 import '../../widgets/grocery_item_uncheck.dart';
 
 class GroceryScreen extends StatefulWidget {
+  // final String? idUser;
   const GroceryScreen({super.key});
 
   @override
@@ -21,8 +24,15 @@ class GroceryScreen extends StatefulWidget {
 
 
 class _GroceryScreenState extends State<GroceryScreen> {
+  late GroceryProvider groceryProvider;
 
   bool deleted = false;
+
+  @override
+  void didChangeDependencies() {
+    groceryProvider = Provider.of<GroceryProvider>(context);
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {

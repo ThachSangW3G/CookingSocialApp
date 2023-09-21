@@ -1,22 +1,48 @@
 import 'package:cooking_social_app/components/line_row.dart';
+import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/app_color.dart';
 import '../constants/app_styles.dart';
 
-class ReviewItem extends StatelessWidget {
-  final String name;
-  final String content;
-  final bool check;
+class ReviewItem extends StatefulWidget {
+  final recipeId;
+  // final String name;
+  // final String content;
+  // final bool check;
   const ReviewItem(
-      {super.key,
-      required this.name,
-      required this.content,
-      required this.check});
+      {super.key, 
+        this.recipeId,
+      // required this.recipeId,
+      // required this.name,
+      // required this.content,
+      // required this.check
+    });
+  
+  @override
+  State<ReviewItem> createState() => _ReviewItemState();
+  
+}
+
+class _ReviewItemState extends State<ReviewItem>{
+
+  late RecipeProvider recipeProvider; 
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    recipeProvider = Provider.of<RecipeProvider>(context);
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) { 
+    // late recipeId;
+    late String name;
+    late String content;
+    late bool check = false;
+
     return Column(
       children: [
         Padding(
@@ -50,7 +76,7 @@ class ReviewItem extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Text(
-                                name,
+                                'name',
                                 style: const TextStyle(
                                     color: AppColors.greyShuttle,
                                     fontFamily: "CeraPro",
@@ -103,7 +129,7 @@ class ReviewItem extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        content,
+                        'content',
                         style: kReviewLabelTextStyle,
                       )
                     ],

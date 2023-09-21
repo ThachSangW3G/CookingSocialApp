@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/comment_item.dart';
 import 'package:cooking_social_app/components/line_row.dart';
+import 'package:cooking_social_app/components/review_item.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:cooking_social_app/models/follow_model.dart';
 import 'package:cooking_social_app/models/like_model.dart';
@@ -467,7 +468,12 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                                       physics: const NeverScrollableScrollPhysics(),
                                                       itemCount: listReview.length,
                                                       itemBuilder: (context, index) {
-                                                        return CommentItem(review: listReview[index]);
+                                                        // return CommentItem(review: listReview[index]);
+                                                        return ReviewItem(
+                                                          // name: listReview[index].name, 
+                                                          // check: listReview[index].check, 
+                                                          // content: listReview[index].description, 
+                                                          recipeId: listReview[index].keyRecipe,);
                                                       },
                                                     ),
                                                   );

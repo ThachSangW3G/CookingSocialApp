@@ -55,7 +55,7 @@ class AppLocalization {
       "searchRecipe": "Search Recipe",
       "recentSearch": "Recent Search",
       "lastSeen": "Last Seen",
-      "recipeTitle,Ingredient": "Recipe Title, Ingredient",
+      "recipeTitle_Ingredient": "Recipe Title, Ingredient",
       
       //Grocery
       "grocery": "Grocery",

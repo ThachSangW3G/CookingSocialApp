@@ -350,7 +350,10 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
                       ),
                     ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, RouteGenerator.recipeaddgroceryScreen);
+                  //CART NE---------------------------------------------------------------------------------------
+                },
                 child: SizedBox(
                   height: 30,
                   width: 30,

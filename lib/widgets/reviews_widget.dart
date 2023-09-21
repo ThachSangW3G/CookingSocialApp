@@ -20,45 +20,47 @@ class _ReviewWidgetState extends State<ReviewWidget> {
       physics: const NeverScrollableScrollPhysics(),
       children: const [
         ReviewItem(
-            name: 'Resep Masakan Lemang Ikan Mas',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: true),
-        ReviewItem(
-            name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        ReviewItem(
-            name: 'Resep Masakan Lemang Ikan Mas',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: true),
-        ReviewItem(
-            name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        ReviewItem(
-            name: 'Resep Masakan Lemang Ikan Mas',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: true),
-        ReviewItem(
-            name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        ReviewItem(
-            name: 'Resep Masakan Lemang Ikan Mas',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: true),
-        ReviewItem(
-            name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
-        ReviewItem(
-            name: 'Resep Masakan Lemang Ikan Mas',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: true),
-        ReviewItem(
-            name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
-            check: false),
+            // name: 'Resep Masakan Lemang Ikan Mas',
+            // content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+            // check: true, 
+            // recipeId: null,
+          ),
+        // ReviewItem(
+        //     name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     check: false),
+        // ReviewItem(
+        //     name: 'Resep Masakan Lemang Ikan Mas',
+        //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     check: true),
+        // ReviewItem(
+        //     name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     check: false),
+        // ReviewItem(
+        //     name: 'Resep Masakan Lemang Ikan Mas',
+        //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     check: true),
+        // ReviewItem(
+        //     name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     check: false),
+        // ReviewItem(
+        //     name: 'Resep Masakan Lemang Ikan Mas',
+        //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     check: true),
+        // ReviewItem(
+        //     name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     check: false),
+        // ReviewItem(
+        //     name: 'Resep Masakan Lemang Ikan Mas',
+        //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     check: true),
+        // ReviewItem(
+        //     name: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     content: 'Resepnya menarik mesti dicoba nih, terima kasih bunda',
+        //     check: false),
       ],
     );
   }

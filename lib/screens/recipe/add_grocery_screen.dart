@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import '../../constants/app_color.dart';
 
 class AddGroceryScreen extends StatefulWidget {
+  // final String? keyRecipe;
   // final List<String> ingredients ;
   // const AddGroceryScreen({required Key key, ingredients, required this.ingredients}) : super(key: key);
 
   // final List<String>? _ingredients;
 
-  const AddGroceryScreen({Key? key,}) : super(key: key);
+  const AddGroceryScreen({Key? key, }) : super(key: key);
 
 
   @override
