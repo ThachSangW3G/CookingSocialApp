@@ -43,7 +43,8 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
-    _userModelFuture = Provider.of<UserProvider>(context, listen: false).getUser(widget.idUser);
+    _userModelFuture = Provider.of<UserProvider>(context, listen: false)
+        .getUser(widget.idUser);
     super.initState();
   }
 
@@ -56,35 +57,32 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
   final user = FirebaseAuth.instance.currentUser!;
   String iconFollow = 'assets/icon_svg/user-follow.svg';
 
-
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     final FollowProvider followProvider = Provider.of<FollowProvider>(context);
-    final NotificationProvider notificationProvider = Provider.of<NotificationProvider>(context);
+    final NotificationProvider notificationProvider =
+        Provider.of<NotificationProvider>(context);
     final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
     final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
-    final ReviewStateProvider reviewStateProvider = Provider.of<ReviewStateProvider>(context);
-    final bool isOwner = user.uid ==  widget.idUser;
+    final ReviewStateProvider reviewStateProvider =
+        Provider.of<ReviewStateProvider>(context);
+    final bool isOwner = user.uid == widget.idUser;
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: FutureBuilder<UserModel>(
           future: _userModelFuture,
-          builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot){
-
-            if(snapshot.connectionState == ConnectionState.waiting){
+          builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Container(
                 height: MediaQuery.of(context).size.height,
                 child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CircularProgressIndicator()
-                    ]
-                ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [CircularProgressIndicator()]),
               );
-            }
-            else {
+            } else {
               final userModel = snapshot.data;
 
               return Stack(
@@ -99,8 +97,7 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                             fit: BoxFit.fill)),
                     alignment: Alignment.topCenter,
                     child: Padding(
-                      padding:
-                      const EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                           horizontal: 10.0, vertical: 50),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -125,67 +122,69 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                             ),
                           ),
                           FutureBuilder<FollowModel>(
-                            future: followProvider.followExist(userModel!.uid, user.uid),
-                            builder: (context, snapshot){
-                              final existFollow = snapshot.data;
-                              return GestureDetector(
-                                onTap: () {
-                                  if(isOwner){
-                                    Navigator.of(context).pushNamed(
-                                      RouteGenerator.editprofileScreen,
-                                      arguments: widget.idUser
-                                    );
-                                  }else{
+                              future: followProvider.followExist(
+                                  userModel!.uid, user.uid),
+                              builder: (context, snapshot) {
+                                final existFollow = snapshot.data;
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (isOwner) {
+                                      Navigator.of(context).pushNamed(
+                                          RouteGenerator.editprofileScreen,
+                                          arguments: widget.idUser);
+                                    } else {
+                                      if (existFollow == null) {
+                                        FollowModel follow = FollowModel(
+                                            id: DateTime.now()
+                                                .toIso8601String(),
+                                            idUserOwner: userModel!.uid,
+                                            idUserFollower: user.uid);
+                                        followProvider.addFollow(follow);
 
-                                    if(existFollow == null){
-                                      FollowModel follow = FollowModel(
-                                          id: DateTime.now().toIso8601String(),
-                                          idUserOwner: userModel!.uid,
-                                          idUserFollower: user.uid
-                                      );
-                                      followProvider.addFollow(follow);
+                                        NotificationModel notification =
+                                            NotificationModel(
+                                                id: DateTime.now()
+                                                    .toIso8601String(),
+                                                idUserGuest: user.uid,
+                                                idUserOwner: userModel.uid,
+                                                time: Timestamp.now(),
+                                                type: 'newFollower',
+                                                read: false,
+                                                title: "",
+                                                idRecipe: "");
 
-                                      NotificationModel notification = NotificationModel(
-                                          id: DateTime.now().toIso8601String(),
-                                          idUserGuest: user.uid,
-                                          idUserOwner: userModel.uid,
-                                          time: Timestamp.now(),
-                                          type: 'newFollower',
-                                          read: false,
-                                          title: "",
-                                          idRecipe: ""
-                                      );
-
-                                      notificationProvider.addNotification(notification);
-
-                                    }else {
-                                      followProvider.deleteFollow(existFollow);
+                                        notificationProvider
+                                            .addNotification(notification);
+                                      } else {
+                                        followProvider
+                                            .deleteFollow(existFollow);
+                                      }
                                     }
-
-
-                                  }
-                                },
-                                child: Container(
-                                  height: 50,
-                                  width: 50,
-                                  decoration: const BoxDecoration(
-                                      color: AppColors.white,
-                                      shape: BoxShape.circle),
-                                  child: Center(
-                                      child: Container(
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    width: 50,
+                                    decoration: const BoxDecoration(
+                                        color: AppColors.white,
+                                        shape: BoxShape.circle),
+                                    child: Center(
+                                        child: Container(
+                                      height: 25,
+                                      width: 25,
+                                      child: SvgPicture.asset(
+                                        isOwner
+                                            ? 'assets/icon_svg/pencil.svg'
+                                            : existFollow == null
+                                                ? 'assets/icon_svg/user-follow.svg'
+                                                : 'assets/icon_svg/group.svg',
                                         height: 25,
                                         width: 25,
-                                        child: SvgPicture.asset(
-                                          isOwner ? 'assets/icon_svg/pencil.svg' : existFollow == null ? 'assets/icon_svg/user-follow.svg' : 'assets/icon_svg/group.svg',
-                                          height: 25,
-                                          width: 25,
-                                          color: AppColors.greyShuttle,
-                                        ),
-                                      )),
-                                ),
-                              );
-                            }
-                          )
+                                        color: AppColors.greyShuttle,
+                                      ),
+                                    )),
+                                  ),
+                                );
+                              })
                         ],
                       ),
                     ),
@@ -199,13 +198,10 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                           children: [
                             Container(
                               height: 190,
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width - 40,
+                              width: MediaQuery.of(context).size.width - 40,
                               decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(15)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
                                 color: AppColors.white,
                               ),
                               child: Column(
@@ -228,8 +224,7 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                         const SizedBox(
                                           height: 10.0,
                                         ),
-                                        Text(
-                                            userModel.bio,
+                                        Text(userModel.bio,
                                             textAlign: TextAlign.center,
                                             softWrap: true,
                                             overflow: TextOverflow.clip,
@@ -238,19 +233,26 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                           height: 10.0,
                                         ),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            FutureBuilder<int>(future: followProvider.getFollower(userModel.uid), builder: (context, snapshot){
-
-                                              if(snapshot.connectionState == ConnectionState.waiting){
-                                                return const Text('0', style: kLabelTextStyle);
-                                              }else {
-                                                final follower = snapshot.data;
-                                                return Text(follower.toString(), style: kLabelTextStyle);
-                                              }
-                                            }),
-
+                                            FutureBuilder<int>(
+                                                future: followProvider
+                                                    .getFollower(userModel.uid),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return const Text('0',
+                                                        style: kLabelTextStyle);
+                                                  } else {
+                                                    final follower =
+                                                        snapshot.data;
+                                                    return Text(
+                                                        follower.toString(),
+                                                        style: kLabelTextStyle);
+                                                  }
+                                                }),
                                             const SizedBox(
                                               width: 5.0,
                                             ),
@@ -269,15 +271,24 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                             const SizedBox(
                                               width: 5.0,
                                             ),
-                                            FutureBuilder<int>(future: followProvider.getFollowing(userModel.uid), builder: (context, snapshot){
-
-                                              if(snapshot.connectionState == ConnectionState.waiting){
-                                                return const Text('0', style: kLabelTextStyle);
-                                              }else {
-                                                final follower = snapshot.data;
-                                                return Text(follower.toString(), style: kLabelTextStyle);
-                                              }
-                                            }),
+                                            FutureBuilder<int>(
+                                                future:
+                                                    followProvider.getFollowing(
+                                                        userModel.uid),
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.waiting) {
+                                                    return const Text('0',
+                                                        style: kLabelTextStyle);
+                                                  } else {
+                                                    final follower =
+                                                        snapshot.data;
+                                                    return Text(
+                                                        follower.toString(),
+                                                        style: kLabelTextStyle);
+                                                  }
+                                                }),
                                             const SizedBox(
                                               width: 5.0,
                                             ),
@@ -336,7 +347,6 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                     ),
                                   ),
 
-
                                   // second tab [you can add an icon using the icon property]
                                   Tab(
                                     child: Container(
@@ -355,91 +365,125 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                             ),
                             const LineRow(),
                             SizedBox(
-                              height: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .height,
+                              height: MediaQuery.of(context).size.height,
                               width: double.infinity,
                               child: TabBarView(
                                   controller: _tabController,
                                   children: [
                                     // const PostWidget(),
                                     FutureBuilder<List<Featured>>(
-                                      future: recipeProvider.getListFeatureByIdUser(userModel.uid),
-                                      builder: (context, snapshot){
+                                      future:
+                                          recipeProvider.getListFeatureByIdUser(
+                                              userModel.uid),
+                                      builder: (context, snapshot) {
                                         //print(snapshot.data!.length);
-                                        if(snapshot.connectionState == ConnectionState.waiting){
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
                                           return const Center(
                                             child: CircularProgressIndicator(),
                                           );
-                                        }else {
+                                        } else {
                                           final features = snapshot.data;
                                           return ListView.builder(
-
-                                            physics: const NeverScrollableScrollPhysics(),
+                                            //physics: const NeverScrollableScrollPhysics(),
                                             itemCount: features!.length,
                                             itemBuilder: (context, index) {
                                               final featured = features![index];
                                               return GestureDetector(
                                                   onTap: () {
                                                     Navigator.of(context).pushNamed(
-                                                        RouteGenerator.recipedetailScreen,
+                                                        RouteGenerator
+                                                            .recipedetailScreen,
                                                         arguments: featured.id);
                                                   },
-                                                  child: FutureBuilder<LikeModel>(
-                                                      future: likeProvider.likeExist(featured.id, user.uid),
-                                                      builder: (context, snapshot){
-                                                        final LikeModel? liked = snapshot.data;
+                                                  child: FutureBuilder<
+                                                          LikeModel>(
+                                                      future: likeProvider
+                                                          .likeExist(
+                                                              featured.id,
+                                                              user.uid),
+                                                      builder:
+                                                          (context, snapshot) {
+                                                        final LikeModel? liked =
+                                                            snapshot.data;
 
-                                                        return FeaturedCard(featured: featured, like: (){
+                                                        return FeaturedCard(
+                                                          featured: featured,
+                                                          like: () {
+                                                            if (liked == null) {
+                                                              LikeModel likeModel = LikeModel(
+                                                                  id: DateTime
+                                                                          .now()
+                                                                      .toIso8601String(),
+                                                                  idRecipe:
+                                                                      featured
+                                                                          .id,
+                                                                  idUser:
+                                                                      user.uid,
+                                                                  time: Timestamp
+                                                                      .now());
+                                                              likeProvider
+                                                                  .addLike(
+                                                                      likeModel);
 
-                                                          if(liked == null){
-                                                            LikeModel likeModel = LikeModel(
-                                                                id: DateTime.now().toIso8601String(),
-                                                                idRecipe: featured.id,
-                                                                idUser: user.uid,
-                                                                time: Timestamp.now()
-                                                            );
-                                                            likeProvider.addLike(likeModel);
+                                                              recipeProvider
+                                                                  .updateAddLikeByFeature(
+                                                                      featured
+                                                                          .id);
 
-                                                            recipeProvider.updateAddLikeByFeature(featured.id);
+                                                              NotificationModel notification = NotificationModel(
+                                                                  id: DateTime
+                                                                          .now()
+                                                                      .toIso8601String(),
+                                                                  idUserGuest:
+                                                                      user.uid,
+                                                                  idUserOwner:
+                                                                      featured
+                                                                          .idUser,
+                                                                  time: Timestamp
+                                                                      .now(),
+                                                                  type: 'liked',
+                                                                  read: false,
+                                                                  title: "",
+                                                                  idRecipe:
+                                                                      featured
+                                                                          .id);
 
-                                                            NotificationModel notification = NotificationModel(
-                                                                id: DateTime.now().toIso8601String(),
-                                                                idUserGuest: user.uid,
-                                                                idUserOwner: featured.idUser,
-                                                                time: Timestamp.now(),
-                                                                type: 'liked',
-                                                                read: false,
-                                                                title: "",
-                                                                idRecipe: featured.id
-                                                            );
-
-                                                            notificationProvider.addNotification(notification);
-
-                                                          }else {
-                                                            likeProvider.deleteLike(liked);
-                                                            recipeProvider.updateRemoveLikeByFeature(featured.id);
-                                                          }
-
-                                                        }, liked: liked != null,
-                                                          viewProfile: (){
-                                                            Navigator.of(context).pushNamed(
-                                                                RouteGenerator.accountpersonScreen,
-                                                                arguments: featured.idUser
-                                                            );
+                                                              notificationProvider
+                                                                  .addNotification(
+                                                                      notification);
+                                                            } else {
+                                                              likeProvider
+                                                                  .deleteLike(
+                                                                      liked);
+                                                              recipeProvider
+                                                                  .updateRemoveLikeByFeature(
+                                                                      featured
+                                                                          .id);
+                                                            }
+                                                          },
+                                                          liked: liked != null,
+                                                          viewProfile: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pushNamed(
+                                                                    RouteGenerator
+                                                                        .accountpersonScreen,
+                                                                    arguments:
+                                                                        featured
+                                                                            .idUser);
                                                           },
                                                         );
-                                                      }
-                                                  ));
+                                                      }));
                                             },
                                           );
                                         }
                                       },
                                     ),
 
-
-                                    ListCookbookWidget(user: userModel,),
+                                    ListCookbookWidget(
+                                      user: userModel,
+                                    ),
                                     // const ReviewWidget()
 
                                     RefreshIndicator(
@@ -447,7 +491,8 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                         context.read<ReviewStateProvider>;
                                       },
                                       child: FutureBuilder<List<Review>>(
-                                        future: reviewStateProvider.fetchReviewByUser(widget.idUser),
+                                        future: reviewStateProvider
+                                            .fetchReviewByUser(widget.idUser),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasError) {
                                             // Hiển thị widget khi có lỗi xảy ra
@@ -460,9 +505,12 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                           } else {
                                             final listReview = snapshot.data;
                                             return listReview == null
-                                                ? const Center(child: CircularProgressIndicator())
+                                                ? const Center(
+                                                    child:
+                                                        CircularProgressIndicator())
                                                 : Padding(
-                                                    padding: const EdgeInsets.all(0),
+                                                    padding:
+                                                        const EdgeInsets.all(0),
                                                     child: ListView.builder(
                                                       shrinkWrap: true,
                                                       physics: const NeverScrollableScrollPhysics(),
@@ -478,10 +526,9 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                                     ),
                                                   );
                                           }
-          },
-        ),
+                                        },
+                                      ),
                                     ),
-
                                   ]),
                             )
                           ],
@@ -501,8 +548,8 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           image: DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                  userModel!.avatar),
+                              image:
+                                  CachedNetworkImageProvider(userModel!.avatar),
                               fit: BoxFit.contain),
                           boxShadow: const [
                             BoxShadow(

@@ -11,6 +11,7 @@ abstract class NotificationRepository{
   Future<List<Map<String, dynamic>>> getListNotification();
   Future<void> updateNotification(NotificationModel notificationModel);
   Future<void> addNotification(NotificationModel notificationModel);
+  Future<void> deleteNotification();
 }
 
 class NotificationRepositoryImpl implements NotificationRepository{
@@ -71,6 +72,11 @@ class NotificationRepositoryImpl implements NotificationRepository{
   @override
   Future<void> addNotification(NotificationModel notificationModel) {
     return _notificationFirestoreService.addNotification(notificationModel);
+  }
+
+  @override
+  Future<void> deleteNotification() {
+    return _notificationFirestoreService.deleteNotification();
   }
 
 }

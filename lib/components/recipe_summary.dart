@@ -66,6 +66,7 @@ class _RecipeSummaryState extends State<RecipeSummary> {
     final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
     final ReviewStateProvider reviewProvider =
         Provider.of<ReviewStateProvider>(context);
+    final CookbookProvider cookbookProvider = Provider.of<CookbookProvider>(context);
 
     // final RecipeStateProvider recipeProvider =
     //     Provider.of<RecipeStateProvider>(context);
@@ -131,7 +132,7 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                               if (liked != null && first) {
                                 check = true;
                                 first = false;
-                              }
+                              } 
                               return GestureDetector(
                                 onTap: () async {
                                   if (!check) {

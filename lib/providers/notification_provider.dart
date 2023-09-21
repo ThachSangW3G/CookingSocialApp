@@ -46,4 +46,13 @@ class NotificationProvider extends ChangeNotifier{
     await _notificationRepository.addNotification(notificationModel);
     notifyListeners();
   }
+
+  Future<List<Map<String, dynamic>>> getListNotification() async {
+    return await _notificationRepository.getListNotification();
+  }
+
+  Future<void> deleteNotification() async {
+    await _notificationRepository.deleteNotification();
+    notifyListeners();
+  }
 }
