@@ -1,29 +1,36 @@
-// import 'package:cooking_social_app/models/grocery.dart';
-// import 'package:cooking_social_app/repository/grocery_repository.dart';
-// import 'package:flutter/material.dart';
+import 'package:cooking_social_app/models/grocery.dart';
+import 'package:cooking_social_app/repository/grocery_repository.dart';
+import 'package:flutter/material.dart';
 
-// class GroceryProvider extends ChangeNotifier{
-//   late GroceryRepository _groceryRepository;
+class GroceryProvider extends ChangeNotifier{
+  late GroceryRepository _groceryRepository;
 
-//   GroceryProvider(){
-//     _groceryRepository = GroceryRepositoryImpl();
-//   }
+  GroceryProvider(){
+    _groceryRepository = GroceryRepositoryImpl();
+  }
 
-//   String idUser = DateTime.now();
+  String idUser = "";
 
-//   createGrogery(Grocery grocery) async {
-//     await _groceryRepository.createGrogery(grocery);
+  String idRecipe = "";
 
-//     notifyListeners();
-//   }
+  createGrogery(Grocery grocery) async {
+    await _groceryRepository.createGrogery(grocery);
 
-//   selectDate(DateTime date){
-//     dateSelected = date;
-//     notifyListeners();
-//   }
+    notifyListeners();
+  }
 
-//   Future<List<RecipeCalendar>> getRecipeCalendar(DateTime date){
-//     return _calendarRepository.getRecipeCalendar(date);
-//   }
+  selectUserId(String userId){
+    idUser = userId;
+    notifyListeners();
+  }
 
-// }
+  selectRecipeId(String recipeId){
+    idRecipe = recipeId;
+    notifyListeners();
+  }
+
+  Future<List<Grocery>> getListGroceries(){
+    return _groceryRepository.getListGroceries();
+  }
+
+}

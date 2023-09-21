@@ -4,7 +4,7 @@ import 'package:cooking_social_app/remote/grocery_firestore_service.dart';
 abstract class GroceryRepository {
   // Future<List<Grocery>> getAllRecipes();
   Future<void> createGrogery(Grocery grocery);
-  Future<List<Grocery>> getListGroceries(String idUser);
+  Future<List<Grocery>> getListGroceries();
 }
 
 class GroceryRepositoryImpl implements GroceryRepository{
@@ -19,8 +19,8 @@ class GroceryRepositoryImpl implements GroceryRepository{
   }
 
   @override
-  Future<List<Grocery>> getListGroceries(String idGrocery) {
-    return _groceryFireStoreService.getListGroceries(idGrocery);
+  Future<List<Grocery>> getListGroceries() {
+    return _groceryFireStoreService.getListGroceries();
   }
 
 }

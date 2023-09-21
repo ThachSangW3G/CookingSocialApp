@@ -3,14 +3,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Grocery {
   String key;
   Timestamp date;
-  List<String> ingredients;
+  List<String> material;
+  List<String> spice;
   String recipeId;
   String uidUser;
   
   Grocery(
     {required this.key,
     required this.date,
-    required this.ingredients,
+    required this.material,
+    required this.spice,
     required this.recipeId,
     required this.uidUser});
 
@@ -18,7 +20,8 @@ class Grocery {
     return Grocery(
         key: json['id'] as String,
         date: json['date' as DateTime],
-        ingredients: List<String>.from(json['ingredients']),
+        material: List<String>.from(json['material']),
+        spice: List<String>.from(json['spice']),
         recipeId: json['recipeIds'] as String,
         uidUser: json['uidUser'] as String);
   }
@@ -26,7 +29,8 @@ class Grocery {
     return {
       'key': key,
       'date': date,
-      'ingredients': ingredients,
+      'material': material,
+      'spice': spice,
       'recipeId': recipeId,
       'uidUser': uidUser
     };
