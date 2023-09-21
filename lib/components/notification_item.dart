@@ -1,12 +1,13 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
-import 'package:cooking_social_app/models/recipe_cookbook.dart';
+
 import 'package:cooking_social_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../models/notification_model.dart';
+import '../models/recipe.dart';
 
 class NotificationItem extends StatelessWidget {
   final NotificationModel notification;
