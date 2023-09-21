@@ -163,9 +163,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               const Text('Profile Name', style: TextStyle(),),
                               TextField(
                                 onChanged: (value) {
-                                  setState(() {
+                                  // setState(() {
                                     _name = value;
-                                  });
+                                  // });
                                 },                               
                                 decoration: InputDecoration(
                                   contentPadding:
@@ -184,10 +184,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               TextField(
                                 // controller: _textEditingController,
                                 onChanged: (value) {
-                                  setState(() {
+                                  // setState(() {
                                     _email = value;
 
-                                  });
+                                  // });
                                 },                                
                                 decoration: InputDecoration(
                                   contentPadding:
@@ -206,9 +206,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               const Text('Bio', style: TextStyle(),),
                               TextField(
                                 onChanged: (value) {
-                                  setState(() {
+                                  // setState(() {
                                      _bio = value;
-                                  });
+                                  // });
                                 },
                                 decoration: InputDecoration(
                                   contentPadding:
@@ -222,35 +222,35 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                               ),
                               const SizedBox(height: 20, ),        
-                              TextField(
-                                decoration: InputDecoration(
-                                  hintText: 'Recipe Title, Ingredient',
-                                  hintStyle: const TextStyle(
-                                      fontFamily: 'CeraPro',
-                                      fontSize: 17,
-                                      // color: AppColors.greyShuttle
-                                  ),
-                                  border: InputBorder.none,
-                                  suffixIcon: IconButton(
-                                    onPressed: (){},
-                                    icon: SvgPicture.asset('assets/icon_svg/search.svg', height: 25, width: 25, color: AppColors.greyShuttle,
-                                    ),
-                                  ),
+                              // TextField(
+                              //   decoration: InputDecoration(
+                              //     hintText: 'Recipe Title, Ingredient',
+                              //     hintStyle: const TextStyle(
+                              //         fontFamily: 'CeraPro',
+                              //         fontSize: 17,
+                              //         // color: AppColors.greyShuttle
+                              //     ),
+                              //     border: InputBorder.none,
+                              //     suffixIcon: IconButton(
+                              //       onPressed: (){},
+                              //       icon: SvgPicture.asset('assets/icon_svg/search.svg', height: 25, width: 25, color: AppColors.greyShuttle,
+                              //       ),
+                              //     ),
 
-                                ),
-                                onChanged: (value) {
-                                  // setState(() {
-                                  //   if (value.isEmpty){
-                                  //     _isSearch = false;
-                                  //   }else {
-                                  //     _isSearch = true;
-                                  //   }
-                                  // });
-                                  // recipeProvider!.search(value);
-                                  //print(recipeProvider!.searchRecipe.length);
-                                }                                                         
+                              //   ),
+                              //   onChanged: (value) {
+                              //     setState(() {
+                              //       if (value.isEmpty){
+                              //         _name = value;
+                              //       }else {
+                              //         _name = value;
+                              //       }
+                              //     });
+                              //     // recipeProvider!.search(value);
+                              //     // print(recipeProvider!.searchRecipe.length);
+                              //   }                                                         
                                         
-                              ),
+                              // ),
                             ]
                           )
                         )
