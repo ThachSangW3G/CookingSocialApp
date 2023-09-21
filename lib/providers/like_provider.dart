@@ -28,4 +28,9 @@ class LikeProvider extends ChangeNotifier{
   Future<List<Recipe>> getLikedRecipe(){
     return _likeRepository.getLikedRecipe();
   }
+
+  Future<int> getLikeCount(String idRecipe) async {
+    return await _likeRepository.getLikeCount(idRecipe);
+  }
+
 }

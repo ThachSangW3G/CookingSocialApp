@@ -10,6 +10,9 @@ abstract class RecipeRepository {
   Future<List<Recipe>> getAllRecipes();
   Future<Recipe> getRecipe(String idRecipe);
   Future<List<Recipe>> getListRecipeByListID(List<dynamic> idRecipes);
+  Future<void> updateAddRecipe(Recipe recipe);
+  Future<void> updateRemoveRecipe(Recipe recipe);
+  Future<List<Recipe>> getListRecipesByIdUser(String idUser);
 }
 
 class RecipeRepositoryImpl implements RecipeRepository {
@@ -46,6 +49,25 @@ class RecipeRepositoryImpl implements RecipeRepository {
 
 
     return Future.value(listRecipes);
+  }
+
+  @override
+  Future<void> updateAddRecipe(Recipe recipe) {
+    recipe.numberLike += 1;
+    print(recipe.numberLike);
+    return _recipeFirestoreService.updateRecipe(recipe);
+  }
+
+  @override
+  Future<void> updateRemoveRecipe(Recipe recipe) {
+    recipe.numberLike -= 1;
+    print(recipe.numberLike);
+    return _recipeFirestoreService.updateRecipe(recipe);
+  }
+
+  @override
+  Future<List<Recipe>> getListRecipesByIdUser(String idUser) {
+    return _recipeFirestoreService.getListRecipesByIdUser(idUser);
   }
 
 }

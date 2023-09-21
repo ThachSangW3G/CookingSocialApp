@@ -187,4 +187,49 @@ class RecipeProvider extends ChangeNotifier {
     return recipes.indexWhere((element) => element.key == idRecipe);
   }
 
+
+  updateAddLike(Recipe recipe) async {
+    _recipeRepository.updateAddRecipe(recipe);
+
+    reloadData();
+    notifyListeners();
+  }
+
+  updateAddLikeByFeature(String idRecipe) async {
+    final Recipe recipe = await _recipeRepository.getRecipe(idRecipe);
+    _recipeRepository.updateAddRecipe(recipe);
+
+    reloadData();
+    notifyListeners();
+  }
+
+  updateRemoveLike(Recipe recipe) async {
+    _recipeRepository.updateRemoveRecipe(recipe);
+
+    reloadData();
+    notifyListeners();
+  }
+
+  updateRemoveLikeByFeature(String idRecipe) async {
+    final Recipe recipe = await _recipeRepository.getRecipe(idRecipe);
+    _recipeRepository.updateRemoveRecipe(recipe);
+
+    reloadData();
+    notifyListeners();
+  }
+
+  reloadData() async {
+    _recipes = await _recipeRepository.getAllRecipes();
+    _features = await _featureRepository.getAllFeature(_recipes);
+    notifyListeners();
+  }
+
+  Future<List<Recipe>> getListRecipesByIdUser(String idUser){
+    return _recipeRepository.getListRecipesByIdUser(idUser);
+  }
+
+  Future<List<Featured>> getListFeatureByIdUser(String idUser){
+    return _featureRepository.getListFeatureByIdUser(idUser);
+  }
+
 }

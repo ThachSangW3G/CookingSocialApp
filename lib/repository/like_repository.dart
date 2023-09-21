@@ -9,6 +9,7 @@ abstract class LikeRepository {
   Future<LikeModel> likeExists(String idRecipe, String idUser);
   Future<void> deleteLike(LikeModel likeModel);
   Future<List<Recipe>> getLikedRecipe();
+  Future<int> getLikeCount(String idRecipe);
 }
 
 class LikeRepositoryImpl implements LikeRepository{
@@ -47,6 +48,11 @@ class LikeRepositoryImpl implements LikeRepository{
 
     return Future.value(recipes);
 
+  }
+
+  @override
+  Future<int> getLikeCount(String idRecipe) {
+    return _likeFirestoreService.getLikeCount(idRecipe);
   }
 
 }
