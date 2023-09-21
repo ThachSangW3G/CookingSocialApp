@@ -52,9 +52,6 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
           child: FutureBuilder(
             future: recipeProvider.fetchRecipe(widget.keyRecipe),
             builder: (context, snapshot) {
-              // if (snapshot.connectionState == ConnectionState.waiting) {
-              //   print(snapshot.data!.description);
-              //return const Center(child: CircularProgressIndicator());
               if (snapshot.hasError) {
                 // Hiển thị widget khi có lỗi xảy ra
                 return Center(
