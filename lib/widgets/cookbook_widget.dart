@@ -121,7 +121,7 @@ class CookBookWidget extends StatelessWidget {
                               fontFamily: 'CeraPro',
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
-                              color: Colors.black87
+                              // color: Colors.black87
                           ),
                         ),
                         const SizedBox(height: 10,),

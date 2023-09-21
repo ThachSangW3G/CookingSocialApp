@@ -14,6 +14,7 @@ import 'package:cooking_social_app/providers/like_provider.dart';
 import 'package:cooking_social_app/providers/like_review_provider.dart';
 import 'package:cooking_social_app/providers/notification_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/authentication_state.dart';
+import 'package:cooking_social_app/providers/provider_language/language_provider.dart';
 
 import 'package:cooking_social_app/providers/provider_recipe/recipe_state.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
@@ -74,6 +75,7 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => LikeReviewProvider()),
 
       ChangeNotifierProvider(create: (_) => ThemeProvider()),
+      ChangeNotifierProvider(create: (_) => LanguageProvider()),
       ChangeNotifierProvider(create: (_) => StepsProvider()),
       ChangeNotifierProvider(create: (_) => SpiceProvider()),
       ChangeNotifierProvider(create: (_) => MaterialProvider()),
@@ -97,30 +99,34 @@ class MyApp extends StatelessWidget {
     //   Provider.of<ThemeProvider>(context, listen: true);
     return Consumer<ThemeProvider>(
       builder: (BuildContext context, ThemeProvider themeProvider, _) { 
-        return MaterialApp(
-          title: 'Cooking Social',
-          debugShowCheckedModeBanner: false,
-          // theme: ThemeData(
-            // colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
-            // useMaterial3: true,
-          // ),
-          theme: themeProvider.themeData,
-          onGenerateRoute: RouteGenerator.generatorRoute,
-          locale: const Locale("vi"),
-          localizationsDelegates: const [
-            AppLocalizationDelegate(),
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          supportedLocales:const [
-            Locale.fromSubtags(languageCode: "en"),
-            Locale.fromSubtags(languageCode: "vi"),
-          ],
-          home: authenticationStateProvider.isLoggedIn
-              ? const HomeScreen()
-              : const LoginScreen(),
-          //home: RecipeEditScreen(),
+        return Consumer<LanguageProvider>(
+          builder: (BuildContext context, LanguageProvider languageProvider, _) {  
+            return MaterialApp(
+              title: 'Cooking Social',
+              debugShowCheckedModeBanner: false,
+              // theme: ThemeData(
+                // colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
+                // useMaterial3: true,
+              // ),
+              theme: themeProvider.themeData,
+              onGenerateRoute: RouteGenerator.generatorRoute,
+              locale: languageProvider.currentLocale,
+              localizationsDelegates: const [
+                AppLocalizationDelegate(),
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+              ],
+              supportedLocales:const [
+                Locale.fromSubtags(languageCode: "en"),
+                Locale.fromSubtags(languageCode: "vi"),
+              ],
+              home: authenticationStateProvider.isLoggedIn
+                  ? const HomeScreen()
+                  : const LoginScreen(),
+              //home: RecipeEditScreen(),
+            );
+          },
         );
       },
     );
