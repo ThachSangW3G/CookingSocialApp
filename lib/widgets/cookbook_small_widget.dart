@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../constants/app_color.dart';
 
-import '../models/recipe_cookbook.dart';
+
 import '../models/recipe_item_published.dart';
 
 class CookbookSmallWidget extends StatelessWidget {

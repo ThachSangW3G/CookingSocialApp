@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../components/line_row.dart';
 import '../../constants/app_color.dart';
+import '../../models/recipe.dart';
 import '../../routes/app_routes.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -44,7 +45,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
           Container(
             margin: const EdgeInsets.only(right: 15),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                notificationProvider.deleteNotification();
+
+              },
               child: const Text(
                 'Clear',
                 textAlign: TextAlign.left,
@@ -59,69 +63,73 @@ class _NotificationScreenState extends State<NotificationScreen> {
         bottom: const PreferredSize(
             preferredSize: Size.fromHeight(16.0), child: LineRow()),
       ),
-      body: FutureBuilder(
-        future: notificationProvider.init(),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: notificationProvider.getListNotification(),
         builder: (context, snapshot){
-         // print(notificationProvider.notifications);
-          return ListView.builder(
-            itemCount: notificationProvider.notifications.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              final dataNotification = notificationProvider.notifications[index];
-              final notificationUpdate = dataNotification['notification'] as NotificationModel;
-              return GestureDetector(
-                onTap: (){
 
-                  notificationUpdate.read = true;
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }else {
+            final notifications = snapshot.data;
 
-                  notificationProvider.updateNotification(notificationUpdate);
-
-                  if(notificationUpdate.type == 'liked'){
-                    Navigator.of(context).pushNamed(
-                        RouteGenerator.recipedetailScreen,
-                        arguments: notificationUpdate.idRecipe);
-                  }else if(notificationUpdate.type == 'newFollower') {
-                    Navigator.of(context).pushNamed(
-                        RouteGenerator.accountpersonScreen,
-                        arguments: notificationUpdate.idUserGuest);
-                  }
-                  // else if(notificationUpdate.type == 'newReview'){
-                  //   Navigator.of(context).pushNamed(
-                  //       RouteGenerator.reviewScreen,
-                  //       arguments: dataNotification['recipe'] as Recipe);
-                  // }
-
-                },
-                child: NotificationItem(
-                  notification: dataNotification['notification'],
-                  userGuest: dataNotification['userGuest'],
-                  userOwner: dataNotification['userOwner'],
-                  recipe: notificationUpdate.idRecipe != "" ? dataNotification['recipe'] : null,
+            if (notifications!.isEmpty){
+              return const Center(
+                child: Text(
+                  'There are no notification!',
+                  style: TextStyle(
+                    fontFamily: 'CeraPro',
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               );
-              // NotificationItem(
-              //     type: 'Bookmarked',
-              //     time: '1 min ago',
-              //     contextTitle: 'Yeay you got new follower',
-              //     contextDescription: 'Nararaya Susanti has follow you'),
-              // NotificationItem(
-              //     type: 'Liked',
-              //     time: '1 min ago',
-              //     contextTitle: 'Yeay you got new follower',
-              //     contextDescription: 'Nararaya Susanti has follow you'),
-              // NotificationItem(
-              //     type: 'NewReview',
-              //     time: '1 min ago',
-              //     contextTitle: 'Yeay you got new follower',
-              //     contextDescription: 'Nararaya Susanti has follow you'),
-              // NotificationItem(
-              //     type: 'ReviewLiked',
-              //     time: '1 min ago',
-              //     contextTitle: 'Yeay you got new follower',
-              //     contextDescription: 'Nararaya Susanti has follow you')
             }
 
-          );
+            return ListView.builder(
+                itemCount: notifications!.length,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  final dataNotification = notifications[index];
+                  final notificationUpdate = dataNotification['notification'] as NotificationModel;
+                  return GestureDetector(
+                    onTap: (){
+
+                      notificationUpdate.read = true;
+
+                      notificationProvider.updateNotification(notificationUpdate);
+
+                      if(notificationUpdate.type == 'liked'){
+                        Navigator.of(context).pushNamed(
+                            RouteGenerator.recipedetailScreen,
+                            arguments: notificationUpdate.idRecipe);
+                      }else if(notificationUpdate.type == 'newFollower') {
+                        Navigator.of(context).pushNamed(
+                            RouteGenerator.accountpersonScreen,
+                            arguments: notificationUpdate.idUserGuest);
+                      }
+                      else if(notificationUpdate.type == 'newReview'){
+                        Navigator.of(context).pushNamed(
+                            RouteGenerator.reviewScreen,
+                            arguments: dataNotification['recipe'] as Recipe);
+                      }
+
+                    },
+                    child: NotificationItem(
+                      notification: dataNotification['notification'],
+                      userGuest: dataNotification['userGuest'],
+                      userOwner: dataNotification['userOwner'],
+                      recipe: notificationUpdate.idRecipe != "" ? dataNotification['recipe'] : null,
+                    ),
+                  );
+
+                }
+
+            );
+          }
+         // print(notificationProvider.notifications);
+
 
         }
       ),

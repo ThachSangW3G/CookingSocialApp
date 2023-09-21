@@ -6,6 +6,7 @@ abstract class NotificationDataService{
   Future<List<NotificationModel>> getListNotification();
   Future<void> updateNotification(NotificationModel notificationModel);
   Future<void> addNotification(NotificationModel notificationModel);
+  Future<void> deleteNotification();
 }
 
 class NotificationFirestoreService implements NotificationDataService{
@@ -40,6 +41,16 @@ class NotificationFirestoreService implements NotificationDataService{
   @override
   Future<void> addNotification(NotificationModel notificationModel) {
     return notifications.doc(notificationModel.id).set(notificationModel.toJson()).then((value) => print('notification add'));
+  }
+
+  @override
+  Future<void> deleteNotification() async {
+    List<NotificationModel> listNotification = await getListNotification();
+
+    for(var notification in listNotification){
+      notifications.doc(notification.id).delete().then((value) => print('notification likecookbook'));
+    }
+
   }
 
 }
