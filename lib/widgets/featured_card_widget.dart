@@ -10,7 +10,7 @@ class FeaturedCard extends StatelessWidget {
   final VoidCallback viewProfile;
   final bool liked;
   const FeaturedCard({
-    super.key, required this.featured, required this.like, required this.liked, required this.viewProfile,
+    super.key, required this.featured, required this.like, required this.liked, required this.viewProfile
   });
 
   @override

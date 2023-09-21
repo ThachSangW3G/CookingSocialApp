@@ -7,6 +7,7 @@ abstract class LikeDataService{
   Future<LikeModel> likeExists(String idRecipe, String idUser);
   Future<void> deleteLike(LikeModel likeModel);
   Future<List<LikeModel>> getLikedRecipe();
+  Future<int> getLikeCount(String idRecipe);
 }
 
 class LikeFirestoreService implements LikeDataService{
@@ -45,6 +46,19 @@ class LikeFirestoreService implements LikeDataService{
     listLikedRecipe.sort((a, b) => a.time.compareTo(b.time));
 
     return Future.value(listLikedRecipe);
+  }
+
+  @override
+  Future<int> getLikeCount(String idRecipe) async {
+    List<LikeModel> listLikedRecipe = [];
+    await likes.where('idRecipe', isEqualTo: idRecipe).get().then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        listLikedRecipe.add(LikeModel.fromJson(doc.data() as Map<String, dynamic>));
+      });
+    });
+
+    return Future.value(listLikedRecipe.length);
+
   }
 
 
