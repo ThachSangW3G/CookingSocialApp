@@ -212,100 +212,103 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
               if (snapshot.hasData && snapshot.data!.exists) {
                 Recipe recipe = Recipe.fromJson(
                     snapshot.data!.data() as Map<String, dynamic>);
+                recipeSet = recipe;
                 return RefreshIndicator(
                   key: _refreshIndicatorKey,
                   onRefresh: () async {
                     //recipeProvider.fetchRecipe(widget.keyRecipe);
                     return Future<void>.delayed(const Duration(seconds: 3));
                   },
-                  child: ListView(
-                    children: [
-                      RecipeSummary(
-                        recipe: recipe,
-                      ),
-                      const SizedBox(height: 15),
-                      Container(
-                        width: double.infinity,
-                        decoration: const BoxDecoration(color: Colors.white),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: 40,
-                              width: double.infinity,
-                              child: TabBar(
-                                controller: _tabController,
-                                indicator: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  color: AppColors.orangeCrusta,
-                                ),
-                                labelColor: Colors.white,
-                                unselectedLabelColor: AppColors.greyShuttle,
-                                dividerColor: Colors.white,
-                                tabs: [
-                                  Tab(
-                                    child: Container(
-                                      width: 100,
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Intro',
-                                        style: TextStyle(
-                                            fontFamily: 'CeraPro',
-                                            fontSize: 17),
-                                      ),
-                                    ),
-                                  ),
-                                  // second tab [you can add an icon using the icon property]
-                                  Tab(
-                                    child: Container(
-                                      width: 100,
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Ingredients',
-                                        style: TextStyle(
-                                            fontFamily: 'CeraPro',
-                                            fontSize: 17),
-                                      ),
-                                    ),
-                                  ),
-                                  Tab(
-                                    child: Container(
-                                      width: 100,
-                                      alignment: Alignment.center,
-                                      child: const Text(
-                                        'Steps',
-                                        style: TextStyle(
-                                            fontFamily: 'CeraPro',
-                                            fontSize: 17),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height,
-                              width: double.infinity,
-                              child: TabBarView(
-                                controller: _tabController,
-                                children: [
-                                  TabContentIntro(
-                                    recipe: recipe,
-                                  ),
-                                  TabContentIngredients(
-                                    recipe: recipe,
-                                  ),
-                                  TabContentSteps(
-                                    recipe: recipe,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        RecipeSummary(
+                          recipe: recipe,
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 15),
+                        Container(
+                          width: double.infinity,
+                          decoration: const BoxDecoration(color: Colors.white),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                height: 40,
+                                width: double.infinity,
+                                child: TabBar(
+                                  controller: _tabController,
+                                  indicator: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    color: AppColors.orangeCrusta,
+                                  ),
+                                  labelColor: Colors.white,
+                                  unselectedLabelColor: AppColors.greyShuttle,
+                                  dividerColor: Colors.white,
+                                  tabs: [
+                                    Tab(
+                                      child: Container(
+                                        width: 100,
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          'Intro',
+                                          style: TextStyle(
+                                              fontFamily: 'CeraPro',
+                                              fontSize: 17),
+                                        ),
+                                      ),
+                                    ),
+                                    // second tab [you can add an icon using the icon property]
+                                    Tab(
+                                      child: Container(
+                                        width: 100,
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          'Ingredients',
+                                          style: TextStyle(
+                                              fontFamily: 'CeraPro',
+                                              fontSize: 17),
+                                        ),
+                                      ),
+                                    ),
+                                    Tab(
+                                      child: Container(
+                                        width: 100,
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          'Steps',
+                                          style: TextStyle(
+                                              fontFamily: 'CeraPro',
+                                              fontSize: 17),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height,
+                                width: double.infinity,
+                                child: TabBarView(
+                                  controller: _tabController,
+                                  children: [
+                                    TabContentIntro(
+                                      recipe: recipe,
+                                    ),
+                                    TabContentIngredients(
+                                      recipe: recipe,
+                                    ),
+                                    TabContentSteps(
+                                      recipe: recipe,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               }

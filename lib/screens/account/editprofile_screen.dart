@@ -21,7 +21,6 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-
   late Future<UserModel> _userModelFuture;
 
   late UserModel tempUser;
@@ -37,7 +36,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late String oldEmail;
   late String oldDes;
   late String oldBio;
-  
+
   //Get data
   String? getName() {
     return _name;
@@ -57,7 +56,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
     // final Future<UserModel> userModel = AsyncSnapshot.waiting(userProvider.getUser(widget.idUser)) as Future<UserModel>;
 
     return Scaffold(
@@ -88,178 +88,195 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           children: [
             FutureBuilder<UserModel>(
-              future: userProvider.getUser(widget.idUser),
-              builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) { 
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  final userModel = snapshot.data;
-                  oldName = userModel!.name;
-                  oldAvatar = userModel.avatar;
-                  oldEmail = userModel.email;
-                  oldBio = userModel.bio;
-                  
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Row(
+                future: userProvider.getUser(widget.idUser),
+                builder:
+                    (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+                  if (snapshot.hasError) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else {
+                    final userModel = snapshot.data;
+                    if (userModel != null) {
+                      oldName = userModel!.name;
+                      oldAvatar = userModel.avatar;
+                      oldEmail = userModel.email;
+                      oldBio = userModel.bio;
+                      return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    height: 60,
+                                    width: 60,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image: CachedNetworkImageProvider(
+                                                userModel!.avatar),
+                                            fit: BoxFit.contain)),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      OneFrameImageStreamCompleter;
+                                    },
+                                    child: SvgPicture.asset(
+                                      'assets/icon_svg/camera.svg',
+                                      height: 24,
+                                      width: 24,
+                                      colorFilter: const ColorFilter.mode(
+                                          AppColors.orangeCrusta,
+                                          BlendMode.srcIn),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  GestureDetector(
+                                      onTap: () {},
+                                      child: const Text(
+                                        'Edit Photo',
+                                        style: TextStyle(
+                                            color: AppColors.orangeCrusta,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: 'CeraPro'),
+                                      ))
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            const LineRow(),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: CachedNetworkImageProvider(userModel!.avatar),
-                                      fit: BoxFit.contain)),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                OneFrameImageStreamCompleter;
-                              },
-                              child: SvgPicture.asset(
-                                'assets/icon_svg/camera.svg',
-                                height: 24,
-                                width: 24,
-                                colorFilter: const ColorFilter.mode(
-                                    AppColors.orangeCrusta, BlendMode.srcIn),
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            GestureDetector(
-                                onTap: () {},
-                                child: const Text(
-                                  'Edit Photo',
-                                  style: TextStyle(
-                                      color: AppColors.orangeCrusta,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: 'CeraPro'),
-                                ))
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const LineRow(),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Profile Name', style: TextStyle(),),
-                              TextField(
-                                onChanged: (value) {
-                                  // setState(() {
-                                    _name = value;
-                                  // });
-                                },                               
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                                  // labelText: 'Profile Name',
-                                  labelStyle: kContentTextStyleProfile,                                  
-                                  hintText: userModel!.name,
-                                  border: InputBorder.none
-                                  
-                                  ),
-                                // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                              ),                            
-                              const SizedBox(height: 20, ),
+                                child: Padding(
+                                    padding: const EdgeInsets.only(left: 20),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text(
+                                            'Profile Name',
+                                            style: TextStyle(),
+                                          ),
+                                          TextFormField(
+                                            onChanged: (value) {
+                                              // setState(() {
+                                              _name = value;
+                                              // });
+                                            },
+                                            decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 0.0,
+                                                        horizontal: 0.0),
+                                                // labelText: 'Profile Name',
+                                                labelStyle:
+                                                    kContentTextStyleProfile,
+                                                hintText: userModel!.name,
+                                                border: InputBorder.none),
+                                            // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
 
-                              const Text('Email', style: TextStyle(),),
-                              TextField(
-                                // controller: _textEditingController,
-                                onChanged: (value) {
-                                  // setState(() {
-                                    _email = value;
+                                          const Text(
+                                            'Email',
+                                            style: TextStyle(),
+                                          ),
+                                          TextField(
+                                            // controller: _textEditingController,
+                                            onChanged: (value) {
+                                              // setState(() {
+                                              _email = value;
 
-                                  // });
-                                },                                
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                                  // labelText: 'Email',
-                                  labelStyle: kContentTextStyleProfile,                                  
-                                  hintText: userModel!.email,
-                                  border: InputBorder.none,
-                                  fillColor: Colors.amber,
-                                  focusColor: Colors.amber
-                                  
-                                  ),
-                                // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                              ),
-                              const SizedBox(height: 20, ),
-                              const Text('Bio', style: TextStyle(),),
-                              TextField(
-                                onChanged: (value) {
-                                  // setState(() {
-                                     _bio = value;
-                                  // });
-                                },
-                                decoration: InputDecoration(
-                                  contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                                  // labelText: 'Bio',
-                                  labelStyle: kContentTextStyleProfile,                                  
-                                  hintText: userModel!.bio,
-                                  border: InputBorder.none
-                                  
-                                  ),
-                                // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                              ),
-                              const SizedBox(height: 20, ),        
-                              // TextField(
-                              //   decoration: InputDecoration(
-                              //     hintText: 'Recipe Title, Ingredient',
-                              //     hintStyle: const TextStyle(
-                              //         fontFamily: 'CeraPro',
-                              //         fontSize: 17,
-                              //         // color: AppColors.greyShuttle
-                              //     ),
-                              //     border: InputBorder.none,
-                              //     suffixIcon: IconButton(
-                              //       onPressed: (){},
-                              //       icon: SvgPicture.asset('assets/icon_svg/search.svg', height: 25, width: 25, color: AppColors.greyShuttle,
-                              //       ),
-                              //     ),
+                                              // });
+                                            },
+                                            decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 0.0,
+                                                        horizontal: 0.0),
+                                                // labelText: 'Email',
+                                                labelStyle:
+                                                    kContentTextStyleProfile,
+                                                hintText: userModel!.email,
+                                                border: InputBorder.none,
+                                                fillColor: Colors.amber,
+                                                focusColor: Colors.amber),
+                                            // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          const Text(
+                                            'Bio',
+                                            style: TextStyle(),
+                                          ),
+                                          TextField(
+                                            onChanged: (value) {
+                                              // setState(() {
+                                              _bio = value;
+                                              // });
+                                            },
+                                            decoration: InputDecoration(
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 0.0,
+                                                        horizontal: 0.0),
+                                                // labelText: 'Bio',
+                                                labelStyle:
+                                                    kContentTextStyleProfile,
+                                                hintText: userModel!.bio,
+                                                border: InputBorder.none),
+                                            // inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                          ),
+                                          const SizedBox(
+                                            height: 20,
+                                          ),
+                                          // TextField(
+                                          //   decoration: InputDecoration(
+                                          //     hintText: 'Recipe Title, Ingredient',
+                                          //     hintStyle: const TextStyle(
+                                          //         fontFamily: 'CeraPro',
+                                          //         fontSize: 17,
+                                          //         // color: AppColors.greyShuttle
+                                          //     ),
+                                          //     border: InputBorder.none,
+                                          //     suffixIcon: IconButton(
+                                          //       onPressed: (){},
+                                          //       icon: SvgPicture.asset('assets/icon_svg/search.svg', height: 25, width: 25, color: AppColors.greyShuttle,
+                                          //       ),
+                                          //     ),
 
-                              //   ),
-                              //   onChanged: (value) {
-                              //     setState(() {
-                              //       if (value.isEmpty){
-                              //         _name = value;
-                              //       }else {
-                              //         _name = value;
-                              //       }
-                              //     });
-                              //     // recipeProvider!.search(value);
-                              //     // print(recipeProvider!.searchRecipe.length);
-                              //   }                                                         
-                                        
-                              // ),
-                            ]
-                          )
-                        )
-                      )
-                    ]
-                  );
-                }             
-              }
-            )
+                                          //   ),
+                                          //   onChanged: (value) {
+                                          //     setState(() {
+                                          //       if (value.isEmpty){
+                                          //         _name = value;
+                                          //       }else {
+                                          //         _name = value;
+                                          //       }
+                                          //     });
+                                          //     // recipeProvider!.search(value);
+                                          //     // print(recipeProvider!.searchRecipe.length);
+                                          //   }
+
+                                          // ),
+                                        ])))
+                          ]);
+                    }
+                    return Container();
+                  }
+                })
           ],
         ),
       ),
@@ -269,9 +286,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           margin: const EdgeInsets.all(20),
           child: GestureDetector(
             onTap: () async {
-              
-              if (_name != null || _email != null || _description != null || _bio != null) {
-                
+              if (_name != null ||
+                  _email != null ||
+                  _description != null ||
+                  _bio != null) {
                 UserModel updatedUser = UserModel(
                   uid: widget.idUser,
                   avatar: _avatar ?? oldAvatar,
@@ -279,13 +297,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   name: _name ?? oldName,
                   bio: _bio ?? oldBio,
                 );
-              
+
                 await userProvider.updateUser(updatedUser);
 
                 Navigator.pop(context);
               }
-                            
-                Navigator.pop(context);
+
+              Navigator.pop(context);
             },
             child: Container(
               width: MediaQuery.of(context).size.width - 40,

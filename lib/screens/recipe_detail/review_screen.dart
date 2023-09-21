@@ -77,99 +77,175 @@ class _ReViewScreenState extends State<ReViewScreen> {
       ),
       resizeToAvoidBottomInset: false,
       body: Scaffold(
-        body: FutureBuilder<List<Review>>(
-          future: reviewProvider.fetchReview(keyRecipe!),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              // Hiển thị widget khi có lỗi xảy ra
-              return const Center(
-                child: Text(
-                  "Don't have review",
-                  style: kReviewLabelTextStyle,
-                ),
-              );
-            } else {
-              final listReview = snapshot.data;
-              return listReview == null
-                  ? const Center(child: CircularProgressIndicator())
-                  : Padding(
-                      padding: const EdgeInsets.all(0),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: listReview.length,
-                        itemBuilder: (context, index) {
-                          return CommentItem(review: listReview[index]);
-                        },
-                      ),
-                    );
-            }
-          },
-        ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-            border: Border(top: BorderSide(color: AppColors.greyBombay))),
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: Stack(
           children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.whitePorcelain),
-                child: TextField(
-                  controller: _textEditingController,
-                  onChanged: (value) {
-                    _description = value;
-                  },
-                  onTap: () {},
-                  decoration: const InputDecoration(
-                    hintText: 'Your Review',
-                    hintStyle: TextStyle(
-                        color: AppColors.greyShuttle,
-                        fontFamily: 'CeraPro',
-                        fontWeight: FontWeight.w400),
-                    border: InputBorder.none,
+            FutureBuilder<List<Review>>(
+              future: reviewProvider.fetchReview(keyRecipe!),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  // Hiển thị widget khi có lỗi xảy ra
+                  return const Center(
+                    child: Text(
+                      "Don't have review",
+                      style: kReviewLabelTextStyle,
+                    ),
+                  );
+                } else {
+                  final listReview = snapshot.data;
+                  return listReview == null
+                      ? const Center(child: CircularProgressIndicator())
+                      : Padding(
+                          padding: const EdgeInsets.all(0),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: listReview.length,
+                            itemBuilder: (context, index) {
+                              return CommentItem(review: listReview[index]);
+                            },
+                          ),
+                        );
+                }
+              },
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(0),
+                child: Container(
+                  decoration: const BoxDecoration(
+                      border:
+                          Border(top: BorderSide(color: AppColors.greyBombay))),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.whitePorcelain),
+                          child: TextField(
+                            controller: _textEditingController,
+                            onChanged: (value) {
+                              _description = value;
+                            },
+                            onTap: () {},
+                            decoration: const InputDecoration(
+                              hintText: 'Your Review',
+                              hintStyle: TextStyle(
+                                  color: AppColors.greyShuttle,
+                                  fontFamily: 'CeraPro',
+                                  fontWeight: FontWeight.w400),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          if (_description != null) {
+                            reviewProvider.addReview(_description!, keyRecipe!);
+                            _textEditingController.clear();
+
+                            NotificationModel notification = NotificationModel(
+                                id: DateTime.now().toIso8601String(),
+                                idUserGuest:
+                                    FirebaseAuth.instance.currentUser!.uid,
+                                idUserOwner: widget.recipe.uidUser,
+                                time: Timestamp.now(),
+                                type: 'newReview',
+                                read: false,
+                                title: _description!,
+                                idRecipe: keyRecipe!);
+
+                            notificationProvider.addNotification(notification);
+                          }
+                        },
+                        child: const Text(
+                          'SUBMIT',
+                          style: TextStyle(
+                              color: AppColors.orangeCrusta,
+                              fontFamily: 'CeraPro',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 17),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
             ),
-            const SizedBox(
-              width: 10,
-            ),
-            GestureDetector(
-              onTap: () async {
-                if (_description != null) {
-                  reviewProvider.addReview(_description!, keyRecipe!);
-                  _textEditingController.clear();
-
-                  NotificationModel notification = NotificationModel(
-                      id: DateTime.now().toIso8601String(),
-                      idUserGuest: FirebaseAuth.instance.currentUser!.uid,
-                      idUserOwner: widget.recipe.uidUser,
-                      time: Timestamp.now(),
-                      type: 'newReview',
-                      read: false,
-                      title: _description!,
-                      idRecipe: keyRecipe!);
-
-                  notificationProvider.addNotification(notification);
-                }
-              },
-              child: const Text(
-                'SUBMIT',
-                style: TextStyle(
-                    color: AppColors.orangeCrusta,
-                    fontFamily: 'CeraPro',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17),
-              ),
-            )
           ],
         ),
       ),
+      // bottomNavigationBar: Container(
+      //   decoration: const BoxDecoration(
+      //       border: Border(top: BorderSide(color: AppColors.greyBombay))),
+      //   padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //     children: [
+      //       Expanded(
+      //         child: ElevatedButton(
+      //           onPressed: () {},
+      //           style: ElevatedButton.styleFrom(
+      //               backgroundColor: AppColors.whitePorcelain),
+      //           child: TextField(
+      //             controller: _textEditingController,
+      //             onChanged: (value) {
+      //               _description = value;
+      //             },
+      //             onTap: () {},
+      //             decoration: const InputDecoration(
+      //               hintText: 'Your Review',
+      //               hintStyle: TextStyle(
+      //                   color: AppColors.greyShuttle,
+      //                   fontFamily: 'CeraPro',
+      //                   fontWeight: FontWeight.w400),
+      //               border: InputBorder.none,
+      //             ),
+      //           ),
+      //         ),
+      //       ),
+      //       const SizedBox(
+      //         width: 10,
+      //       ),
+      //       GestureDetector(
+      //         onTap: () async {
+      //           if (_description != null) {
+      //             reviewProvider.addReview(_description!, keyRecipe!);
+      //             _textEditingController.clear();
+
+      //             NotificationModel notification = NotificationModel(
+      //                 id: DateTime.now().toIso8601String(),
+      //                 idUserGuest: FirebaseAuth.instance.currentUser!.uid,
+      //                 idUserOwner: widget.recipe.uidUser,
+      //                 time: Timestamp.now(),
+      //                 type: 'newReview',
+      //                 read: false,
+      //                 title: _description!,
+      //                 idRecipe: keyRecipe!);
+
+      //             notificationProvider.addNotification(notification);
+      //           }
+      //         },
+      //         child: const Text(
+      //           'SUBMIT',
+      //           style: TextStyle(
+      //               color: AppColors.orangeCrusta,
+      //               fontFamily: 'CeraPro',
+      //               fontWeight: FontWeight.w500,
+      //               fontSize: 17),
+      //         ),
+      //       )
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
