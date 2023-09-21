@@ -1,3 +1,4 @@
+import 'package:cooking_social_app/localization/app_localization.dart';
 import 'package:cooking_social_app/widgets/calendar_with_recipe_view.dart';
 import 'package:cooking_social_app/widgets/my_calendar_new.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +18,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Calendar',
-          style: TextStyle(
+        title: Text(
+          context.localize('calendar'),
+          style: const TextStyle(
             fontFamily: 'Recoleta',
             fontSize: 20,
             fontWeight: FontWeight.bold,

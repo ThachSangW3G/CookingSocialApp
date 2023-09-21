@@ -1,3 +1,4 @@
+import 'package:cooking_social_app/localization/app_localization.dart';
 import 'package:cooking_social_app/models/recent_search.dart';
 import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
@@ -31,13 +32,13 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
       return Column(
         children: [
           const SizedBox(height: 20.0,),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               children: [
                 Text(
-                  'Recent Search',
-                  style: TextStyle(
+                  context.localize('recentSearch'),
+                  style: const TextStyle(
                       fontFamily: 'Recoleta',
                       fontWeight: FontWeight.w700,
                       fontSize: 20
@@ -68,14 +69,15 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
           ),
 
   const SizedBox(height: 10.0,),
-    const Padding(
-    padding: EdgeInsets.symmetric(horizontal: 20.0),
-    child: Row(
-    children: [
-    Text
-    (
-                  'Last Seen',
-                  style: TextStyle(
+    Padding(  
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Row(
+          children: [
+            Text
+            (
+                  context.localize('lastSeen'),
+                  // 'last seen',
+                  style: const TextStyle(
                       fontFamily: 'Recoleta',
                       fontWeight: FontWeight.w700,
                       fontSize: 20
@@ -112,9 +114,9 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
     recentSearchProvider = Provider.of<RecentSearchProvider>(context)..getListRecentSearch(FirebaseAuth.instance.currentUser!.uid);
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Search Recipe',
-          style: TextStyle(
+        title: Text(
+          context.localize('searchRecipe'),
+          style: const TextStyle(
             fontFamily: 'Recoleta',
             fontSize: 20,
             fontWeight: FontWeight.w800
@@ -147,7 +149,7 @@ class _SearchRecipeScreenState extends State<SearchRecipeScreen> {
               child: TextField(
 
                 decoration: InputDecoration(
-                  hintText: 'Recipe Title, Ingredient',
+                  hintText: context.localize('recipeTitle_Ingredient'),
                   hintStyle: const TextStyle(
                       fontFamily: 'CeraPro',
                       fontSize: 17,

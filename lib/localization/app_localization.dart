@@ -53,10 +53,16 @@ class AppLocalization {
 
       //Search Screen
       "searchRecipe": "Search Recipe",
-      "or": "OR",
-      "or": "OR",
-      "or": "OR",
-      "or": "OR",
+      "recentSearch": "Recent Search",
+      "lastSeen": "Last Seen",
+      "recipeTitle,Ingredient": "Recipe Title, Ingredient",
+      
+      //Grocery
+      "grocery": "Grocery",
+      "addNewItem": "Add new item",
+
+      //Calendar
+      "calendar": "Calendar",
     },
     "vi": {
       "title": "Mallika",
@@ -90,11 +96,21 @@ class AppLocalization {
 
       //Search Screen
       "searchRecipe": "Tìm kiếm công thức",
-      "or": "OR",
-      "or": "OR",
-      "or": "OR",
-      "or": "OR",
-      "or": "OR",
+      "recentSearch": "Kết quả tìm kiếm",
+      "lastSeen": "Đã tìm trước đó",
+      "recipeTitle_Ingredient": "Tên công thức, nguyên liệu",
+
+      //Grocery
+      "grocery": "Giỏ hàng",
+      "addNewItem": "Thêm nguyên liệu",
+
+      //Calendar
+      "calendar": "Lịch Nấu Ăn",
+      // "calendar": "Calendar",
+      // "calendar": "Calendar",
+      // "calendar": "Calendar",
+      // "calendar": "Calendar",
+      // "calendar": "Calendar",
     },
   };
 }
