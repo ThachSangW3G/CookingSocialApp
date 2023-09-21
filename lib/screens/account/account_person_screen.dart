@@ -518,9 +518,8 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                                       itemBuilder: (context, index) {
                                                         // return CommentItem(review: listReview[index]);
                                                         return ReviewItem(
-                                                          // name: listReview[index].name, 
-                                                          // check: listReview[index].check, 
-                                                          // content: listReview[index].description, 
+                                                          check: listReview[index].check, 
+                                                          content: listReview[index].description, 
                                                           recipeId: listReview[index].keyRecipe,);
                                                       },
                                                     ),
