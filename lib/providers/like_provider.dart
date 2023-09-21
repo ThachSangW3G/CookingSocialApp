@@ -2,7 +2,9 @@ import 'package:cooking_social_app/models/like_model.dart';
 import 'package:cooking_social_app/repository/like_repository.dart';
 import 'package:flutter/cupertino.dart';
 
-import '../models/recipe_cookbook.dart';
+import '../models/recipe.dart';
+
+
 
 class LikeProvider extends ChangeNotifier{
   late LikeRepository _likeRepository;

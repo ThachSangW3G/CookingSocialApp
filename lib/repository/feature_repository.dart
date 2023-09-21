@@ -3,7 +3,8 @@ import 'package:cooking_social_app/remote/recipe_firestore_sevice.dart';
 import 'package:cooking_social_app/remote/user_firestore_service.dart';
 
 import '../models/featured.dart';
-import '../models/recipe_cookbook.dart';
+import '../models/recipe.dart';
+
 
 abstract class FeatureRepository {
   Future<Featured> getFeature(Recipe recipe);
@@ -33,7 +34,7 @@ class FeatureRepositoryImpl implements FeatureRepository {
         avatar: userModel.avatar,
         nameUser: userModel.name,
         likeCount: recipe.numberLike,
-        reviewCount: recipe.numberView,
+        reviewCount: recipe.numberReView,
         category: recipe.category,
         cookTime: recipe.cookTime,
         idUser: recipe.uidUser
@@ -58,7 +59,7 @@ class FeatureRepositoryImpl implements FeatureRepository {
         avatar: userModel.avatar,
         nameUser: userModel.name,
         likeCount: recipe.numberLike,
-        reviewCount: recipe.numberView, category: recipe.category,
+        reviewCount: recipe.numberReView, category: recipe.category,
         cookTime: recipe.cookTime,
         idUser: recipe.uidUser
       );
@@ -87,7 +88,7 @@ class FeatureRepositoryImpl implements FeatureRepository {
           avatar: userModel.avatar,
           nameUser: userModel.name,
           likeCount: recipe.numberLike,
-          reviewCount: recipe.numberView, category: recipe.category,
+          reviewCount: recipe.numberReView, category: recipe.category,
           cookTime: recipe.cookTime,
           idUser: recipe.uidUser
       );

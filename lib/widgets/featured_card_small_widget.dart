@@ -78,7 +78,7 @@ class FeaturedCardSmallWidget extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Expanded(
+                        Flexible(
                           child: Text(
                             featured.nameUser,
                             overflow: TextOverflow.clip,

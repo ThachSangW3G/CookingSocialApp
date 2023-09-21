@@ -27,6 +27,7 @@ import 'package:cooking_social_app/providers/user_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
+import 'package:cooking_social_app/screens/bottom_navigation/bottom_navigation.dart';
 import 'package:cooking_social_app/screens/calendar/calendar_screen.dart';
 import 'package:cooking_social_app/screens/grocery/grocery_screen.dart';
 import 'package:cooking_social_app/screens/home/home_screen.dart';
@@ -122,7 +123,7 @@ class MyApp extends StatelessWidget {
                 Locale.fromSubtags(languageCode: "vi"),
               ],
               home: authenticationStateProvider.isLoggedIn
-                  ? const HomeScreen()
+                  ? const BottomNavigation()
                   : const LoginScreen(),
               //home: RecipeEditScreen(),
             );

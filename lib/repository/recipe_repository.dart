@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/models/featured.dart';
-import 'package:cooking_social_app/models/recipe_cookbook.dart';
 import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/remote/recipe_firestore_sevice.dart';
 import 'package:cooking_social_app/repository/user_repository.dart';
 import 'package:get/get.dart';
+
+import '../models/recipe.dart';
 
 abstract class RecipeRepository {
   Future<List<Recipe>> getAllRecipes();

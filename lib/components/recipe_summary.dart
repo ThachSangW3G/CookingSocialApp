@@ -8,10 +8,12 @@ import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:cooking_social_app/models/like_model.dart';
 import 'package:cooking_social_app/models/review.dart';
+import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/providers/like_provider.dart';
 import 'package:cooking_social_app/providers/provider_recipe/recipe_state.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:cooking_social_app/widgets/option_add_to_cookbook.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,6 +65,7 @@ class _RecipeSummaryState extends State<RecipeSummary> {
     final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
     final ReviewStateProvider reviewProvider =
         Provider.of<ReviewStateProvider>(context);
+
     // final RecipeStateProvider recipeProvider =
     //     Provider.of<RecipeStateProvider>(context);
     final String? uid = FirebaseAuth.instance.currentUser?.uid;
@@ -276,7 +279,12 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                                         .symmetric(
                                                         vertical: 10),
                                                     child: GestureDetector(
-                                                      onTap: () {},
+                                                      onTap: () {
+
+                                                        cookbookProvider.setListCookbookOption(FirebaseAuth.instance.currentUser!.uid);
+                                                        _showOptionAddToCookbook(context);
+
+                                                      },
                                                       child: Container(
                                                         height: 30,
                                                         width: 30,
@@ -527,5 +535,13 @@ class _RecipeSummaryState extends State<RecipeSummary> {
       ),
     );
     //});
+  }
+
+  _showOptionAddToCookbook(BuildContext context){
+    showDialog(context: context,
+      builder: (context){
+        return OptionAddToCookbook(recipe: widget.recipe,);
+      }
+    );
   }
 }

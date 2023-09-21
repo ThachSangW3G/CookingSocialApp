@@ -3,7 +3,7 @@ class CookBook {
   final String title;
   final String description;
   final int likes;
-  final List<dynamic> recipes;
+  List<dynamic> recipes;
   final String image;
   final int popularRecipeIndex;
   final String idUser;

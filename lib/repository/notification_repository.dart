@@ -2,8 +2,9 @@ import 'package:cooking_social_app/models/notification_model.dart';
 import 'package:cooking_social_app/remote/notification_firestore_service.dart';
 import 'package:cooking_social_app/remote/recipe_firestore_sevice.dart';
 
+import '../models/recipe.dart';
 import '../models/user_model.dart';
-import '../models/recipe_cookbook.dart';
+
 import '../remote/user_firestore_service.dart';
 
 abstract class NotificationRepository{

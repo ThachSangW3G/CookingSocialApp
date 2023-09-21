@@ -1,7 +1,8 @@
 import 'package:cooking_social_app/models/like_model.dart';
-import 'package:cooking_social_app/models/recipe_cookbook.dart';
+
 import 'package:cooking_social_app/remote/like_firesotre_service.dart';
 
+import '../models/recipe.dart';
 import '../remote/recipe_firestore_sevice.dart';
 
 abstract class LikeRepository {

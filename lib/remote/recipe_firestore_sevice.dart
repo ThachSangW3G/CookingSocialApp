@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cooking_social_app/models/recipe_cookbook.dart';
+
+import '../models/recipe.dart';
+
 
 abstract class RecipeDataService {
   Future<List<Recipe>> getAllRecipes();

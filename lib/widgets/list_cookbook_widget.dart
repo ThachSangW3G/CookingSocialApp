@@ -94,7 +94,7 @@ class _ListCookbookWidgetState extends State<ListCookbookWidget> {
 
           Expanded(
             child: FutureBuilder<List<CookBook>>(
-              future: cookbookProvider.getListCookbookbyIdUser(widget.user.uid),
+              future: cookbookProvider.getSearchCookbookByIdUser(widget.user.uid),
               builder: (context, snapshot){
                 if(snapshot.connectionState == ConnectionState.waiting){
                   return const Center(
