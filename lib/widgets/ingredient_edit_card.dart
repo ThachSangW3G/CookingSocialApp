@@ -123,7 +123,6 @@ class _IngredientEditCardState extends State<IngredientEditCard> {
               _buildOptionItem('Edit', context),
               _buildOptionItem('Add item above', context),
               _buildOptionItem('Add item below', context),
-              _buildOptionItem('Set as item', context),
               _buildOptionItem('Add item to Grocery', context),
               _buildOptionItem('Delete', context),
             ],
@@ -291,15 +290,6 @@ class _IngredientEditCardState extends State<IngredientEditCard> {
                 .moveItemDown(widget.item.id);
             Navigator.pop(context);
           };
-          break;
-        case 'Set as item':
-          icon = SvgPicture.asset(
-            'assets/icon_svg/flag-alt.svg',
-            height: 20,
-            width: 20,
-          );
-          text = 'Set as header';
-          actions = () {};
           break;
         case 'Add item to Grocery':
           icon = SvgPicture.asset(

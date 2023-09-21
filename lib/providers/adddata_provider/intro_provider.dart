@@ -65,8 +65,12 @@ class IntroProvider with ChangeNotifier {
   }
 
   void clearData() {
-    //Intro intro = Intro();
     _intro = Intro();
+    notifyListeners();
+  }
+
+  void updateItemsFormList(Intro intro) {
+    _intro = intro;
     notifyListeners();
   }
 }

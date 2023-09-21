@@ -296,50 +296,58 @@ class _HomeScreenState extends State<HomeScreen> {
                       return GestureDetector(
                           onTap: () {
                             Navigator.of(context).pushNamed(
-                                RouteGenerator.recipedetailScreen,
-                                arguments: featured.id);
+                              RouteGenerator.recipedetailScreen,
+                              arguments: {
+                                'key': featured.id,
+                                'uid': featured.idUser,
+                              },
+                            );
                           },
                           child: FutureBuilder<LikeModel>(
-                            future: likeProvider.likeExist(featured.id, user.uid),
-                            builder: (context, snapshot){
-                              final LikeModel? liked = snapshot.data;
-                              return  FeaturedCard(featured: featured, like: (){
+                              future: likeProvider.likeExist(featured.id, user.uid),
+                              builder: (context, snapshot){
+                                final LikeModel? liked = snapshot.data;
 
-                                if(liked == null){
-                                  LikeModel likeModel = LikeModel(
-                                      id: DateTime.now().toIso8601String(),
-                                      idRecipe: featured.id,
-                                      idUser: user.uid,
-                                      time: Timestamp.now()
-                                  );
-                                  likeProvider.addLike(likeModel);
+                                return FeaturedCard(featured: featured, like: (){
 
-                                  NotificationModel notification = NotificationModel(
-                                    id: DateTime.now().toIso8601String(),
-                                    idUserGuest: user.uid,
-                                    idUserOwner: featured.idUser,
-                                    time: Timestamp.now(),
-                                    type: 'liked',
-                                    read: false,
-                                    title: "",
-                                    idRecipe: featured.id
-                                  );
+                                  if(liked == null){
+                                    LikeModel likeModel = LikeModel(
+                                        id: DateTime.now().toIso8601String(),
+                                        idRecipe: featured.id,
+                                        idUser: user.uid,
+                                        time: Timestamp.now()
+                                    );
+                                    likeProvider.addLike(likeModel);
 
-                                  notificationProvider.addNotification(notification);
+                                    recipeProvider.updateAddLikeByFeature(featured.id);
 
-                                }else {
-                                  likeProvider.deleteLike(liked);
-                                }
+                                    NotificationModel notification = NotificationModel(
+                                        id: DateTime.now().toIso8601String(),
+                                        idUserGuest: user.uid,
+                                        idUserOwner: featured.idUser,
+                                        time: Timestamp.now(),
+                                        type: 'liked',
+                                        read: false,
+                                        title: "",
+                                        idRecipe: featured.id
+                                    );
 
-                              }, liked: liked != null,
-                              viewProfile: (){
-                                Navigator.of(context).pushNamed(
-                                    RouteGenerator.accountpersonScreen,
-                                    arguments: featured.idUser
+                                    notificationProvider.addNotification(notification);
+
+                                  }else {
+                                    likeProvider.deleteLike(liked);
+                                    recipeProvider.updateRemoveLikeByFeature(featured.id);
+                                  }
+
+                                }, liked: liked != null,
+                                  viewProfile: (){
+                                    Navigator.of(context).pushNamed(
+                                        RouteGenerator.accountpersonScreen,
+                                        arguments: featured.idUser
+                                    );
+                                  },
                                 );
-                              },
-                              );
-                            }
+                              }
                           ));
                     },
                   ),

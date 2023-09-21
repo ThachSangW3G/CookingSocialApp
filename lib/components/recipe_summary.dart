@@ -60,10 +60,9 @@ class _RecipeSummaryState extends State<RecipeSummary> {
 
   @override
   Widget build(BuildContext context) {
-    final LikeProvider likeProvider =
-        Provider.of<LikeProvider>(context, listen: false);
+    final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
     final ReviewStateProvider reviewProvider =
-        Provider.of<ReviewStateProvider>(context, listen: false);
+        Provider.of<ReviewStateProvider>(context);
     // final RecipeStateProvider recipeProvider =
     //     Provider.of<RecipeStateProvider>(context);
     final String? uid = FirebaseAuth.instance.currentUser?.uid;
@@ -489,24 +488,31 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                       future: reviewProvider
                                           .fetchReview(recipe.key),
                                       builder: (context, snapshotReview) {
-                                        if (snapshotReview.hasError) {
-                                          // Hiển thị widget khi có lỗi xảy ra
+                                        try {
+                                          if (snapshotReview.hasError) {
+                                            // Hiển thị widget khi có lỗi xảy ra
+                                            return const Center(
+                                              child: Text(
+                                                "Don't have review",
+                                                style: kReviewLabelTextStyle,
+                                              ),
+                                            );
+                                          } else {
+                                            final review = snapshotReview.data;
+                                            return review == null
+                                                ? const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  )
+                                                : const CommentItemNotOption();
+                                          }
+                                        } catch (e) {
                                           return const Center(
                                             child: Text(
                                               "Don't have review",
                                               style: kReviewLabelTextStyle,
                                             ),
                                           );
-                                        } else {
-                                          final review = snapshotReview.data;
-                                          return review == null
-                                              ? const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                )
-                                              : CommentItemNotOption(
-                                                  review: review[0],
-                                                );
                                         }
                                       })
                                 ],

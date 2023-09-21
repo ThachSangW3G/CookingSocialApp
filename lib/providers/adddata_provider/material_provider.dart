@@ -56,4 +56,9 @@ class MaterialProvider extends ChangeNotifier {
     _items.clear();
     notifyListeners();
   }
+
+  void updateItemsFormList(List<Item> newItems) {
+    _items = newItems;
+    notifyListeners();
+  }
 }

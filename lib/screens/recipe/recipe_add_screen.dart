@@ -189,11 +189,21 @@ class _RecipeAddState extends State<RecipeAddScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Lỗi'),
-          content: Text('Giá trị nhập vào không phải là URL hợp lệ.'),
+          title: const Text(
+            'Lỗi',
+            style: TextStyle(fontFamily: "CeraPro"),
+          ),
+          content: const Text(
+            'Giá trị nhập vào không phải là URL hợp lệ.',
+            style: TextStyle(fontFamily: "CeraPro"),
+          ),
           actions: <Widget>[
             TextButton(
-              child: Text('OK'),
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                    fontFamily: "CeraPro", color: AppColors.orangeCrusta),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

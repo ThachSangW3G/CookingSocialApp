@@ -19,7 +19,6 @@ class RecipeStateProvider extends ChangeNotifier {
     }
     _recipes.clear();
     _recipes.addAll(fetchedRecipe);
-    //notifyListeners();
     return Future.value(_recipes[0]);
   }
 
@@ -30,10 +29,8 @@ class RecipeStateProvider extends ChangeNotifier {
           .collection('recipes')
           .doc(recipe.key)
           .delete();
-
       // Cập nhật danh sách công thức sau khi xóa
       _recipes.remove(recipe);
-
       notifyListeners();
     } catch (error) {
       debugPrint(error as String?);
@@ -48,13 +45,11 @@ class RecipeStateProvider extends ChangeNotifier {
           .doc(recipe.key)
           .update(recipe
               .toJson()); // Giả sử có phương thức toJson() để chuyển đổi thành Map
-
       // Cập nhật danh sách công thức sau khi cập nhật
       int index = _recipes.indexWhere((r) => r.key == recipe.key);
       if (index != -1) {
         _recipes[index] = recipe;
       }
-
       notifyListeners();
     } catch (error) {
       debugPrint(error as String?);

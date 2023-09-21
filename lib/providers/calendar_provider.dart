@@ -26,4 +26,17 @@ class CalendarProvider extends ChangeNotifier{
     return _calendarRepository.getRecipeCalendar(date);
   }
 
+  Future<void> deleteRecipeCalendar(RecipeCalendar recipeCalendar) async {
+    await _calendarRepository.deleteRecipeCalendar(recipeCalendar);
+
+    notifyListeners();
+  }
+
+  Future<void> updateRecipeCalendar(RecipeCalendar recipeCalendar) async {
+    await _calendarRepository.updateRecipeCalendar(recipeCalendar);
+
+    notifyListeners();
+  }
+
+
 }

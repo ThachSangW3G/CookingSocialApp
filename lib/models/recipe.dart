@@ -8,6 +8,7 @@ class Recipe {
   bool isPublic;
   List<String> material;
   int numberLike;
+  String category;
   int numberReView;
   int serves;
   String source;
@@ -23,6 +24,7 @@ class Recipe {
       required this.difficult,
       required this.isPublic,
       required this.material,
+      required this.category,
       required this.numberLike,
       required this.numberReView,
       required this.serves,
@@ -45,6 +47,7 @@ class Recipe {
         numberReView: json['numberReview'] as int,
         serves: json['serves'] as int,
         source: json['source'] as String,
+        category: json['category'] as String,
         spice: List<String>.from(json['spice']),
         steps: List<String>.from(json['steps']),
         uidUser: json['uidUser'] as String);
@@ -61,6 +64,7 @@ class Recipe {
       'material': material,
       'numberLike': numberLike,
       'numberReView': numberReView,
+      'category': category,
       'serves': serves,
       'source': source,
       'spice': spice,

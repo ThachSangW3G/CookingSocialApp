@@ -110,7 +110,6 @@ class StepEditCard extends StatelessWidget {
               _buildOptionItem('Edit', context),
               _buildOptionItem('Add item above', context),
               _buildOptionItem('Add item below', context),
-              _buildOptionItem('Set as header', context),
               _buildOptionItem('Delete', context),
             ],
           ),
@@ -154,14 +153,6 @@ class StepEditCard extends StatelessWidget {
           width: 20,
         );
         text = 'Add item below';
-        break;
-      case 'Set as header':
-        icon = SvgPicture.asset(
-          'assets/icon_svg/flag-alt.svg',
-          height: 20,
-          width: 20,
-        );
-        text = 'Set as header';
         break;
       case 'Delete':
         icon = SvgPicture.asset(

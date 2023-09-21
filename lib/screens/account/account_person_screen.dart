@@ -363,71 +363,84 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                   controller: _tabController,
                                   children: [
                                     // const PostWidget(),
-                                      RefreshIndicator(
-                                      onRefresh: () async {
-                                        context.read<RecipeProvider>().init();
-                                      },
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
-                                        itemCount: recipeProvider.features.length,
-                                        itemBuilder: (context, index) {
-                                          final featured = recipeProvider.features[index];
-                                          return GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).pushNamed(
-                                                    RouteGenerator.recipedetailScreen,
-                                                    arguments: featured.id);
-                                              },
-                                              child: FutureBuilder<LikeModel>(
-                                                future: likeProvider.likeExist(featured.id, user.uid),
-                                                builder: (context, snapshot){
-                                                  final LikeModel? liked = snapshot.data;
-                                                  return  FeaturedCard(featured: featured, like: (){
+                                    FutureBuilder<List<Featured>>(
+                                      future: recipeProvider.getListFeatureByIdUser(userModel.uid),
+                                      builder: (context, snapshot){
+                                        //print(snapshot.data!.length);
+                                        if(snapshot.connectionState == ConnectionState.waiting){
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        }else {
+                                          final features = snapshot.data;
+                                          return ListView.builder(
 
-                                                    if(liked == null){
-                                                      LikeModel likeModel = LikeModel(
-                                                          id: DateTime.now().toIso8601String(),
-                                                          idRecipe: featured.id,
-                                                          idUser: user.uid,
-                                                          time: Timestamp.now()
-                                                      );
-                                                      likeProvider.addLike(likeModel);
-
-                                                      NotificationModel notification = NotificationModel(
-                                                        id: DateTime.now().toIso8601String(),
-                                                        idUserGuest: user.uid,
-                                                        idUserOwner: featured.idUser,
-                                                        time: Timestamp.now(),
-                                                        type: 'liked',
-                                                        read: false,
-                                                        title: "",
-                                                        idRecipe: featured.id
-                                                      );
-
-                                                      notificationProvider.addNotification(notification);
-
-                                                    }else {
-                                                      likeProvider.deleteLike(liked);
-                                                    }
-
-                                                  }, liked: liked != null,
-                                                  viewProfile: (){
+                                            physics: const NeverScrollableScrollPhysics(),
+                                            itemCount: features!.length,
+                                            itemBuilder: (context, index) {
+                                              final featured = features![index];
+                                              return GestureDetector(
+                                                  onTap: () {
                                                     Navigator.of(context).pushNamed(
-                                                        RouteGenerator.accountpersonScreen,
-                                                        arguments: featured.idUser
-                                                    );
+                                                        RouteGenerator.recipedetailScreen,
+                                                        arguments: featured.id);
                                                   },
-                                                  );
-                                                }
-                                              ));
-                                        },
-                                      ),
+                                                  child: FutureBuilder<LikeModel>(
+                                                      future: likeProvider.likeExist(featured.id, user.uid),
+                                                      builder: (context, snapshot){
+                                                        final LikeModel? liked = snapshot.data;
+
+                                                        return FeaturedCard(featured: featured, like: (){
+
+                                                          if(liked == null){
+                                                            LikeModel likeModel = LikeModel(
+                                                                id: DateTime.now().toIso8601String(),
+                                                                idRecipe: featured.id,
+                                                                idUser: user.uid,
+                                                                time: Timestamp.now()
+                                                            );
+                                                            likeProvider.addLike(likeModel);
+
+                                                            recipeProvider.updateAddLikeByFeature(featured.id);
+
+                                                            NotificationModel notification = NotificationModel(
+                                                                id: DateTime.now().toIso8601String(),
+                                                                idUserGuest: user.uid,
+                                                                idUserOwner: featured.idUser,
+                                                                time: Timestamp.now(),
+                                                                type: 'liked',
+                                                                read: false,
+                                                                title: "",
+                                                                idRecipe: featured.id
+                                                            );
+
+                                                            notificationProvider.addNotification(notification);
+
+                                                          }else {
+                                                            likeProvider.deleteLike(liked);
+                                                            recipeProvider.updateRemoveLikeByFeature(featured.id);
+                                                          }
+
+                                                        }, liked: liked != null,
+                                                          viewProfile: (){
+                                                            Navigator.of(context).pushNamed(
+                                                                RouteGenerator.accountpersonScreen,
+                                                                arguments: featured.idUser
+                                                            );
+                                                          },
+                                                        );
+                                                      }
+                                                  ));
+                                            },
+                                          );
+                                        }
+                                      },
                                     ),
+
 
                                     ListCookbookWidget(user: userModel,),
                                     // const ReviewWidget()
-                                    
+
                                     RefreshIndicator(
                                       onRefresh: () async {
                                         context.read<ReviewStateProvider>;
