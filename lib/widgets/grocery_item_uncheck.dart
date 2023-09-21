@@ -5,9 +5,9 @@ import '../constants/app_color.dart';
 import '../models/ingredient_item.dart';
 
 class GroceryItemUncheck extends StatelessWidget {
-  final IngredientItem ingredientItem;
+  final String title;
   const GroceryItemUncheck({
-    super.key, required this.ingredientItem,
+    super.key, required this.title,
   });
 
   @override
@@ -35,7 +35,7 @@ class GroceryItemUncheck extends StatelessWidget {
           const SizedBox(width: 10.0,),
           Expanded(
             child: Text(
-              ingredientItem.title,
+              title,
               softWrap: true,
 
 

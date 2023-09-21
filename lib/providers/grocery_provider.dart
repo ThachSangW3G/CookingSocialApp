@@ -29,8 +29,13 @@ class GroceryProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<List<Grocery>> getListGroceries(){
-    return _groceryRepository.getListGroceries();
+  Future<List<Grocery>> getListGroceries() async {
+    return await _groceryRepository.getListGroceries();
+  }
+
+  Future<void> deleteGrocery() async {
+    await _groceryRepository.deleteGrocery();
+    notifyListeners();
   }
 
 }

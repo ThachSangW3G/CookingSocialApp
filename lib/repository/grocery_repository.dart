@@ -5,6 +5,7 @@ abstract class GroceryRepository {
   // Future<List<Grocery>> getAllRecipes();
   Future<void> createGrogery(Grocery grocery);
   Future<List<Grocery>> getListGroceries();
+  Future<void> deleteGrocery();
 }
 
 class GroceryRepositoryImpl implements GroceryRepository{
@@ -21,6 +22,11 @@ class GroceryRepositoryImpl implements GroceryRepository{
   @override
   Future<List<Grocery>> getListGroceries() {
     return _groceryFireStoreService.getListGroceries();
+  }
+
+  @override
+  Future<void> deleteGrocery() {
+    return _groceryFireStoreService.deleteGrocery();
   }
 
 }
