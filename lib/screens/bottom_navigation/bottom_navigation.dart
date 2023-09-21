@@ -16,16 +16,13 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
-
   int currentTab = 0;
   final List<Widget> screens = [
     const HomeScreen(),
     const SearchRecipeScreen(),
     const GroceryScreen(),
     const CalendarScreen(),
-
   ];
-
 
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = const HomeScreen();
@@ -42,11 +39,14 @@ class _BottomNavigationState extends State<BottomNavigation> {
         backgroundColor: AppColors.orangeCrusta,
         foregroundColor: AppColors.whitePorcelain,
         shape: const CircleBorder(),
-        child: const Icon(Icons.add, size: 25, ),
-        onPressed: (){
+        child: const Icon(
+          Icons.add,
+          size: 25,
+        ),
+        onPressed: () {
           Navigator.of(context).pushNamed(
-              RouteGenerator.recipeeditScreen,
-              );
+            RouteGenerator.recipeaddScreen,
+          );
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -64,33 +64,32 @@ class _BottomNavigationState extends State<BottomNavigation> {
               Expanded(
                 child: MaterialButton(
                   minWidth: 40,
-                  onPressed: (){
+                  onPressed: () {
                     setState(() {
                       currentScreen = const HomeScreen();
                       currentTab = 0;
-
                     });
                   },
                   child: SvgPicture.asset(
                     'assets/icon_svg/home.svg',
-                    color: currentTab == 0 ? AppColors.orangeCrusta : Colors.black,
+                    color:
+                        currentTab == 0 ? AppColors.orangeCrusta : Colors.black,
                   ),
                 ),
               ),
               Expanded(
                 child: MaterialButton(
                   minWidth: 40,
-
-                  onPressed: (){
+                  onPressed: () {
                     setState(() {
                       currentScreen = const SearchRecipeScreen();
                       currentTab = 1;
-
                     });
                   },
                   child: SvgPicture.asset(
                     'assets/icon_svg/search.svg',
-                    color: currentTab == 1 ? AppColors.orangeCrusta : Colors.black,
+                    color:
+                        currentTab == 1 ? AppColors.orangeCrusta : Colors.black,
                   ),
                 ),
               ),
@@ -100,32 +99,32 @@ class _BottomNavigationState extends State<BottomNavigation> {
               Expanded(
                 child: MaterialButton(
                   minWidth: 40,
-                  onPressed: (){
+                  onPressed: () {
                     setState(() {
                       currentScreen = const GroceryScreen();
                       currentTab = 2;
-
                     });
                   },
                   child: SvgPicture.asset(
                     'assets/icon_svg/cart.svg',
-                    color: currentTab == 2 ? AppColors.orangeCrusta : Colors.black,
+                    color:
+                        currentTab == 2 ? AppColors.orangeCrusta : Colors.black,
                   ),
                 ),
               ),
               Expanded(
                 child: MaterialButton(
                   minWidth: 40,
-                  onPressed: (){
+                  onPressed: () {
                     setState(() {
                       currentScreen = const CalendarScreen();
                       currentTab = 3;
-
                     });
                   },
                   child: SvgPicture.asset(
                     'assets/icon_svg/calendar.svg',
-                    color: currentTab == 3 ? AppColors.orangeCrusta : Colors.black,
+                    color:
+                        currentTab == 3 ? AppColors.orangeCrusta : Colors.black,
                   ),
                 ),
               )
