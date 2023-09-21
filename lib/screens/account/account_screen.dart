@@ -4,6 +4,7 @@ import 'package:cooking_social_app/blocs/states/authentication_state.dart';
 import 'package:cooking_social_app/components/icon_content.dart';
 import 'package:cooking_social_app/components/row_content.dart';
 import 'package:cooking_social_app/components/row_content_not_icon.dart';
+import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/provider_authentication/authentication_state.dart';
@@ -34,162 +35,167 @@ class _AccountScreenState extends State<AccountScreen> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
     final AuthenticationStateProvider _authenticationStateProvider = Provider.of<AuthenticationStateProvider>(context, listen: false);
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Account',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              fontFamily: 'Recoleta'),
+      backgroundColor: AppColors.whitePorcelain,
+      body: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            'Account',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                // color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                fontFamily: 'Recoleta'),
+          ),
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios_outlined,
+                // color: Colors.black,
+                size: 20,
+              )),
+          bottom: const PreferredSize(
+              preferredSize: Size.fromHeight(16.0), child: LineRow()),
         ),
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios_outlined,
-              color: Colors.black,
-              size: 20,
-            )),
-        bottom: const PreferredSize(
-            preferredSize: Size.fromHeight(16.0), child: LineRow()),
-      ),
-      body: Column(children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-              child: Column(
-                children: [
-                  FutureBuilder<UserModel>(
-                    future: userProvider.getUser(user.uid),
-                    builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      } else {
-                        final userModel = snapshot.data;
-
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
-                                RouteGenerator.accountpersonScreen,
-                                arguments: user.uid
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    userModel!.name,
-                                    style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: "CeraPro"),
-                                  ),
-                                  Text(userModel.email, style: kLabelTextStyle)
-                                ],
-                              ),
-                              Container(
-                                height: 60,
-                                width: 60,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: CachedNetworkImageProvider(
-                                            userModel.avatar),
-                                        fit: BoxFit.contain)),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-
-                    }
-
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const LineRow()
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-              child: Column(children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+        body: Column(children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                child: Column(
                   children: [
-                    IconContent(
-                        label: 'Liked Recipe',
-                        iconData: 'assets/icon_svg/heart.svg',
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, RouteGenerator.likedrecipeScreen);
-                        }),
-                    IconContent(
-                        label: 'Notifications',
-                        iconData: 'assets/icon_svg/bell.svg',
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, RouteGenerator.notificationScreen);
-                        }),
-                    IconContent(
-                        label: 'Settings',
-                        iconData: 'assets/icon_svg/equalizer.svg',
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, RouteGenerator.accountpersonScreen);
-                        }),
+                    FutureBuilder<UserModel>(
+                      future: userProvider.getUser(user.uid),
+                      builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          final userModel = snapshot.data;
+    
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                  RouteGenerator.accountpersonScreen,
+                                  arguments: user.uid
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      userModel!.name,
+                                      style: const TextStyle(
+                                          // color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "CeraPro"),
+                                    ),
+                                    Text(userModel.email, style: kLabelTextStyle)
+                                  ],
+                                ),
+                                Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: CachedNetworkImageProvider(
+                                              userModel.avatar),
+                                          fit: BoxFit.contain)),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+    
+                      }
+    
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const LineRow()
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const LineRow()
-              ]),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'General',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        fontFamily: 'Recoleta'),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
+                child: Column(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconContent(
+                          label: 'Liked Recipe',
+                          iconData: 'assets/icon_svg/heart.svg',
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, RouteGenerator.likedrecipeScreen);
+                          }),
+                      IconContent(
+                          label: 'Notifications',
+                          iconData: 'assets/icon_svg/bell.svg',
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, RouteGenerator.notificationScreen);
+                          }),
+                      IconContent(
+                          label: 'Settings',
+                          iconData: 'assets/icon_svg/equalizer.svg',
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, RouteGenerator.settingScreen);
+                          }),
+                    ],
                   ),
-                  RowContent(label: 'Abount', onTap: () {}),
-                  RowContent(label: 'Help & Support', onTap: () {}),
-                  RowContent(label: 'Send FeedBack', onTap: () {}),
-                  RowContent(label: 'Rate Us', onTap: () {}),
-                  RowContent(label: 'Check For Update', onTap: () {}),
-                  RowContentNotIcon(
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const LineRow()
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'General',
+                      style: TextStyle(
+                          // color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          fontFamily: 'Recoleta'),
+                    ),
+                    RowContent(label: 'Abount', onTap: () {
+                      // Navigator.push(context, route)
+                    }),
+                    RowContent(label: 'Help & Support', onTap: () {}),
+                    RowContent(label: 'Send FeedBack', onTap: () {}),
+                    RowContent(label: 'Rate Us', onTap: () {}),
+                    RowContent(label: 'Check For Update', onTap: () {}),
+                    RowContentNotIcon(
                       label: 'Logout',
                       onTap: () async {
                         print(_authenticationStateProvider.getUID);
                         try {
                           await _authenticationStateProvider.signOut();
                           Navigator.pushNamed(context, RouteGenerator.login);
-
+  
                         }catch (e){}
-
-
-                      })
-                ],
-              ),
-            )
-          ])
+  
+  
+                    })
+                  ],
+                ),
+              )
+            ])
+      ),
     );
   }
 }

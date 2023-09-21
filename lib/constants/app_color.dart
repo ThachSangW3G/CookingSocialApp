@@ -11,6 +11,7 @@ class AppColors {
   static const Color red = Color(0xFFD5463C);
   static const Color navy = Color(0xFF0B0F26);
   static const Color cetaceanBlue = Color(0xFF0F1538);
+  static const Color groundRed = Color.fromRGBO(188, 91, 91, 1);
   static const Color black = Color.fromRGBO(0, 0, 0, 1);
 
   static const Color appPrimaryColor = Color(0xFF0A0E21);

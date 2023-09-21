@@ -2,6 +2,7 @@
 
 
 
+import 'package:cooking_social_app/localization/app_localization.dart';
 import 'package:cooking_social_app/models/ingredient_item.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,9 +28,9 @@ class _GroceryScreenState extends State<GroceryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Grocery',
-          style: TextStyle(
+        title: Text(
+          context.localize('grocery'),
+          style: const TextStyle(
               fontFamily: 'Recoleta',
               fontSize: 20,
               fontWeight: FontWeight.w800
@@ -81,12 +82,12 @@ class _GroceryScreenState extends State<GroceryScreen> {
                   borderRadius: BorderRadius.all(Radius.circular(16.0)),
                   color: AppColors.greyIron
               ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: TextField(
                   decoration: InputDecoration(
-                    hintText: 'Add new item',
-                    hintStyle: TextStyle(
+                    hintText: context.localize('addNewItem'),
+                    hintStyle: const TextStyle(
                         fontFamily: 'CeraPro',
                         fontSize: 17,
                         color: AppColors.greyShuttle

@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 
 class AuthenticationStateProvider extends ChangeNotifier{
-  String? _uid, _email;
+  String? _email;
+
+  String? _uid = FirebaseAuth.instance.currentUser!.uid;
 
   String? get getUID => _uid;
   String? get getEmail => _email;
@@ -18,7 +20,7 @@ class AuthenticationStateProvider extends ChangeNotifier{
       UserCredential? userCredential = await _authService.signInWithGoogle();
 
       if (userCredential != null){
-        _uid = userCredential.user?.uid;
+        _uid = userCredential.user!.uid;
         _email = userCredential.user?.email;
 
         await _authService.addDataUser(userCredential);
@@ -39,7 +41,7 @@ class AuthenticationStateProvider extends ChangeNotifier{
       UserCredential? userCredential = await _authService.signInWithFacebook();
 
       if (userCredential != null){
-        _uid = userCredential.user?.uid;
+        _uid = userCredential.user!.uid;
         _email = userCredential.user?.email;
 
         await _authService.addDataUser(userCredential);

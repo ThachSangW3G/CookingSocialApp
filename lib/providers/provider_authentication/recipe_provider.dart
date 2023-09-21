@@ -28,10 +28,17 @@ class RecipeProvider extends ChangeNotifier {
 
   String get sort => _sort;
 
+  List<int> selected = [];
+  List<int> unSelected = [];
+
   RecipeProvider() {
     _recipeRepository = RecipeRepositoryImpl();
     _featureRepository = FeatureRepositoryImpl();
+
     init();
+    initSelect();
+
+
   }
 
   init() async {
@@ -40,6 +47,8 @@ class RecipeProvider extends ChangeNotifier {
     _features = await _featureRepository.getAllFeature(_recipes);
     // print(_recipes.length);
     // print(_recipes.map((recipe) => recipe.name));
+
+    initSelect();
     notifyListeners();
   }
 
@@ -139,5 +148,43 @@ class RecipeProvider extends ChangeNotifier {
     }
   }
 
+
+   initSelect(){
+    selected = [];
+    unSelected = List<int>.generate(recipes.length, (index) => index);
+
+    print(selected);
+    print(unSelected);
+
+    notifyListeners();
+  }
+
+   addSelected(int index){
+    selected.add(index);
+    unSelected.remove(index);
+
+
+    notifyListeners();
+  }
+
+   removeSelected(int index){
+    unSelected.add(index);
+    selected.remove(index);
+
+    notifyListeners();
+  }
+
+  List<String> getIdRecipeSelected(){
+    List<String> listId = [];
+    for(var index in selected){
+      listId.add(recipes[index].key);
+    }
+
+    return listId;
+  }
+
+  int getIndexRecipe(String idRecipe){
+    return recipes.indexWhere((element) => element.key == idRecipe);
+  }
 
 }

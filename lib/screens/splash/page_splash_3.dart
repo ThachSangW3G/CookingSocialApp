@@ -1,3 +1,4 @@
+import 'package:cooking_social_app/localization/app_localization.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 
@@ -41,13 +42,13 @@ class _PageSplash3State extends State<PageSplash3> {
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
                           color: Colors.black),
-                      child: const Padding(
+                      child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                            const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                         child: Center(
                           child: Text(
-                            'Skip',
-                            style: TextStyle(
+                            context.localize('skip'),
+                            style: const TextStyle(
                                 color: Colors.white, fontFamily: "CeraPro"),
                           ),
                         ),
@@ -90,10 +91,10 @@ class _PageSplash3State extends State<PageSplash3> {
                 const SizedBox(
                   height: 50,
                 ),
-                const Text(
-                  'COOK FROM YOUR FAVORITE DEVICE',
+                Text(
+                  context.localize('cookFromYourFavouriteDevice'),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'CeraPro',
                     fontWeight: FontWeight.w600,
                     fontSize: 25,
