@@ -9,8 +9,9 @@ import 'package:provider/provider.dart';
 class RecipeCalendarCard extends StatelessWidget {
 
   final RecipeCalendar recipeCalendar;
+  final VoidCallback option;
 
-  const RecipeCalendarCard({super.key, required this.recipeCalendar, });
+  const RecipeCalendarCard({super.key, required this.recipeCalendar, required this.option, });
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +48,7 @@ class RecipeCalendarCard extends StatelessWidget {
                       height: 24,
                       width: 24,
                     ),
-                    onPressed: () {
-                      // Xử lý sự kiện khi nhấn IconButton
-                    },
+                    onPressed: option,
                   ),
                 );
               }

@@ -8,6 +8,7 @@ import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 import 'package:cooking_social_app/widgets/tab_content_ingredients.dart';
 import 'package:cooking_social_app/widgets/tab_content_intro.dart';
 import 'package:cooking_social_app/widgets/tab_content_steps.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cooking_social_app/providers/provider_recipe/recipe_state.dart';
@@ -161,6 +162,7 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
                       idRecipe: widget.keyRecipe,
                       date: Timestamp.fromDate(date),
                       meal: meal!,
+                      idUser: FirebaseAuth.instance.currentUser!.uid
                     );
 
                     calendarProvider.addRecipeCalendar(recipeCalendar);

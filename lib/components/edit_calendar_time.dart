@@ -4,7 +4,6 @@ import 'package:cooking_social_app/providers/calendar_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/widgets/recipe_item_published_widget.dart';
 import 'package:cooking_social_app/widgets/recipe_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -12,31 +11,50 @@ import 'package:provider/provider.dart';
 import '../constants/app_color.dart';
 
 
-class AddCalendarItem extends StatefulWidget {
+class EditCalendarItem extends StatefulWidget {
 
-
-  const AddCalendarItem({super.key});
+  final RecipeCalendar recipeCalendar;
+  final int indexRecipe;
+  const EditCalendarItem({super.key, required this.recipeCalendar, required this.indexRecipe});
 
 
 
   @override
-  State<AddCalendarItem> createState() => _AddCalendarItemState();
+  State<EditCalendarItem> createState() => _EditCalendarItemState();
 }
 
-class _AddCalendarItemState extends State<AddCalendarItem> {
+class _EditCalendarItemState extends State<EditCalendarItem> {
 
 
-  String? meal = 'Breakfast';
+  late RecipeCalendar recipeCalendar;
+  late RecipeProvider recipeProvider;
+  late CalendarProvider calendarProvider;
+
+  @override
+  void didChangeDependencies() {
+
+    super.didChangeDependencies();
+    recipeProvider =  Provider.of<RecipeProvider>(context);
+    calendarProvider =  Provider.of<CalendarProvider>(context);
+  }
+
+  @override
+  void initState() {
+
+    super.initState();
+    recipeCalendar = widget.recipeCalendar;
+    meal = recipeCalendar.meal;
+    selected = widget.indexRecipe;
+  }
+  String? meal;
   int? selected;
 
   @override
   Widget build(BuildContext context) {
 
-    final recipeProvider =  Provider.of<RecipeProvider>(context);
-    final calendarProvider =  Provider.of<CalendarProvider>(context);
     return AlertDialog(
       title: const Text(
-        'Add Recipe Calendar',
+        'Edit Recipe Calendar',
         style: TextStyle(
           fontFamily: 'CeraPro',
         ),
@@ -52,7 +70,7 @@ class _AddCalendarItemState extends State<AddCalendarItem> {
           },
         ),
         TextButton(
-          child: const Text('Add',
+          child: const Text('Edit',
               style: TextStyle(
                   fontFamily: 'CeraPro', color: AppColors.orangeCrusta)),
           onPressed: () {
@@ -61,16 +79,12 @@ class _AddCalendarItemState extends State<AddCalendarItem> {
               return;
             }
 
-            final recipeCalendar = RecipeCalendar(
-              id: DateTime.now().toIso8601String(),
-              idRecipe: recipeProvider.recipes[selected!].key,
-              date: Timestamp.fromDate(calendarProvider.dateSelected),
-              meal: meal!,
-              idUser: FirebaseAuth.instance.currentUser!.uid
-            );
-            
-            calendarProvider.addRecipeCalendar(recipeCalendar);
+            recipeCalendar.meal = meal!;
+            recipeCalendar.idRecipe = recipeProvider.recipes[selected!].key;
 
+            calendarProvider.updateRecipeCalendar(recipeCalendar);
+
+            Navigator.pop(context);
             Navigator.pop(context);
 
           },
@@ -117,7 +131,7 @@ class _AddCalendarItemState extends State<AddCalendarItem> {
               ),
               onChanged: (String? value) {
                 setState(() {
-                  meal = value;
+                  meal = value!;
                 });
               },
               items: const [
@@ -182,11 +196,11 @@ class _AddCalendarItemState extends State<AddCalendarItem> {
                 final recipe = recipeProvider.recipes[index];
 
                 return GestureDetector(
-                  onTap: (){
-                    setState(() {
-                      selected = index;
-                    });
-                  },
+                    onTap: (){
+                      setState(() {
+                        selected = index;
+                      });
+                    },
                     child: RecipeWidget(recipe: recipe, selected: selected == index,)
                 );
               },
