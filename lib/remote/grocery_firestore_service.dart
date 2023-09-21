@@ -7,6 +7,7 @@ abstract class GroceryDataService {
   // Future<List<Grocery>> getAllRecipes();
   Future<void> createGrogery(Grocery grocery);
   Future<List<Grocery>> getListGroceries();
+  Future<void> deleteGrocery();
 }
 
 class GroceryFireStoreService implements GroceryDataService {
@@ -27,14 +28,28 @@ class GroceryFireStoreService implements GroceryDataService {
 
     List<Grocery> list = [];
     await groceries
-        .where('userID', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .where('uidUser', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .get().then((QuerySnapshot snapshot) {
           snapshot.docs.forEach((doc) {
               list.add(Grocery.fromJson(doc.data() as Map<String, dynamic>));
            });
-        }).onError((error, stackTrace) { print(error); }
-        );
-        return Future.value(list);
+        }).onError((error, stackTrace) {
+          print(error);
+    });
+
+    print(list);
+
+
+    return Future.value(list);
+  }
+
+  @override
+  Future<void> deleteGrocery() async {
+    List<Grocery> listGrocery = await getListGroceries();
+
+    for(var grocery in listGrocery){
+      groceries.doc(grocery.key).delete().then((value) => print('grocery likecookbook'));
+    }
   }
 
 }

@@ -3,8 +3,11 @@
 
 
 import 'package:cooking_social_app/localization/app_localization.dart';
+import 'package:cooking_social_app/models/grocery.dart';
 import 'package:cooking_social_app/models/ingredient_item.dart';
+import 'package:cooking_social_app/models/recipe.dart';
 import 'package:cooking_social_app/providers/grocery_provider.dart';
+import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -36,6 +39,10 @@ class _GroceryScreenState extends State<GroceryScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final groceryProvider = Provider.of<GroceryProvider>(context);
+    final recipeProvider =  Provider.of<RecipeProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -54,12 +61,10 @@ class _GroceryScreenState extends State<GroceryScreen> {
               final bool? delete = await openDialog();
 
               if(delete == null) return;
-              if(delete == true)
-                {
-                  setState(() {
-                    deleted = true;
-                  });
-                }
+              if(delete == true){
+                groceryProvider.deleteGrocery();
+              }
+
 
             },
             child: Padding(
@@ -81,122 +86,147 @@ class _GroceryScreenState extends State<GroceryScreen> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: !deleted ? Column(
-          children: [
-            const SizedBox(height: 20.0,),
-            Container(
-              height: 48,
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                  color: AppColors.greyIron
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: context.localize('addNewItem'),
-                    hintStyle: const TextStyle(
-                        fontFamily: 'CeraPro',
-                        fontSize: 17,
-                        color: AppColors.greyShuttle
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: !deleted ? Column(
+            children: [
+              // const SizedBox(height: 20.0,),
+              // Container(
+              //   height: 48,
+              //   decoration: const BoxDecoration(
+              //       borderRadius: BorderRadius.all(Radius.circular(16.0)),
+              //       color: AppColors.greyIron
+              //   ),
+              //   child: Padding(
+              //     padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              //     child: TextField(
+              //       decoration: InputDecoration(
+              //         hintText: context.localize('addNewItem'),
+              //         hintStyle: const TextStyle(
+              //             fontFamily: 'CeraPro',
+              //             fontSize: 17,
+              //             color: AppColors.greyShuttle
+              //         ),
+              //         border: InputBorder.none,
+              //
+              //
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              const SizedBox(height: 10.0,),
+              // Container(
+              //   height: 1,
+              //   color: AppColors.greyIron,
+              // ),
+              const SizedBox(height: 20.0,),
+              FutureBuilder<List<Grocery>>(
+                future: groceryProvider.getListGroceries(),
+                builder: (context, snapshot){
+                  if(snapshot.connectionState == ConnectionState.waiting){
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }else {
+                    final listGrocery = snapshot.data;
+                    return Column(
+                      children: listGrocery!.map((grocery) => FutureBuilder<Recipe>(
+                        future: recipeProvider.getRecipe(grocery.recipeId),
+                        builder: (context, snapshot){
+                          if(snapshot.connectionState == ConnectionState.waiting){
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }else {
+                            final recipe = snapshot.data;
+                            return Column(
+                              children:[
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        recipe!.name,
+                                        maxLines: 2,
+                                        style: const TextStyle(
+                                          fontFamily: 'CeraPro',
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 20,
+
+                                        ),
+                                      ),
+                                    ),
+                                    SvgPicture.asset(
+                                      'assets/icon_svg/chevron-circle-up.svg',
+                                      height: 24,
+                                      width: 24,
+                                      color: AppColors.greyBombay,
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  children: grocery.ingredients.map((e) => GroceryItemUncheck(title: e)).toList(),
+                                ),
+                                const SizedBox(height: 30,)
+                              ]
+                            );
+                          }
+                        },
+                      )).toList()
+                    );
+                  }
+                }
+              )
+            ],
+          ) : Column(
+            children: [
+              const SizedBox(height: 20.0,),
+              Container(
+                height: 48,
+                decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                    color: AppColors.greyIron
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'Add new item',
+                      hintStyle: TextStyle(
+                          fontFamily: 'CeraPro',
+                          fontSize: 17,
+                          color: AppColors.greyShuttle
+                      ),
+                      border: InputBorder.none,
+
+
                     ),
-                    border: InputBorder.none,
-
-
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20.0,),
-            Container(
-              height: 1,
-              color: AppColors.greyIron,
-            ),
-            const SizedBox(height: 20.0,),
-            Row(
-              children: [
-                const Expanded(
-                  child: Text(
-                    'Menu Makan Malam: Sup Makaroni',
-                    maxLines: 2,
-                    style: TextStyle(
-                      fontFamily: 'CeraPro',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 20,
-
-                    ),
-                  ),
+              const SizedBox(height: 20.0,),
+              Container(
+                height: 1,
+                color: AppColors.greyIron,
+              ),
+              const SizedBox(height: 40.0,),
+              SvgPicture.asset(
+                'assets/icon_svg/cart.svg',
+                height: 40,
+                width: 40,
+                color: AppColors.greyBombay,
+              ),
+              const SizedBox(height: 20.0,),
+              const Text(
+                'Grocery Empty',
+                style: TextStyle(
+                  fontFamily: 'CeraPro',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700
                 ),
-                SvgPicture.asset(
-                  'assets/icon_svg/chevron-circle-up.svg',
-                  height: 24,
-                  width: 24,
-                  color: AppColors.greyBombay,
-                )
-              ],
-            ),
-            SizedBox(height: 20.0,),
-            Expanded(
-              child: ListView.builder(
-                itemCount: listIngredientItem.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (BuildContext context, int index) {
-                  return GroceryItemUncheck(ingredientItem: listIngredientItem[index]);
-                },
-
-              ),
-            )
-          ],
-        ) : Column(
-          children: [
-            const SizedBox(height: 20.0,),
-            Container(
-              height: 48,
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                  color: AppColors.greyIron
-              ),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Add new item',
-                    hintStyle: TextStyle(
-                        fontFamily: 'CeraPro',
-                        fontSize: 17,
-                        color: AppColors.greyShuttle
-                    ),
-                    border: InputBorder.none,
-
-
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            Container(
-              height: 1,
-              color: AppColors.greyIron,
-            ),
-            const SizedBox(height: 40.0,),
-            SvgPicture.asset(
-              'assets/icon_svg/cart.svg',
-              height: 40,
-              width: 40,
-              color: AppColors.greyBombay,
-            ),
-            const SizedBox(height: 20.0,),
-            const Text(
-              'Grocery Empty',
-              style: TextStyle(
-                fontFamily: 'CeraPro',
-                fontSize: 20,
-                fontWeight: FontWeight.w700
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

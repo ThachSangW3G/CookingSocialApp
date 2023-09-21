@@ -211,13 +211,13 @@ class _IngredientEditCardState extends State<IngredientEditCard> {
           );
           text = 'Add item to Grocery';
           actions = () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const AddGroceryScreen(
-                        key: null,
-                      )),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => const AddGroceryScreen(
+            //             key: null, recipe: ,
+            //           )),
+            //);
           };
           break;
         case 'Delete':
@@ -299,13 +299,13 @@ class _IngredientEditCardState extends State<IngredientEditCard> {
           );
           text = 'Add item to Grocery';
           actions = () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const AddGroceryScreen(
-                        key: null,
-                      )),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //       builder: (context) => const AddGroceryScreen(
+            //             key: null,
+            //           )),
+            // );
           };
           break;
         case 'Delete':

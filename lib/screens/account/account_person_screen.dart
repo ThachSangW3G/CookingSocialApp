@@ -386,6 +386,8 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                           final features = snapshot.data;
                                           return ListView.builder(
                                             //physics: const NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            primary: false,
                                             itemCount: features!.length,
                                             itemBuilder: (context, index) {
                                               final featured = features![index];
