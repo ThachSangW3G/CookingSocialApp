@@ -4,7 +4,7 @@ import 'package:cooking_social_app/repository/recipe_repository.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../models/featured.dart';
-import '../../models/recipe_cookbook.dart';
+import '../../models/recipe.dart';
 
 class RecipeProvider extends ChangeNotifier {
   late RecipeRepository _recipeRepository;

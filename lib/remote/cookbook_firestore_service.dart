@@ -5,6 +5,8 @@ abstract class CookbookDataService{
   Future<List<CookBook>> getAllCookbooks();
   Future<void> addCookbook(CookBook cookBook);
   Future<List<CookBook>> getListCookbookbyIdUser(String idUser);
+  Future<void> updateCookbook(CookBook cookBook);
+  Future<CookBook> getCookbook(String id);
 }
 
 class CookbookFirestoreService implements CookbookDataService{
@@ -43,5 +45,26 @@ class CookbookFirestoreService implements CookbookDataService{
 
     return Future.value(listCookbook);
   }
+
+  @override
+  Future<void> updateCookbook(CookBook cookBook) {
+    return cookbooks
+        .doc(cookBook.id)
+        .update(cookBook.toJson())
+        .then((value) => print('cookbook updated'));
+  }
+
+  @override
+  Future<CookBook> getCookbook(String id) async {
+    return await cookbooks.doc(id).get().then(
+            (DocumentSnapshot doc){
+          final data = CookBook.fromJson(doc.data() as Map<String, dynamic>);
+          return Future.value(data);
+        }
+    );
+  }
+
+
+
 
 }

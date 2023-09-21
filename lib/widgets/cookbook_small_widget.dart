@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cooking_social_app/models/cookbook.dart';
 
 import 'package:cooking_social_app/models/recipe_item_unpublished.dart';
 import 'package:flutter/material.dart';
@@ -6,16 +7,15 @@ import 'package:flutter_svg/svg.dart';
 
 import '../constants/app_color.dart';
 
-
-import '../models/recipe.dart';
+import '../models/recipe_cookbook.dart';
 import '../models/recipe_item_published.dart';
 
-class RecipeWidget extends StatelessWidget {
-  final Recipe recipe;
+class CookbookSmallWidget extends StatelessWidget {
+  final CookBook cookBook;
   final bool selected;
-  const RecipeWidget({
+  const CookbookSmallWidget({
     super.key,
-    required this.recipe, required this.selected,
+    required this.cookBook, required this.selected,
   });
 
   @override
@@ -25,8 +25,8 @@ class RecipeWidget extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
-            border: const Border(bottom: BorderSide(color: AppColors.greyIron)
-            ),
+          border: const Border(bottom: BorderSide(color: AppColors.greyIron)
+          ),
           color: selected ? AppColors.orange : AppColors.transparentColor,
 
         ),
@@ -41,7 +41,7 @@ class RecipeWidget extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(16.0)),
                   child: CachedNetworkImage(
-                    imageUrl: recipe.url,
+                    imageUrl: cookBook.image,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -54,7 +54,7 @@ class RecipeWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      recipe.name,
+                      cookBook.title,
                       style: const TextStyle(
                           fontFamily: 'CeraPro',
                           fontSize: 16,
@@ -70,16 +70,16 @@ class RecipeWidget extends StatelessWidget {
                           child: Row(
                             children: [
                               SvgPicture.asset(
-                                'assets/icon_svg/clock.svg',
+                                'assets/icon_svg/heart_orange.svg',
                                 height: 16,
                                 width: 16,
-                                color: AppColors.greyBombay,
+                                color: AppColors.orangeCrusta,
                               ),
                               const SizedBox(
                                 width: 10.0,
                               ),
                               Text(
-                                recipe.cookTime.toString(),
+                                cookBook.recipes.length.toString(),
                                 style: const TextStyle(
                                   fontFamily: 'CeraPro',
                                   fontSize: 14,
@@ -100,23 +100,7 @@ class RecipeWidget extends StatelessWidget {
                               const SizedBox(
                                 width: 12.0,
                               ),
-                              SvgPicture.asset(
-                                'assets/icon_svg/dinner.svg',
-                                height: 16,
-                                width: 16,
-                                color: AppColors.greyBombay,
-                              ),
-                              const SizedBox(
-                                width: 8.0,
-                              ),
-                              Text(
-                                recipe.difficult,
-                                style: const TextStyle(
-                                  fontFamily: 'CeraPro',
-                                  fontSize: 14,
-                                  color: AppColors.greyShuttle,
-                                ),
-                              ),
+
                             ],
                           ),
                         ),

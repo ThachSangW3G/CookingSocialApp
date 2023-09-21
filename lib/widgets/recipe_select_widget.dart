@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../constants/app_color.dart';
-import '../models/recipe_cookbook.dart';
+
+import '../models/recipe.dart';
 import '../models/recipe_item_published.dart';
 
 class RecipeSelect extends StatelessWidget {
@@ -85,7 +86,7 @@ class RecipeSelect extends StatelessWidget {
                             ),
                             const SizedBox(width: 5.0,),
                             Text(
-                              recipe.numberView.toString(),
+                              recipe.numberReView.toString(),
                               style: const TextStyle(
                                 fontFamily: 'CeraPro',
                                 fontSize: 14,

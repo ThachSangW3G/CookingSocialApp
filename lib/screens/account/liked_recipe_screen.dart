@@ -1,11 +1,12 @@
 import 'package:cooking_social_app/components/recipe_item.dart';
-import 'package:cooking_social_app/models/recipe_cookbook.dart';
+
 import 'package:cooking_social_app/widgets/recipe_item_unpublished_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/line_row.dart';
 import '../../constants/app_color.dart';
+import '../../models/recipe.dart';
 import '../../providers/like_provider.dart';
 import '../../routes/app_routes.dart';
 

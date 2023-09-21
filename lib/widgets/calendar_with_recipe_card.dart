@@ -1,10 +1,11 @@
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/recipe_calendar.dart';
-import 'package:cooking_social_app/models/recipe_cookbook.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+
+import '../models/recipe.dart';
 
 class RecipeCalendarCard extends StatelessWidget {
 

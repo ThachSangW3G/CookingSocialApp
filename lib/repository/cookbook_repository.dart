@@ -5,6 +5,8 @@ abstract class CookbookRepository {
   Future<List<CookBook>> getAllCookbooks();
   Future<void> addCookbook(CookBook cookBook);
   Future<List<CookBook>> getListCookbookbyIdUser(String idUser);
+  Future<void> updateCookbook(CookBook cookBook);
+  Future<CookBook> getCookbook(String id);
 }
 
 class CookbookRepositoryImpl implements CookbookRepository{
@@ -26,6 +28,16 @@ class CookbookRepositoryImpl implements CookbookRepository{
   @override
   Future<List<CookBook>> getListCookbookbyIdUser(String idUser) {
     return _cookbookFirestoreService.getListCookbookbyIdUser(idUser);
+  }
+
+  @override
+  Future<void> updateCookbook(CookBook cookBook) {
+    return _cookbookFirestoreService.updateCookbook(cookBook);
+  }
+
+  @override
+  Future<CookBook> getCookbook(String id) {
+    return _cookbookFirestoreService.getCookbook(id);
   }
 
 }

@@ -21,10 +21,13 @@ class CookbookProvider extends ChangeNotifier{
   int pageCurrent = 1;
   PageController pageController = PageController();
 
+  List<CookBook> cookbookOptions = [];
+
   CookbookProvider(){
     _cookbookRepository = CookbookRepositoryImpl();
     init();
   }
+
 
   init() async {
     _cookbooks = await _cookbookRepository.getAllCookbooks();
@@ -61,7 +64,7 @@ class CookbookProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<List<CookBook>> getListCookbookbyIdUser(String idUser) async {
+  Future<List<CookBook>> getSearchCookbookByIdUser(String idUser) async {
 
     if (searchText == ""){
       return _cookbookRepository.getListCookbookbyIdUser(idUser);
@@ -74,6 +77,11 @@ class CookbookProvider extends ChangeNotifier{
 
   }
 
+  Future<List<CookBook>> getListCookbookbyIdUser(String idUser){
+    return _cookbookRepository.getListCookbookbyIdUser(idUser);
+  }
+
+
   search(String value, String idUser){
     searchText = value;
 
@@ -81,5 +89,22 @@ class CookbookProvider extends ChangeNotifier{
 
   }
 
+  setListCookbookOption(String idUser) async {
+    cookbookOptions = await _cookbookRepository.getListCookbookbyIdUser(idUser);
+    notifyListeners();
+  }
+
+  bool isCookbookContantsRecipe(CookBook cookBook, String idRecipe){
+    return cookBook.recipes.contains(idRecipe);
+  }
+
+  Future<void> updateCookbook(CookBook cookBook) async {
+    await _cookbookRepository.updateCookbook(cookBook);
+    notifyListeners();
+  }
+
+  Future<CookBook> getCookbook(String idCookbook) async {
+    return await  _cookbookRepository.getCookbook(idCookbook);
+  }
 
 }

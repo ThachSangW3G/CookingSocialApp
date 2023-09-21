@@ -228,8 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       //print(cookbook);
                       return InkWell(
                           onTap: () {
-                            // Navigator.pushNamed(
-                            //     context, RouteGenerator.detailCookbook, arguments: CookBook(id: cookbook.id, title: cookbook.title, description: cookbook.description, likes: cookbook.likes, recipes: cookbook.recipes, image: cookbook.image, popularRecipeIndex: cookbook.popularRecipeIndex));
+
                             Navigator.of(context).pushNamed(
                                 RouteGenerator.detailCookbook,
                                 arguments: cookbook);
