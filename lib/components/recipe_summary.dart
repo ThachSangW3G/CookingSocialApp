@@ -60,10 +60,9 @@ class _RecipeSummaryState extends State<RecipeSummary> {
 
   @override
   Widget build(BuildContext context) {
-    final LikeProvider likeProvider =
-        Provider.of<LikeProvider>(context, listen: false);
+    final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
     final ReviewStateProvider reviewProvider =
-        Provider.of<ReviewStateProvider>(context, listen: false);
+        Provider.of<ReviewStateProvider>(context);
     // final RecipeStateProvider recipeProvider =
     //     Provider.of<RecipeStateProvider>(context);
     final String? uid = FirebaseAuth.instance.currentUser?.uid;
@@ -505,9 +504,7 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                                     child:
                                                         CircularProgressIndicator(),
                                                   )
-                                                : CommentItemNotOption(
-                                                    review: review[0],
-                                                  );
+                                                : const CommentItemNotOption();
                                           }
                                         } catch (e) {
                                           return const Center(

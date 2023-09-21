@@ -35,8 +35,7 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
 
   @override
   void didChangeDependencies() {
-    calendarProvider =
-        Provider.of<CalendarProvider>(context, listen: true);
+    calendarProvider = Provider.of<CalendarProvider>(context, listen: true);
     super.didChangeDependencies();
   }
 
@@ -53,16 +52,20 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
   //   context.read<RecipeStateProvider>().fetchRecipe(widget.keyRecipe);
   //   super.didChangeDependencies();
   // }
-  
+
   DateTime date = DateTime.now();
   String? meal = 'Breakfast';
 
-  _showDatePicker(){
-    showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2025)).then((value) {
+  _showDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2025))
+        .then((value) {
       setState(() {
         date = value!;
         _showDialogChooseMeal(context);
-
       });
     });
   }
@@ -161,12 +164,11 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
                 TextButton(
                   onPressed: () {
                     final RecipeCalendar recipeCalendar = RecipeCalendar(
-                      id: DateTime.now().toIso8601String(),
-                      idRecipe: widget.keyRecipe,
-                      date: Timestamp.fromDate(date),
-                      meal: meal!,
-                      idUser: FirebaseAuth.instance.currentUser!.uid
-                    );
+                        id: DateTime.now().toIso8601String(),
+                        idRecipe: widget.keyRecipe,
+                        date: Timestamp.fromDate(date),
+                        meal: meal!,
+                        idUser: FirebaseAuth.instance.currentUser!.uid);
 
                     calendarProvider.addRecipeCalendar(recipeCalendar);
 
@@ -185,131 +187,129 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final RecipeStateProvider recipeProvider =
-        Provider.of<RecipeStateProvider>(context, listen: true);
-
+    // final RecipeStateProvider recipeProvider =
+    //     Provider.of<RecipeStateProvider>(context, listen: true);
+    DocumentReference documentRef =
+        FirebaseFirestore.instance.collection('recipes').doc(widget.keyRecipe);
     return Scaffold(
         backgroundColor: AppColors.whitePorcelain,
         body: Padding(
           padding: const EdgeInsets.all(0),
-          child: FutureBuilder(
-            future: recipeProvider.fetchRecipe(widget.keyRecipe),
+          child: StreamBuilder(
+            stream: documentRef.snapshots(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 // Hiển thị widget khi có lỗi xảy ra
                 return Center(
                   child: Text('Error: ${snapshot.error}'),
                 );
-              } else {
-                final recipe = snapshot.data;
-                if (recipe == null) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  recipeSet = recipe;
-                  return RefreshIndicator(
-                    key: _refreshIndicatorKey,
-                    onRefresh: () async {
-                      //recipeProvider.fetchRecipe(widget.keyRecipe);
-                      return Future<void>.delayed(const Duration(seconds: 3));
-                    },
-                    child: ListView(
-                      children: [
-                        RecipeSummary(
-                          recipe: recipe,
-                        ),
-                        const SizedBox(height: 15),
-                        Expanded(
-                          child: Container(
-                            width: double.infinity,
-                            decoration:
-                                const BoxDecoration(color: Colors.white),
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 10),
-                                SizedBox(
-                                  height: 40,
-                                  width: double.infinity,
-                                  child: TabBar(
-                                    controller: _tabController,
-                                    indicator: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(25.0),
-                                      color: AppColors.orangeCrusta,
-                                    ),
-                                    labelColor: Colors.white,
-                                    unselectedLabelColor: AppColors.greyShuttle,
-                                    dividerColor: Colors.white,
-                                    tabs: [
-                                      Tab(
-                                        child: Container(
-                                          width: 100,
-                                          alignment: Alignment.center,
-                                          child: const Text(
-                                            'Intro',
-                                            style: TextStyle(
-                                                fontFamily: 'CeraPro',
-                                                fontSize: 17),
-                                          ),
-                                        ),
-                                      ),
-                                      // second tab [you can add an icon using the icon property]
-                                      Tab(
-                                        child: Container(
-                                          width: 100,
-                                          alignment: Alignment.center,
-                                          child: const Text(
-                                            'Ingredients',
-                                            style: TextStyle(
-                                                fontFamily: 'CeraPro',
-                                                fontSize: 17),
-                                          ),
-                                        ),
-                                      ),
-                                      Tab(
-                                        child: Container(
-                                          width: 100,
-                                          alignment: Alignment.center,
-                                          child: const Text(
-                                            'Steps',
-                                            style: TextStyle(
-                                                fontFamily: 'CeraPro',
-                                                fontSize: 17),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                SizedBox(
-                                  height: MediaQuery.of(context).size.height,
-                                  width: double.infinity,
-                                  child: TabBarView(
-                                    controller: _tabController,
-                                    children: [
-                                      TabContentIntro(
-                                        recipe: recipe,
-                                      ),
-                                      TabContentIngredients(
-                                        recipe: recipe,
-                                      ),
-                                      TabContentSteps(
-                                        recipe: recipe,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }
               }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasData && snapshot.data!.exists) {
+                Recipe recipe = Recipe.fromJson(
+                    snapshot.data!.data() as Map<String, dynamic>);
+                return RefreshIndicator(
+                  key: _refreshIndicatorKey,
+                  onRefresh: () async {
+                    //recipeProvider.fetchRecipe(widget.keyRecipe);
+                    return Future<void>.delayed(const Duration(seconds: 3));
+                  },
+                  child: ListView(
+                    children: [
+                      RecipeSummary(
+                        recipe: recipe,
+                      ),
+                      const SizedBox(height: 15),
+                      Container(
+                        width: double.infinity,
+                        decoration: const BoxDecoration(color: Colors.white),
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              height: 40,
+                              width: double.infinity,
+                              child: TabBar(
+                                controller: _tabController,
+                                indicator: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  color: AppColors.orangeCrusta,
+                                ),
+                                labelColor: Colors.white,
+                                unselectedLabelColor: AppColors.greyShuttle,
+                                dividerColor: Colors.white,
+                                tabs: [
+                                  Tab(
+                                    child: Container(
+                                      width: 100,
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Intro',
+                                        style: TextStyle(
+                                            fontFamily: 'CeraPro',
+                                            fontSize: 17),
+                                      ),
+                                    ),
+                                  ),
+                                  // second tab [you can add an icon using the icon property]
+                                  Tab(
+                                    child: Container(
+                                      width: 100,
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Ingredients',
+                                        style: TextStyle(
+                                            fontFamily: 'CeraPro',
+                                            fontSize: 17),
+                                      ),
+                                    ),
+                                  ),
+                                  Tab(
+                                    child: Container(
+                                      width: 100,
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Steps',
+                                        style: TextStyle(
+                                            fontFamily: 'CeraPro',
+                                            fontSize: 17),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height,
+                              width: double.infinity,
+                              child: TabBarView(
+                                controller: _tabController,
+                                children: [
+                                  TabContentIntro(
+                                    recipe: recipe,
+                                  ),
+                                  TabContentIngredients(
+                                    recipe: recipe,
+                                  ),
+                                  TabContentSteps(
+                                    recipe: recipe,
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+              return Container();
             },
           ),
         ),
@@ -376,9 +376,7 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
                 ),
               ),
               GestureDetector(
-                onTap: () {
-
-                },
+                onTap: () {},
                 child: SizedBox(
                   height: 30,
                   width: 30,
@@ -394,4 +392,3 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
         ));
   }
 }
-

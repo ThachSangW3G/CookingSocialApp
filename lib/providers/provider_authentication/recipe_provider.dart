@@ -1,4 +1,3 @@
-
 import 'package:cooking_social_app/repository/feature_repository.dart';
 import 'package:cooking_social_app/repository/recipe_repository.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,8 +36,6 @@ class RecipeProvider extends ChangeNotifier {
 
     init();
     initSelect();
-
-
   }
 
   init() async {
@@ -52,7 +49,7 @@ class RecipeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  setSort(String strSort){
+  setSort(String strSort) {
     _sort = strSort;
     filterListFeatured();
     notifyListeners();
@@ -64,43 +61,42 @@ class RecipeProvider extends ChangeNotifier {
     return recipe;
   }
 
-
-  Future<List<Recipe>> getListRecipeByListID(List<dynamic> idRecipes){
+  Future<List<Recipe>> getListRecipeByListID(List<dynamic> idRecipes) {
     return _recipeRepository.getListRecipeByListID(idRecipes);
   }
 
   updateSearch() async {
-    if(searchText.isEmpty){
+    if (searchText.isEmpty) {
       searchRecipe = await _recipeRepository.getAllRecipes();
-    }else {
-      searchRecipe = _recipes.where((element) => element.name.toLowerCase().contains(searchText)).toList();
-
+    } else {
+      searchRecipe = _recipes
+          .where((element) => element.name.toLowerCase().contains(searchText))
+          .toList();
     }
     //print(searchRecipe![0].name);
     notifyListeners();
   }
 
-  search(String search){
+  search(String search) {
     searchText = search;
     updateSearch();
   }
 
-  filterListFeatured(){
-
+  filterListFeatured() {
     if (filterKey.isEmpty) {
       filterFeatured = features;
-    }else{
-      filterFeatured = features.where((feature){
+    } else {
+      filterFeatured = features.where((feature) {
         return filterKey.contains(feature.category);
       }).toList();
     }
 
-    switch (_sort){
+    switch (_sort) {
       case 'relevancy':
         if (filterKey.isEmpty) {
           filterFeatured = features;
-        }else{
-          filterFeatured = features.where((feature){
+        } else {
+          filterFeatured = features.where((feature) {
             return filterKey.contains(feature.category);
           }).toList();
         }
@@ -116,23 +112,22 @@ class RecipeProvider extends ChangeNotifier {
     }
 
     print(_sort);
-
   }
 
-  addFilterKey(String idCategory){
+  addFilterKey(String idCategory) {
     filterKey.add(idCategory);
     notifyListeners();
   }
 
-  removeFilterKey(String idCategory){
+  removeFilterKey(String idCategory) {
     filterKey.remove(idCategory);
     notifyListeners();
   }
 
-  eventFilterKey(String idCategory){
-    if (!filterKey.contains(idCategory)){
+  eventFilterKey(String idCategory) {
+    if (!filterKey.contains(idCategory)) {
       addFilterKey(idCategory);
-    }else{
+    } else {
       removeFilterKey(idCategory);
     }
     filterListFeatured();
@@ -140,16 +135,15 @@ class RecipeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool containsFilter(String idCategory){
-    if(filterKey.contains(idCategory)){
+  bool containsFilter(String idCategory) {
+    if (filterKey.contains(idCategory)) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-
-   initSelect(){
+  initSelect() {
     selected = [];
     unSelected = List<int>.generate(recipes.length, (index) => index);
 
@@ -159,32 +153,29 @@ class RecipeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-   addSelected(int index){
+  addSelected(int index) {
     selected.add(index);
     unSelected.remove(index);
-
 
     notifyListeners();
   }
 
-   removeSelected(int index){
+  removeSelected(int index) {
     unSelected.add(index);
     selected.remove(index);
 
     notifyListeners();
   }
 
-  List<String> getIdRecipeSelected(){
+  List<String> getIdRecipeSelected() {
     List<String> listId = [];
-    for(var index in selected){
+    for (var index in selected) {
       listId.add(recipes[index].key);
     }
-
     return listId;
   }
 
-  int getIndexRecipe(String idRecipe){
+  int getIndexRecipe(String idRecipe) {
     return recipes.indexWhere((element) => element.key == idRecipe);
   }
-
 }
