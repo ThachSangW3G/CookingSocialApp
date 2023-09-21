@@ -87,4 +87,21 @@ class AuthService {
       });
     }
   }
+
+  Future<void> addDataUserFacebook(UserCredential userCredential) async {
+    DocumentSnapshot userSnapshot = await _fireStore
+        .collection('users')
+        .doc(userCredential.user!.uid)
+        .get();
+    if (!userSnapshot.exists) {
+      // Thêm dữ liệu vào Firestore
+      await _fireStore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'name': userCredential.user?.displayName,
+        'email': userCredential.additionalUserInfo!.profile!['email'],
+        'avatar': userCredential.additionalUserInfo!.profile!['picture']['data']['url']
+        // Thêm các trường dữ liệu khác tùy ý
+      });
+    }
+  }
 }

@@ -44,7 +44,7 @@ class AuthenticationStateProvider extends ChangeNotifier{
         _uid = userCredential.user!.uid;
         _email = userCredential.user?.email;
 
-        await _authService.addDataUser(userCredential);
+        await _authService.addDataUserFacebook(userCredential);
 
         return success = true;
       }
