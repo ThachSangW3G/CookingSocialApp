@@ -173,12 +173,25 @@ class _AccountScreenState extends State<AccountScreen> {
                           fontFamily: 'Recoleta'),
                     ),
                     RowContent(label: 'Abount', onTap: () {
-                      // Navigator.push(context, route)
+                      Navigator.pushNamed(context, RouteGenerator.aboutScreen);
+                      
                     }),
-                    RowContent(label: 'Help & Support', onTap: () {}),
-                    RowContent(label: 'Send FeedBack', onTap: () {}),
-                    RowContent(label: 'Rate Us', onTap: () {}),
-                    RowContent(label: 'Check For Update', onTap: () {}),
+                    RowContent(label: 'Help & Support', onTap: () {
+                      Navigator.pushNamed(context, RouteGenerator.helpsupportScreen);
+
+                    }),
+                    RowContent(label: 'Send FeedBack', onTap: () {
+                      Navigator.pushNamed(context, RouteGenerator.sendfeedbackScreen);
+
+                    }),
+                    RowContent(label: 'Rate Us', onTap: () {
+                      Navigator.pushNamed(context, RouteGenerator.rateusScreen);
+
+                    }),
+                    RowContent(label: 'Check For Update', onTap: () {
+                      Navigator.pushNamed(context, RouteGenerator.checkforupdateScreen);
+
+                    }),
                     RowContentNotIcon(
                       label: 'Logout',
                       onTap: () async {

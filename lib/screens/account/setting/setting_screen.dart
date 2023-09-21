@@ -73,33 +73,33 @@ class _SettingScreenSate extends State<SettingScreen>{
             ),
             const SizedBox(height: 18,),
 
-            ElevatedButton(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Notifications',
-                  style: TextStyle(
-                    fontFamily: 'CeraPro',
-                    fontWeight: FontWeight.w500,
-                    fontSize: 17,
-                  ),
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                shadowColor: AppColors.appPrimaryColor,
-                backgroundColor: AppColors.yellowOrange,
-                // foregroundColor: AppColors.black,
-                elevation: 3,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),      
-                fixedSize: Size(MediaQuery.of(context).size.width, 50),     
-              ),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotiSettingScreen()));
-              }, 
-            ),
-            const SizedBox(height: 18,),
+            // ElevatedButton(
+            //   child: Align(
+            //     alignment: Alignment.centerLeft,
+            //     child: Text(
+            //       'Notifications',
+            //       style: TextStyle(
+            //         fontFamily: 'CeraPro',
+            //         fontWeight: FontWeight.w500,
+            //         fontSize: 17,
+            //       ),
+            //     ),
+            //   ),
+            //   style: ElevatedButton.styleFrom(
+            //     shadowColor: AppColors.appPrimaryColor,
+            //     backgroundColor: AppColors.yellowOrange,
+            //     // foregroundColor: AppColors.black,
+            //     elevation: 3,
+            //     shape: RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(12),
+            //     ),      
+            //     fixedSize: Size(MediaQuery.of(context).size.width, 50),     
+            //   ),
+            //   onPressed: () {
+            //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => NotiSettingScreen()));
+            //   }, 
+            // ),
+            // const SizedBox(height: 18,),
 
 
             ElevatedButton(
