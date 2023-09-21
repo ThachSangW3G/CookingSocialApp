@@ -1,5 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cooking_social_app/providers/provider_theme/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/app_color.dart';
 import '../models/cookbook.dart';
@@ -12,15 +15,18 @@ class CookBookWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
+    final isLightTheme = themeProvider.isLightTheme;
     return Container(
       height: 500,
       width: double.infinity,
       decoration:  BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(12)),
-          color: Colors.white,
+          color: isLightTheme ? Colors.white : AppColors.appCircleButtonColor,
           boxShadow: [
             BoxShadow(color: Colors.grey.withOpacity(0.5), // Màu và độ mờ của đổ bóng
-              spreadRadius: 2, // Bán kính mở rộng của đổ bóng
+              spreadRadius: 10, // Bán kính mở rộng của đổ bóng
               blurRadius: 5, // Độ mờ của đổ bóng
               offset: const Offset(0, 3), // Vị trí của đổ bóng trong hệ tọa độ (x, y)
             )
@@ -60,7 +66,10 @@ class CookBookWidget extends StatelessWidget {
                   width: 300,
                   decoration: BoxDecoration(
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      color: Colors.white,
+                      color: isLightTheme ? 
+                      // Color.fromARGB(179, 255, 255, 255) 
+                      Colors.white
+                      : Colors.black54,
                       boxShadow: [
                         BoxShadow(color: Colors.grey.withOpacity(0.5), // Màu và độ mờ của đổ bóng
                           spreadRadius: 0.1, // Bán kính mở rộng của đổ bóng
@@ -69,6 +78,8 @@ class CookBookWidget extends StatelessWidget {
                         )
                       ]
                   ),
+
+                  //Box con
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Column(
@@ -110,7 +121,7 @@ class CookBookWidget extends StatelessWidget {
                               fontFamily: 'CeraPro',
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
-                              color: Colors.grey
+                              // color: Colors.black87
                           ),
                         ),
                         const SizedBox(height: 10,),

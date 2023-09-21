@@ -1,6 +1,10 @@
 import 'package:cooking_social_app/blocs/blocs/authentication_bloc.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/models/recipe.dart';
+import 'package:cooking_social_app/screens/account/setting/interface_setting_screen.dart';
+import 'package:cooking_social_app/screens/account/setting/language_setting_screen.dart';
+import 'package:cooking_social_app/screens/account/setting/notification_setting_screen.dart';
+import 'package:cooking_social_app/screens/account/setting/setting_screen.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
 import 'package:cooking_social_app/screens/bottom_navigation/bottom_navigation.dart';
@@ -23,6 +27,7 @@ import 'package:cooking_social_app/screens/account/notification_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/recipe_details_screen.dart';
 import 'package:cooking_social_app/screens/recipe_detail/review_screen.dart';
 import 'package:cooking_social_app/services/auth_service.dart';
+import 'package:cooking_social_app/widgets/add_cookbook.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -110,6 +115,30 @@ class RouteGenerator {
       case notificationScreen:
         return PageTransition(
           child: const SafeArea(child: SafeArea(child: NotificationScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+      case settingScreen:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: SettingScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+      case interfacesettingScreen:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: InterfaceSettingScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+      case notisettingScreen:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: NotiSettingScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+      case languagesettingScreen:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: LanguageSettingScreen())),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
@@ -203,7 +232,14 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
 
-      //
+      case addCookbookScreen:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: AddCookbookScreen())),
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 400),
+        );
+
+    //
 
       default:
         throw const RouteException("Route not found");
@@ -225,7 +261,12 @@ class RouteGenerator {
   static const accountpersonScreen = '/accountperson';
   static const editprofileScreen = '/editprofile';
   static const likedrecipeScreen = '/likedrecipe';
-  //
+  
+  //SETTINGS
+  static const settingScreen = 'settings';
+  static const interfacesettingScreen = 'interfacesetting';
+  static const notisettingScreen = 'nitificationssetting';
+  static const languagesettingScreen = 'languagesetting';
 
   // RECIPE DETAILS
   static const recipedetailScreen = '/recipedetail';
@@ -244,6 +285,8 @@ class RouteGenerator {
 
   //CALENDAR
   static const calendarScreen = '/calendar';
+
+  static const addCookbookScreen = '/add_cookbook';
 }
 
 class RouteException implements Exception {

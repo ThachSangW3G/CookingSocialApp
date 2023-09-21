@@ -1,6 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cooking_social_app/components/add_calendar_item.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/providers/calendar_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class MyNewCalendar extends StatefulWidget {
@@ -18,6 +22,9 @@ class _MyNewCalendarState extends State<MyNewCalendar> {
 
   @override
   Widget build(BuildContext context) {
+
+    final calendarProvider = Provider.of<CalendarProvider>(context);
+
     return Container(
       decoration: const BoxDecoration(
         color: AppColors.greyIron
@@ -38,6 +45,8 @@ class _MyNewCalendarState extends State<MyNewCalendar> {
           setState(() {
             _selectedDay = selectedDay;
             _focusedDay = selectedDay;
+
+            calendarProvider.selectDate(_selectedDay);
           });
           
         },
@@ -58,12 +67,17 @@ class _MyNewCalendarState extends State<MyNewCalendar> {
           leftChevronPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 5),
           rightChevronPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 5)
         ),
-        daysOfWeekStyle: DaysOfWeekStyle(
+        daysOfWeekStyle: const DaysOfWeekStyle(
           weekdayStyle: TextStyle(fontFamily: 'CeraPro', fontSize: 14, fontWeight: FontWeight.w500)
         ),
         
         
       ),
     );
+
+
+
   }
+
 }
+

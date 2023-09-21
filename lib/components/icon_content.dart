@@ -23,7 +23,10 @@ class IconContent extends StatelessWidget {
             iconData,
             height: 25,
             width: 25,
-            colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+            // colorFilter: const ColorFilter.mode(
+            //   Colors.black,
+            //   BlendMode.srcIn
+            // ),
           ),
           const SizedBox(
             height: 10,

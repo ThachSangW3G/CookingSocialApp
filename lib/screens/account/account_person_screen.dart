@@ -9,11 +9,11 @@ import 'package:cooking_social_app/models/review.dart';
 import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/follow_provider.dart';
 import 'package:cooking_social_app/providers/like_provider.dart';
-import 'package:cooking_social_app/providers/like_review_provider.dart';
 import 'package:cooking_social_app/providers/notification_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/providers/provider_recipe/review_state.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:cooking_social_app/widgets/list_cookbook_widget.dart';
 import 'package:cooking_social_app/widgets/post_widget.dart';
 import 'package:cooking_social_app/widgets/reviews_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -41,7 +41,7 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
   late Future<UserModel> _userModelFuture;
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     _userModelFuture = Provider.of<UserProvider>(context, listen: false).getUser(widget.idUser);
     super.initState();
   }
@@ -59,11 +59,11 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
+    final FollowProvider followProvider = Provider.of<FollowProvider>(context);
+    final NotificationProvider notificationProvider = Provider.of<NotificationProvider>(context);
     final RecipeProvider recipeProvider = Provider.of<RecipeProvider>(context);
     final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
     final ReviewStateProvider reviewStateProvider = Provider.of<ReviewStateProvider>(context);
-    final FollowProvider followProvider = Provider.of<FollowProvider>(context);
-    final NotificationProvider notificationProvider = Provider.of<NotificationProvider>(context);
     final bool isOwner = user.uid ==  widget.idUser;
     return Scaffold(
       backgroundColor: Colors.white,
@@ -131,9 +131,9 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                 onTap: () {
                                   if(isOwner){
                                     Navigator.of(context).pushNamed(
-                                        RouteGenerator.editprofileScreen,
-                                        arguments: widget.idUser
-                                      );
+                                      RouteGenerator.editprofileScreen,
+                                      arguments: widget.idUser
+                                    );
                                   }else{
 
                                     if(existFollow == null){
@@ -322,6 +322,20 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                     ),
                                   ),
 
+                                  Tab(
+                                    child: Container(
+                                      width: 280,
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Cookbooks',
+                                        style: TextStyle(
+                                            fontFamily: 'CeraPro',
+                                            fontSize: 15),
+                                      ),
+                                    ),
+                                  ),
+
+
                                   // second tab [you can add an icon using the icon property]
                                   Tab(
                                     child: Container(
@@ -348,7 +362,8 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                               child: TabBarView(
                                   controller: _tabController,
                                   children: [
-                                    RefreshIndicator(
+                                    // const PostWidget(),
+                                      RefreshIndicator(
                                       onRefresh: () async {
                                         context.read<RecipeProvider>().init();
                                       },
@@ -409,6 +424,10 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
                                         },
                                       ),
                                     ),
+
+                                    ListCookbookWidget(user: userModel,),
+                                    // const ReviewWidget()
+                                    
                                     RefreshIndicator(
                                       onRefresh: () async {
                                         context.read<ReviewStateProvider>;
@@ -443,8 +462,7 @@ class _AccountPerSonScreenState extends State<AccountPerSonScreen>
           },
         ),
                                     ),
-                                    //PostWidget(),
-                                    //ReviewWidget()
+
                                   ]),
                             )
                           ],
