@@ -1,12 +1,17 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/components/additem_dialog.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
+import 'package:cooking_social_app/models/category.dart';
+import 'package:cooking_social_app/models/recipe.dart';
 import 'package:cooking_social_app/providers/adddata_provider/intro_provider.dart';
 import 'package:cooking_social_app/providers/adddata_provider/material_provider.dart';
 import 'package:cooking_social_app/providers/adddata_provider/spice_provder.dart';
 import 'package:cooking_social_app/providers/adddata_provider/steps_provider.dart';
+import 'package:cooking_social_app/providers/category_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:cooking_social_app/services/change_url.dart';
 import 'package:cooking_social_app/widgets/recipe_ingredients_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_intro_edit_view.dart';
 import 'package:cooking_social_app/widgets/recipe_steps_edit_view.dart';
@@ -23,7 +28,8 @@ import 'package:provider/provider.dart';
 // enum Choice { A, B, C }
 
 class RecipeEditScreen extends StatefulWidget {
-  const RecipeEditScreen({Key? key}) : super(key: key);
+  final Recipe? recipe;
+  const RecipeEditScreen({Key? key, this.recipe}) : super(key: key);
 
   @override
   State<RecipeEditScreen> createState() => _RecipeEditScreenState();
@@ -53,6 +59,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
   String? _category;
   late TabController _tabController;
   int _selectedTabIndex = 0;
+  Intro? introGet;
 
   // Choice selectedChoice = Choice.A;
 
@@ -83,6 +90,10 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       _showDetailDialog();
       return;
     }
+    if (!isURL(source)) {
+      showValidationError(context);
+      return;
+    }
     String? url = await upLoadFileToFirebase(getFile);
     setState(() {
       _name = name;
@@ -104,60 +115,117 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       List<String> steps = _steps!.map((item) => item.name).toList();
       List<String> spice = _spices!.map((item) => item.name).toList();
       List<String> material = _materials!.map((item) => item.name).toList();
-      // Khởi tạo Firestore instance
-      FirebaseFirestore firestore = FirebaseFirestore.instance;
-      // Tạo một document reference và lấy ra ID ngẫu nhiên
-      DocumentReference reviewRef = firestore.collection('recipes').doc();
-      //
-      Map<String, dynamic> recipe = {
-        'id': reviewRef.id,
-        'URL': _url,
-        'cookTime': _cookTime! + _cookTimeHours! * 60,
-        'description': _description,
-        'difficult': _difficult,
-        'isPublic': _isPublic,
-        'name': _name,
-        'numberLike': 0,
-        'numberReview': 0,
-        'category': _category,
-        'server': _server,
-        'uidUser': FirebaseAuth.instance.currentUser?.uid,
-        'source': _source,
-        'spice': spice,
-        'step': steps,
-        'material': material
-      };
+      if (widget.recipe == null) {
+        // Khởi tạo Firestore instance
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+        // Tạo một document reference và lấy ra ID ngẫu nhiên
+        DocumentReference reviewRef = firestore.collection('recipes').doc();
+        //
+        Map<String, dynamic> recipe = {
+          'id': reviewRef.id,
+          'URL': _url,
+          'cookTime': _cookTime! + _cookTimeHours! * 60,
+          'description': _description,
+          'difficult': _difficult,
+          'isPublic': _isPublic,
+          'name': _name,
+          'numberLike': 0,
+          'numberReview': 0,
+          'category': _category,
+          'serves': _server,
+          'uidUser': FirebaseAuth.instance.currentUser?.uid,
+          'source': _source,
+          'spice': spice,
+          'steps': steps,
+          'material': material
+        };
 
-      await reviewRef.set(recipe).then((value) => showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text('Thông báo',
-                  style: TextStyle(fontFamily: "CeraPro")),
-              content: const Text('Thêm Dữ Liệu Thành Công',
-                  style: TextStyle(fontFamily: "CeraPro")),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Provider.of<IntroProvider>(context, listen: false)
-                        .clearData();
-                    Provider.of<StepsProvider>(context, listen: false)
-                        .cleardata();
-                    Provider.of<SpiceProvider>(context, listen: false)
-                        .cleardata();
-                    Provider.of<MaterialProvider>(context, listen: false)
-                        .cleardata();
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text(
-                    'Đóng',
-                    style: TextStyle(
-                        fontFamily: "CeraPro", color: AppColors.orangeCrusta),
+        await reviewRef.set(recipe).then((value) => showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Thông báo',
+                    style: TextStyle(fontFamily: "CeraPro")),
+                content: const Text('Thêm Dữ Liệu Thành Công',
+                    style: TextStyle(fontFamily: "CeraPro")),
+                actions: [
+                  TextButton(
+                    onPressed: () async {
+                      Provider.of<IntroProvider>(context, listen: false)
+                          .clearData();
+                      Provider.of<StepsProvider>(context, listen: false)
+                          .cleardata();
+                      Provider.of<SpiceProvider>(context, listen: false)
+                          .cleardata();
+                      Provider.of<MaterialProvider>(context, listen: false)
+                          .cleardata();
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Đóng',
+                      style: TextStyle(
+                          fontFamily: "CeraPro", color: AppColors.orangeCrusta),
+                    ),
                   ),
-                ),
-              ],
-            );
-          }));
+                ],
+              );
+            }));
+      } else {
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+        // Tạo một document reference và lấy ra ID ngẫu nhiên
+        DocumentReference reviewRef =
+            firestore.collection('recipes').doc(widget.recipe!.key);
+        //
+        Map<String, dynamic> recipe = {
+          'id': reviewRef.id,
+          'URL': _url,
+          'cookTime': _cookTime! + _cookTimeHours! * 60,
+          'description': _description,
+          'difficult': _difficult,
+          'isPublic': _isPublic,
+          'name': _name,
+          'numberLike': 0,
+          'numberReview': 0,
+          'category': _category,
+          'serves': _server,
+          'uidUser': FirebaseAuth.instance.currentUser?.uid,
+          'source': _source,
+          'spice': spice,
+          'steps': steps,
+          'material': material
+        };
+
+        await reviewRef.update(recipe).then((value) => showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Thông báo',
+                    style: TextStyle(fontFamily: "CeraPro")),
+                content: const Text('Cập Nhật Dữ Liệu Thành Công',
+                    style: TextStyle(fontFamily: "CeraPro")),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Provider.of<IntroProvider>(context, listen: false)
+                          .clearData();
+                      Provider.of<StepsProvider>(context, listen: false)
+                          .cleardata();
+                      Provider.of<SpiceProvider>(context, listen: false)
+                          .cleardata();
+                      Provider.of<MaterialProvider>(context, listen: false)
+                          .cleardata();
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(
+                      'Đóng',
+                      style: TextStyle(
+                          fontFamily: "CeraPro", color: AppColors.orangeCrusta),
+                    ),
+                  ),
+                ],
+              );
+            }));
+      }
     } catch (e) {
       print('Error uploading file: $e');
     }
@@ -201,12 +269,65 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+    if (widget.recipe != null) {
+      upLoadData();
+      //upLoadDataIntro();
+    }
+    Future<void>.delayed(const Duration(seconds: 2));
   }
 
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  void upLoadData() async {
+    Recipe? recipe = widget.recipe;
+    List<Item> materialList = recipe!.material.map((name) {
+      String id = Random().nextInt(100).toString(); // Tạo ID ngẫu nhiên
+      return Item(id: id, name: name);
+    }).toList();
+    List<Item> spiceList = recipe.spice.map((name) {
+      String id = Random().nextInt(100).toString(); // Tạo ID ngẫu nhiên
+      return Item(id: id, name: name);
+    }).toList();
+    List<Item> stepsList = recipe.steps.map((name) {
+      String id = Random().nextInt(100).toString(); // Tạo ID ngẫu nhiên
+      return Item(id: id, name: name);
+    }).toList();
+    Provider.of<StepsProvider>(context, listen: false)
+        .updateItemsFormList(stepsList);
+    Provider.of<MaterialProvider>(context, listen: false)
+        .updateItemsFormList(materialList);
+    Provider.of<SpiceProvider>(context, listen: false)
+        .updateItemsFormList(spiceList);
+    int minutes = recipe.cookTime % 60;
+    int hours = recipe.cookTime ~/ 60;
+    Category category = Provider.of<CategoryProvider>(context, listen: false)
+        .getOneCategoty(recipe.category);
+    String imageUrl = recipe.url;
+    File imageFile = await convertImageUrlToFile(imageUrl);
+
+    Intro intro = Intro(
+        name: recipe.name,
+        url: recipe.source,
+        cookTime: minutes,
+        cookTimeHour: hours,
+        description: recipe.description,
+        isPublic: recipe.isPublic,
+        server: recipe.serves,
+        category: category,
+        difficult: recipe.difficult,
+        file: imageFile,
+        source: 'Person');
+    introGet = intro;
+    upLoadDataIntro();
+  }
+
+  void upLoadDataIntro() {
+    Provider.of<IntroProvider>(context, listen: false)
+        .updateItemsFormList(introGet!);
   }
 
   @override
@@ -434,6 +555,11 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
           actions: [
             TextButton(
               onPressed: () {
+                Provider.of<IntroProvider>(context, listen: false).clearData();
+                Provider.of<StepsProvider>(context, listen: false).cleardata();
+                Provider.of<SpiceProvider>(context, listen: false).cleardata();
+                Provider.of<MaterialProvider>(context, listen: false)
+                    .cleardata();
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
               },
@@ -573,5 +699,47 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         }));
     // Xử lý
     // khi tùy chọn "Edit" được chọn
+  }
+
+  // Hàm kiểm tra giá trị nhập vào có phải là URL hay không
+  bool isURL(String value) {
+    // Biểu thức chính quy để kiểm tra URL
+    final urlPattern = RegExp(
+      r'^(http(s)?:\/\/)?'
+      r'(([a-zA-Z0-9\-])+(\.)?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?'
+      r'(:[0-9]+)?(\/([\w#!:.?+=&%@!\-\/])*)?$',
+    );
+
+    return urlPattern.hasMatch(value);
+  }
+
+  void showValidationError(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text(
+            'Lỗi',
+            style: TextStyle(fontFamily: "CeraPro"),
+          ),
+          content: const Text(
+            'Giá trị nhập vào không phải là URL hợp lệ.',
+            style: TextStyle(fontFamily: "CeraPro"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                    fontFamily: "CeraPro", color: AppColors.orangeCrusta),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

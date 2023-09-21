@@ -116,14 +116,22 @@ class RouteGenerator {
       case accountpersonScreen:
         String idUser = args as String;
         return PageTransition(
-          child: SafeArea(child: SafeArea(child: AccountPerSonScreen(idUser: idUser,))),
+          child: SafeArea(
+              child: SafeArea(
+                  child: AccountPerSonScreen(
+            idUser: idUser,
+          ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
       case editprofileScreen:
-       String idUser = args as String;
+        String idUser = args as String;
         return PageTransition(
-          child: SafeArea(child: SafeArea(child: EditProfileScreen(idUser: idUser,))),
+          child: SafeArea(
+              child: SafeArea(
+                  child: EditProfileScreen(
+            idUser: idUser,
+          ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );
@@ -134,12 +142,15 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
       case recipedetailScreen:
-        String key = args as String;
+        Map<String, dynamic>? argsMap = args as Map<String, dynamic>?;
+        String key = argsMap!['key'] as String;
+        String uid = argsMap['uid'] as String;
         return PageTransition(
           child: SafeArea(
               child: SafeArea(
                   child: RecipeDetailsScreen(
             keyRecipe: key,
+            uidRecipe: uid,
           ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
@@ -163,13 +174,13 @@ class RouteGenerator {
           duration: const Duration(milliseconds: 400),
         );
       case recipeeditScreen:
-        // String keyRecipe = args as String;
+        Recipe? recipe = args as Recipe?;
         return PageTransition(
-          child: const SafeArea(
+          child: SafeArea(
               child: SafeArea(
                   child: RecipeEditScreen(
-                      // keyRecipe: keyRecipe,
-                      ))),
+            recipe: recipe,
+          ))),
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 400),
         );

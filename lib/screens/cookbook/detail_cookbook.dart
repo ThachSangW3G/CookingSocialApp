@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-
 import '../../models/recipe_cookbook.dart';
 import '../../widgets/recipe_item_published_widget.dart';
 
@@ -260,8 +259,12 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                             return GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pushNamed(
-                                      RouteGenerator.recipedetailScreen,
-                                      arguments: recipe.key);
+                                    RouteGenerator.recipedetailScreen,
+                                    arguments: {
+                                      'key': recipe.key,
+                                      'uid': recipe.uidUser,
+                                    },
+                                  );
                                 },
                                 child: PopularRecipe(recipe: recipe!));
                           }
@@ -338,8 +341,12 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                                   return GestureDetector(
                                     onTap: () {
                                       Navigator.of(context).pushNamed(
-                                          RouteGenerator.recipedetailScreen,
-                                          arguments: recipe.key);
+                                        RouteGenerator.recipedetailScreen,
+                                        arguments: {
+                                          'key': recipe.key,
+                                          'uid': recipe.uidUser,
+                                        },
+                                      );
                                     },
                                     child: RecipeItemUnPublishedWidget(
                                         recipe: recipe),

@@ -87,301 +87,424 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
 
   @override
   Widget build(BuildContext context) {
-    final introProvider = Provider.of<IntroProvider>(context);
-    final intro = introProvider.intro;
     final categotyProvider = Provider.of<CategoryProvider>(context);
     final categoty = categotyProvider.categories;
-    return SingleChildScrollView(
-        child: Container(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TextFormField(
-            initialValue: intro.name,
-            validator: (value) =>
-                (value?.isEmpty ?? true) ? 'Title is required' : null,
-            onChanged: (value) {
-              setState(() {
-                introProvider.updateIntro(name: value);
-              });
-            },
-            //controller: _textEditingController,
-            decoration: const InputDecoration(
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-              labelText: 'Title',
-              enabledBorder: UnderlineInputBorder(
-                // viền dưới khi không có focus
-                borderSide: BorderSide(color: AppColors.greyIron),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                // viền dưới khi có focus
-                borderSide: BorderSide(color: AppColors.greyShuttle),
-              ),
-
-              // errorText: _textEditingController.text.isEmpty
-              //     ? 'Giá trị không được để trống'
-              //     : null,
-              labelStyle: TextStyle(
-                  fontFamily: 'CeraPro',
-                  // fontSize: 14,
-                  fontWeight: FontWeight.w400),
-            ),
-          ),
-
-          // COOK TIME--------------------------------------------
-          const SizedBox(height: 24),
-          const Text(
-            'Cooking Time',
-            style: TextStyle(
-                fontFamily: 'CeraPro',
-                fontSize: 14,
-                fontWeight: FontWeight.w400),
-          ),
-          const SizedBox(height: 5),
-          Row(
+    return Consumer<IntroProvider>(
+      builder: (context, introProvider, _) {
+        //final intro = introProvider.intro;
+        return SingleChildScrollView(
+            child: Container(
+          padding:
+              const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: TextFormField(
-                  initialValue:
-                      intro.cookTime == null ? '' : intro.cookTime.toString(),
-                  onChanged: (value) {
-                    introProvider.updateIntro(cookTime: int.parse(value));
-                  },
-                  decoration: const InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        // viền dưới khi không có focus
-                        borderSide: BorderSide(color: AppColors.greyIron),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        // viền dưới khi có focus
-                        borderSide: BorderSide(color: AppColors.greyShuttle),
-                      ),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                      labelText: 'minutes',
-                      labelStyle: TextStyle(
-                          fontFamily: 'CeraPro',
-                          // fontSize: 14,
-                          fontWeight: FontWeight.w400)),
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                ),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              Expanded(
-                child: TextFormField(
-                  initialValue: intro.cookTimeHour == null
-                      ? ''
-                      : intro.cookTimeHour.toString(),
-                  onChanged: (value) {
-                    introProvider.updateIntro(cookTimeHour: int.parse(value));
-                  },
-                  decoration: const InputDecoration(
-                      enabledBorder: UnderlineInputBorder(
-                        // viền dưới khi không có focus
-                        borderSide: BorderSide(color: AppColors.greyIron),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        // viền dưới khi có focus
-                        borderSide: BorderSide(color: AppColors.greyShuttle),
-                      ),
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                      labelText: 'hours',
-                      labelStyle: TextStyle(
-                          fontFamily: 'CeraPro',
-                          // fontSize: 14,
-                          fontWeight: FontWeight.w400)),
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                ),
-              ),
-            ],
-          ),
-
-          // IMAGE -------------------------------------
-          const SizedBox(
-            height: 24,
-          ),
-          Stack(children: [
-            ClipRRect(
-              child: intro.file != null
-                  ? Image.file(
-                      intro.file!,
-                      width: MediaQuery.of(context).size.width,
-                      height: 208,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.asset(
-                      'assets/images/image_background.png',
-                      width: MediaQuery.of(context).size.width,
-                      height: 208,
-                      fit: BoxFit.cover,
-                    ),
-            ),
-            Positioned(
-              top: 16.0,
-              right: 16.0,
-              child: InkWell(
-                onTap: () async {
-                  try {
-                    XFile? pickedFile = await ImagePicker()
-                        .pickImage(source: ImageSource.gallery);
-                    if (pickedFile != null) {
-                      File file = File(pickedFile.path);
-                      introProvider.updateIntro(file: file);
-                      // Thực hiện các thao tác tiếp theo với file...
-                    }
-                  } catch (e) {
-                    print('Error picking image: $e');
-                  }
+              TextFormField(
+                initialValue: introProvider.intro.name,
+                validator: (value) =>
+                    (value?.isEmpty ?? true) ? 'Title is required' : null,
+                onChanged: (value) {
+                  setState(() {
+                    introProvider.updateIntro(name: value);
+                  });
                 },
-                child: Container(
-                  height: 40,
-                  width: 40,
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    // shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.white,
+                //controller: _textEditingController,
+                decoration: const InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                  labelText: 'Title',
+                  enabledBorder: UnderlineInputBorder(
+                    // viền dưới khi không có focus
+                    borderSide: BorderSide(color: AppColors.greyIron),
                   ),
-                  child: SvgPicture.asset(
-                    'assets/icon_svg/pencil.svg',
-                    color: Colors.grey[800],
-                    height: 10,
-                    width: 10,
+                  focusedBorder: UnderlineInputBorder(
+                    // viền dưới khi có focus
+                    borderSide: BorderSide(color: AppColors.greyShuttle),
                   ),
+
+                  // errorText: _textEditingController.text.isEmpty
+                  //     ? 'Giá trị không được để trống'
+                  //     : null,
+                  labelStyle: TextStyle(
+                      fontFamily: 'CeraPro',
+                      // fontSize: 14,
+                      fontWeight: FontWeight.w400),
                 ),
               ),
-            ),
-          ]),
 
-          // DESCRIPTION -------------------------------
-          const SizedBox(
-            height: 24,
-          ),
-          TextFormField(
-            initialValue: intro.description,
-            onChanged: (value) {
-              introProvider.updateIntro(description: value);
-            },
-            decoration: const InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                labelText: 'Description',
-                enabledBorder: UnderlineInputBorder(
-                  // viền dưới khi không có focus
-                  borderSide: BorderSide(color: AppColors.greyIron),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  // viền dưới khi có focus
-                  borderSide: BorderSide(color: AppColors.greyShuttle),
-                ),
-                labelStyle: TextStyle(
+              // COOK TIME--------------------------------------------
+              const SizedBox(height: 24),
+              const Text(
+                'Cooking Time',
+                style: TextStyle(
                     fontFamily: 'CeraPro',
-                    // fontSize: 14,
-                    fontWeight: FontWeight.w400)),
-            inputFormatters: [FilteringTextInputFormatter.singleLineFormatter],
-            maxLines: null, // Cho phép hiển thị nhiều dòng văn bản
-            keyboardType:
-                TextInputType.multiline, // Bàn phím hiển thị dạng đa dòng
-            textInputAction: TextInputAction.newline,
-          ),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400),
+              ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      initialValue: introProvider.intro.cookTime == null
+                          ? ''
+                          : introProvider.intro.cookTime.toString(),
+                      onChanged: (value) {
+                        introProvider.updateIntro(cookTime: int.parse(value));
+                      },
+                      decoration: const InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            // viền dưới khi không có focus
+                            borderSide: BorderSide(color: AppColors.greyIron),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            // viền dưới khi có focus
+                            borderSide:
+                                BorderSide(color: AppColors.greyShuttle),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 0.0, horizontal: 0.0),
+                          labelText: 'minutes',
+                          labelStyle: TextStyle(
+                              fontFamily: 'CeraPro',
+                              // fontSize: 14,
+                              fontWeight: FontWeight.w400)),
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 16,
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      initialValue: introProvider.intro.cookTimeHour == null
+                          ? ''
+                          : introProvider.intro.cookTimeHour.toString(),
+                      onChanged: (value) {
+                        introProvider.updateIntro(
+                            cookTimeHour: int.parse(value));
+                      },
+                      decoration: const InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            // viền dưới khi không có focus
+                            borderSide: BorderSide(color: AppColors.greyIron),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            // viền dưới khi có focus
+                            borderSide:
+                                BorderSide(color: AppColors.greyShuttle),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 0.0, horizontal: 0.0),
+                          labelText: 'hours',
+                          labelStyle: TextStyle(
+                              fontFamily: 'CeraPro',
+                              // fontSize: 14,
+                              fontWeight: FontWeight.w400)),
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    ),
+                  ),
+                ],
+              ),
 
-          //-------------------------------------------
-          const SizedBox(
-            height: 24,
-          ),
+              // IMAGE -------------------------------------
+              const SizedBox(
+                height: 24,
+              ),
+              Stack(children: [
+                ClipRRect(
+                  child: introProvider.intro.file != null
+                      ? Image.file(
+                          introProvider.intro.file!,
+                          width: MediaQuery.of(context).size.width,
+                          height: 208,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          'assets/images/image_background.png',
+                          width: MediaQuery.of(context).size.width,
+                          height: 208,
+                          fit: BoxFit.cover,
+                        ),
+                ),
+                Positioned(
+                  top: 16.0,
+                  right: 16.0,
+                  child: InkWell(
+                    onTap: () async {
+                      try {
+                        XFile? pickedFile = await ImagePicker()
+                            .pickImage(source: ImageSource.gallery);
+                        if (pickedFile != null) {
+                          File file = File(pickedFile.path);
+                          introProvider.updateIntro(file: file);
+                          // Thực hiện các thao tác tiếp theo với file...
+                        }
+                      } catch (e) {
+                        print('Error picking image: $e');
+                      }
+                    },
+                    child: Container(
+                      height: 40,
+                      width: 40,
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        // shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(8),
+                        color: Colors.white,
+                      ),
+                      child: SvgPicture.asset(
+                        'assets/icon_svg/pencil.svg',
+                        color: Colors.grey[800],
+                        height: 10,
+                        width: 10,
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
 
-          Row(
-            children: [
-              Expanded(
-                  child: Column(
+              // DESCRIPTION -------------------------------
+              const SizedBox(
+                height: 24,
+              ),
+              TextFormField(
+                initialValue: introProvider.intro.description,
+                onChanged: (value) {
+                  introProvider.updateIntro(description: value);
+                },
+                decoration: const InputDecoration(
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                    labelText: 'Description',
+                    enabledBorder: UnderlineInputBorder(
+                      // viền dưới khi không có focus
+                      borderSide: BorderSide(color: AppColors.greyIron),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      // viền dưới khi có focus
+                      borderSide: BorderSide(color: AppColors.greyShuttle),
+                    ),
+                    labelStyle: TextStyle(
+                        fontFamily: 'CeraPro',
+                        // fontSize: 14,
+                        fontWeight: FontWeight.w400)),
+                inputFormatters: [
+                  FilteringTextInputFormatter.singleLineFormatter
+                ],
+                maxLines: null, // Cho phép hiển thị nhiều dòng văn bản
+                keyboardType:
+                    TextInputType.multiline, // Bàn phím hiển thị dạng đa dòng
+                textInputAction: TextInputAction.newline,
+              ),
+
+              //-------------------------------------------
+              const SizedBox(
+                height: 24,
+              ),
+
+              Row(
+                children: [
+                  Expanded(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Difficulty',
+                        style: TextStyle(fontFamily: "CeraPro"),
+                      ),
+                      SizedBox(
+                        width: 160,
+                        child: DropdownButton<String>(
+                          value: introProvider.intro.difficult,
+                          underline: const Divider(
+                            thickness: 1.5,
+                            color: AppColors.greyIron,
+                          ),
+                          elevation: 16,
+                          isExpanded: true,
+                          alignment: Alignment.center,
+                          padding: const EdgeInsets.only(top: 8),
+                          icon: Align(
+                            alignment: Alignment.centerRight,
+                            child: SvgPicture.asset(
+                              'assets/icon_svg/chevron-circle-down.svg',
+                              height: 15,
+                              width: 8,
+                            ),
+                          ),
+                          onChanged: (String? value) {
+                            introProvider.updateIntro(difficult: value);
+                          },
+                          items: const [
+                            DropdownMenuItem<String>(
+                              value: "Easy",
+                              child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text('Easy',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'CeraPro',
+                                        fontSize: 16,
+                                      ),
+                                      textAlign: TextAlign.right)),
+                            ),
+                            DropdownMenuItem<String>(
+                              value: 'Medium',
+                              child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text('Medium',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'CeraPro',
+                                        fontSize: 16,
+                                      ),
+                                      textAlign: TextAlign.right)),
+                            ),
+                            DropdownMenuItem<String>(
+                              value: 'Difficult',
+                              child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text('Difficult',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'CeraPro',
+                                        fontSize: 16,
+                                      ),
+                                      textAlign: TextAlign.right)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )),
+                  // const SizedBox(
+                  //   width: 16,
+                  // ),
+                  Expanded(
+                    child: TextFormField(
+                      initialValue: introProvider.intro.server == null
+                          ? ''
+                          : introProvider.intro.server.toString(),
+                      onChanged: (value) {
+                        introProvider.updateIntro(server: int.parse(value));
+                      },
+                      decoration: const InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          // viền dưới khi không có focus
+                          borderSide: BorderSide(color: AppColors.greyIron),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          // viền dưới khi có focus
+                          borderSide: BorderSide(color: AppColors.greyShuttle),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 0.0, horizontal: 0.0),
+                        labelText: 'Serve',
+                      ),
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    ),
+                  ),
+                ],
+              ),
+
+              //---------------------
+              const SizedBox(
+                height: 24,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Publish to Community?',
+                        style: TextStyle(
+                            fontFamily: 'CeraPro',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      Switch(
+                        value: introProvider.intro.isPublic!,
+                        onChanged: (bool newValue) {
+                          introProvider.updateIntro(isPublic: newValue);
+                        },
+                        activeColor: AppColors.orangeCrusta,
+                        inactiveTrackColor: AppColors.greyDark,
+                        inactiveThumbColor: AppColors.white,
+                      ),
+                      // const SizedBox(
+                      //   width: 20,
+                      // )
+                    ],
+                  )),
+                ],
+              ),
+              //---------------
+              const SizedBox(
+                height: 24,
+              ),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Difficulty',
+                    'Category',
                     style: TextStyle(fontFamily: "CeraPro"),
                   ),
                   SizedBox(
                     width: 160,
-                    child: DropdownButton<String>(
-                      value: intro.difficult,
-                      underline: const Divider(
-                        thickness: 1.5,
-                        color: AppColors.greyIron,
-                      ),
-                      elevation: 16,
-                      isExpanded: true,
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.only(top: 8),
-                      icon: Align(
-                        alignment: Alignment.centerRight,
-                        child: SvgPicture.asset(
-                          'assets/icon_svg/chevron-circle-down.svg',
-                          height: 15,
-                          width: 8,
+                    child: DropdownButton<Category>(
+                        value: introProvider.intro.category,
+                        underline: const Divider(
+                          thickness: 1.5,
+                          color: AppColors.greyIron,
                         ),
-                      ),
-                      onChanged: (String? value) {
-                        introProvider.updateIntro(difficult: value);
-                      },
-                      items: const [
-                        DropdownMenuItem<String>(
-                          value: "Easy",
-                          child: Align(
-                              alignment: Alignment.center,
-                              child: Text('Easy',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'CeraPro',
-                                    fontSize: 16,
-                                  ),
-                                  textAlign: TextAlign.right)),
+                        elevation: 16,
+                        isExpanded: true,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.only(top: 8),
+                        icon: Align(
+                          alignment: Alignment.centerRight,
+                          child: SvgPicture.asset(
+                            'assets/icon_svg/chevron-circle-down.svg',
+                            height: 15,
+                            width: 8,
+                          ),
                         ),
-                        DropdownMenuItem<String>(
-                          value: 'Medium',
-                          child: Align(
-                              alignment: Alignment.center,
-                              child: Text('Medium',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'CeraPro',
-                                    fontSize: 16,
-                                  ),
-                                  textAlign: TextAlign.right)),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: 'Difficult',
-                          child: Align(
-                              alignment: Alignment.center,
-                              child: Text('Difficult',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'CeraPro',
-                                    fontSize: 16,
-                                  ),
-                                  textAlign: TextAlign.right)),
-                        ),
-                      ],
-                    ),
+                        onChanged: (Category? value) {
+                          introProvider.updateIntro(category: value);
+                        },
+                        items: [
+                          for (int index = 0; index < categoty.length; index++)
+                            DropdownMenuItem<Category>(
+                              key: ValueKey(categoty[index].id),
+                              value: categoty[index],
+                              child: Align(
+                                  alignment: Alignment.center,
+                                  child: Text(categoty[index].name,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'CeraPro',
+                                        fontSize: 16,
+                                      ),
+                                      textAlign: TextAlign.right)),
+                            ),
+                        ]),
                   ),
                 ],
-              )),
-              // const SizedBox(
-              //   width: 16,
-              // ),
-              Expanded(
-                child: TextFormField(
-                  initialValue:
-                      intro.server == null ? '' : intro.server.toString(),
-                  onChanged: (value) {
-                    introProvider.updateIntro(server: int.parse(value));
-                  },
-                  decoration: const InputDecoration(
+              ),
+              //---------------
+              const SizedBox(
+                height: 24,
+              ),
+              TextFormField(
+                initialValue: introProvider.intro.source,
+                onChanged: (value) {
+                  introProvider.updateIntro(source: value);
+                },
+                decoration: const InputDecoration(
                     enabledBorder: UnderlineInputBorder(
                       // viền dưới khi không có focus
                       borderSide: BorderSide(color: AppColors.greyIron),
@@ -392,155 +515,43 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                     ),
                     contentPadding:
                         EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                    labelText: 'Serve',
-                  ),
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                ),
-              ),
-            ],
-          ),
-
-          //---------------------
-          const SizedBox(
-            height: 24,
-          ),
-          Row(
-            children: [
-              Expanded(
-                  child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Publish to Community?',
-                    style: TextStyle(
+                    labelText: 'Source',
+                    labelStyle: TextStyle(
                         fontFamily: 'CeraPro',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400),
-                  ),
-                  Switch(
-                    value: intro.isPublic!,
-                    onChanged: (bool newValue) {
-                      introProvider.updateIntro(isPublic: newValue);
-                    },
-                    activeColor: AppColors.orangeCrusta,
-                    inactiveTrackColor: AppColors.greyDark,
-                    inactiveThumbColor: AppColors.white,
-                  ),
-                  // const SizedBox(
-                  //   width: 20,
-                  // )
-                ],
-              )),
-            ],
-          ),
-          //---------------
-          const SizedBox(
-            height: 24,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Category',
-                style: TextStyle(fontFamily: "CeraPro"),
+                        // fontSize: 14,
+                        fontWeight: FontWeight.w400)),
               ),
-              SizedBox(
-                width: 160,
-                child: DropdownButton<Category>(
-                    value: intro.category,
-                    underline: const Divider(
-                      thickness: 1.5,
-                      color: AppColors.greyIron,
-                    ),
-                    elevation: 16,
-                    isExpanded: true,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.only(top: 8),
-                    icon: Align(
-                      alignment: Alignment.centerRight,
-                      child: SvgPicture.asset(
-                        'assets/icon_svg/chevron-circle-down.svg',
-                        height: 15,
-                        width: 8,
-                      ),
-                    ),
-                    onChanged: (Category? value) {
-                      introProvider.updateIntro(category: value);
-                    },
-                    items: [
-                      for (int index = 0; index < categoty.length; index++)
-                        DropdownMenuItem<Category>(
-                          key: ValueKey(categoty[index].id),
-                          value: categoty[index],
-                          child: Align(
-                              alignment: Alignment.center,
-                              child: Text(categoty[index].name,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: 'CeraPro',
-                                    fontSize: 16,
-                                  ),
-                                  textAlign: TextAlign.right)),
-                        ),
-                    ]),
-              ),
-            ],
-          ),
-          //---------------
-          const SizedBox(
-            height: 24,
-          ),
-          TextFormField(
-            initialValue: intro.source,
-            onChanged: (value) {
-              introProvider.updateIntro(source: value);
-            },
-            decoration: const InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                  // viền dưới khi không có focus
-                  borderSide: BorderSide(color: AppColors.greyIron),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  // viền dưới khi có focus
-                  borderSide: BorderSide(color: AppColors.greyShuttle),
-                ),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                labelText: 'Source',
-                labelStyle: TextStyle(
-                    fontFamily: 'CeraPro',
-                    // fontSize: 14,
-                    fontWeight: FontWeight.w400)),
-          ),
 
-          //-----------------
-          const SizedBox(
-            height: 24,
+              //-----------------
+              const SizedBox(
+                height: 24,
+              ),
+              TextFormField(
+                initialValue: introProvider.intro.url,
+                onChanged: (value) {
+                  introProvider.updateIntro(url: value);
+                },
+                decoration: const InputDecoration(
+                    enabledBorder: UnderlineInputBorder(
+                      // viền dưới khi không có focus
+                      borderSide: BorderSide(color: AppColors.greyIron),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      // viền dưới khi có focus
+                      borderSide: BorderSide(color: AppColors.greyShuttle),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+                    labelText: 'URL',
+                    labelStyle: TextStyle(
+                        fontFamily: 'CeraPro',
+                        // fontSize: 14,
+                        fontWeight: FontWeight.w400)),
+              ),
+            ],
           ),
-          TextFormField(
-            initialValue: intro.url,
-            onChanged: (value) {
-              introProvider.updateIntro(url: value);
-            },
-            decoration: const InputDecoration(
-                enabledBorder: UnderlineInputBorder(
-                  // viền dưới khi không có focus
-                  borderSide: BorderSide(color: AppColors.greyIron),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  // viền dưới khi có focus
-                  borderSide: BorderSide(color: AppColors.greyShuttle),
-                ),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-                labelText: 'URL',
-                labelStyle: TextStyle(
-                    fontFamily: 'CeraPro',
-                    // fontSize: 14,
-                    fontWeight: FontWeight.w400)),
-          ),
-        ],
-      ),
-    ));
+        ));
+      },
+    );
   }
 }
