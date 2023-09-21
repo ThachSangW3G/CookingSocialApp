@@ -8,6 +8,7 @@ import '../models/recipe_cookbook.dart';
 abstract class FeatureRepository {
   Future<Featured> getFeature(Recipe recipe);
   Future<List<Featured>> getAllFeature(List<Recipe> recipes);
+  Future<List<Featured>> getListFeatureByIdUser(String idUser);
 }
 
 class FeatureRepositoryImpl implements FeatureRepository {
@@ -60,6 +61,35 @@ class FeatureRepositoryImpl implements FeatureRepository {
         reviewCount: recipe.numberView, category: recipe.category,
         cookTime: recipe.cookTime,
         idUser: recipe.uidUser
+      );
+      listFeature.add(featured);
+      // print(listFeature.length);
+    }
+
+    return Future.value(listFeature);
+  }
+
+  @override
+  Future<List<Featured>> getListFeatureByIdUser(String idUser) async {
+    List<Recipe> listRecipe = (await _recipeFirestoreService.getListRecipesByIdUser(idUser));
+    List<Featured> listFeature = [];
+
+    print(listRecipe.length);
+
+
+    for (var recipe in listRecipe) {
+      UserModel userModel =
+      await _userFirestoreService.getUser(recipe.uidUser) as UserModel;
+      Featured featured = Featured(
+          id: recipe.key,
+          image: recipe.url,
+          title: recipe.name,
+          avatar: userModel.avatar,
+          nameUser: userModel.name,
+          likeCount: recipe.numberLike,
+          reviewCount: recipe.numberView, category: recipe.category,
+          cookTime: recipe.cookTime,
+          idUser: recipe.uidUser
       );
       listFeature.add(featured);
       // print(listFeature.length);

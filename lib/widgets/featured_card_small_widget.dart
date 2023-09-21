@@ -78,14 +78,16 @@ class FeaturedCardSmallWidget extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
-                          featured.nameUser,
-                          overflow: TextOverflow.clip,
-                          maxLines: 1,
-                          style: const TextStyle(
-                              fontFamily: 'CeraPro',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500
+                        Expanded(
+                          child: Text(
+                            featured.nameUser,
+                            overflow: TextOverflow.clip,
+                            maxLines: 1,
+                            style: const TextStyle(
+                                fontFamily: 'CeraPro',
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500
+                            ),
                           ),
                         ),
                       ],
