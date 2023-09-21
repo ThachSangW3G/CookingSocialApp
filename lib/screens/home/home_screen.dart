@@ -296,8 +296,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       return GestureDetector(
                           onTap: () {
                             Navigator.of(context).pushNamed(
-                                RouteGenerator.recipedetailScreen,
-                                arguments: featured.id);
+                              RouteGenerator.recipedetailScreen,
+                              arguments: {
+                                'key': featured.id,
+                                'uid': featured.idUser,
+                              },
+                            );
                           },
                           child: FutureBuilder<LikeModel>(
                               future: likeProvider.likeExist(featured.id, user.uid),

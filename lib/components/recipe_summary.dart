@@ -489,24 +489,33 @@ class _RecipeSummaryState extends State<RecipeSummary> {
                                       future: reviewProvider
                                           .fetchReview(recipe.key),
                                       builder: (context, snapshotReview) {
-                                        if (snapshotReview.hasError) {
-                                          // Hiển thị widget khi có lỗi xảy ra
+                                        try {
+                                          if (snapshotReview.hasError) {
+                                            // Hiển thị widget khi có lỗi xảy ra
+                                            return const Center(
+                                              child: Text(
+                                                "Don't have review",
+                                                style: kReviewLabelTextStyle,
+                                              ),
+                                            );
+                                          } else {
+                                            final review = snapshotReview.data;
+                                            return review == null
+                                                ? const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  )
+                                                : CommentItemNotOption(
+                                                    review: review[0],
+                                                  );
+                                          }
+                                        } catch (e) {
                                           return const Center(
                                             child: Text(
                                               "Don't have review",
                                               style: kReviewLabelTextStyle,
                                             ),
                                           );
-                                        } else {
-                                          final review = snapshotReview.data;
-                                          return review == null
-                                              ? const Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                )
-                                              : CommentItemNotOption(
-                                                  review: review[0],
-                                                );
                                         }
                                       })
                                 ],
