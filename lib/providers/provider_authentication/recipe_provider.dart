@@ -183,5 +183,8 @@ class RecipeProvider extends ChangeNotifier {
     return listId;
   }
 
+  int getIndexRecipe(String idRecipe){
+    return recipes.indexWhere((element) => element.key == idRecipe);
+  }
 
 }

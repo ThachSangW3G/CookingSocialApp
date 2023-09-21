@@ -3,17 +3,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class RecipeCalendar{
   final String id;
   final Timestamp date;
-  final String meal;
-  final String idRecipe;
+  String meal;
+  String idRecipe;
+  final String idUser;
 
-  RecipeCalendar({required this.id, required this.date, required this.meal, required this.idRecipe});
+  RecipeCalendar( {required this.id, required this.date, required this.meal, required this.idRecipe, required this.idUser,});
 
   factory RecipeCalendar.fromJson(Map<String, dynamic> json){
     return RecipeCalendar(
       id: json['id'],
       date: json['date'],
       meal: json['meal'],
-      idRecipe: json['idRecipe']
+      idRecipe: json['idRecipe'],
+      idUser: json['idUser']
     );
   }
 
@@ -22,7 +24,8 @@ class RecipeCalendar{
       'id': id,
       'date': date,
       'meal': meal,
-      'idRecipe': idRecipe
+      'idRecipe': idRecipe,
+      'idUser': idUser
     };
   }
 }
