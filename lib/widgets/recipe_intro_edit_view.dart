@@ -101,7 +101,8 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
-                initialValue: introProvider.intro.name,
+                controller:
+                    TextEditingController(text: introProvider.intro.name),
                 validator: (value) =>
                     (value?.isEmpty ?? true) ? 'Title is required' : null,
                 onChanged: (value) {
@@ -147,9 +148,13 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                 children: [
                   Expanded(
                     child: TextFormField(
-                      initialValue: introProvider.intro.cookTime == null
-                          ? ''
-                          : introProvider.intro.cookTime.toString(),
+                      controller: TextEditingController(
+                          text: introProvider.intro.cookTime == null
+                              ? ''
+                              : introProvider.intro.cookTime.toString()),
+                      // initialValue: introProvider.intro.cookTime == null
+                      //     ? ''
+                      //     : introProvider.intro.cookTime.toString(),
                       onChanged: (value) {
                         introProvider.updateIntro(cookTime: int.parse(value));
                       },
@@ -178,9 +183,11 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                   ),
                   Expanded(
                     child: TextFormField(
-                      initialValue: introProvider.intro.cookTimeHour == null
-                          ? ''
-                          : introProvider.intro.cookTimeHour.toString(),
+                      controller: TextEditingController(
+                        text: introProvider.intro.cookTimeHour == null
+                            ? ''
+                            : introProvider.intro.cookTimeHour.toString(),
+                      ),
                       onChanged: (value) {
                         introProvider.updateIntro(
                             cookTimeHour: int.parse(value));
@@ -270,7 +277,8 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                 height: 24,
               ),
               TextFormField(
-                initialValue: introProvider.intro.description,
+                controller: TextEditingController(
+                    text: introProvider.intro.description),
                 onChanged: (value) {
                   introProvider.updateIntro(description: value);
                 },
@@ -384,9 +392,11 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                   // ),
                   Expanded(
                     child: TextFormField(
-                      initialValue: introProvider.intro.server == null
-                          ? ''
-                          : introProvider.intro.server.toString(),
+                      controller: TextEditingController(
+                        text: introProvider.intro.server == null
+                            ? ''
+                            : introProvider.intro.server.toString(),
+                      ),
                       onChanged: (value) {
                         introProvider.updateIntro(server: int.parse(value));
                       },
@@ -500,7 +510,8 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                 height: 24,
               ),
               TextFormField(
-                initialValue: introProvider.intro.source,
+                controller:
+                    TextEditingController(text: introProvider.intro.source),
                 onChanged: (value) {
                   introProvider.updateIntro(source: value);
                 },
@@ -527,7 +538,8 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                 height: 24,
               ),
               TextFormField(
-                initialValue: introProvider.intro.url,
+                controller:
+                    TextEditingController(text: introProvider.intro.url),
                 onChanged: (value) {
                   introProvider.updateIntro(url: value);
                 },

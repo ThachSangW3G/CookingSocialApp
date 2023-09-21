@@ -42,15 +42,16 @@ class ReviewStateProvider extends ChangeNotifier {
       //
       QuerySnapshot snapshotLike = await FirebaseFirestore.instance
           .collection('reviewlike')
-          .where('keyReview', isEqualTo: key)
+          .where('idReview', isEqualTo: key)
           .get();
       bool check = false;
       for (var docs in snapshotLike.docs) {
-        if (docs['uidUser'] == FirebaseAuth.instance.currentUser?.uid) {
+        if (docs['idUser'] == FirebaseAuth.instance.currentUser?.uid) {
           check = true;
           break;
         }
       }
+
       Review review = Review(
           uidUser: uidUser,
           description: description,
@@ -104,11 +105,11 @@ class ReviewStateProvider extends ChangeNotifier {
       //
       QuerySnapshot snapshotLike = await FirebaseFirestore.instance
           .collection('reviewlike')
-          .where('keyReview', isEqualTo: key)
+          .where('idReview', isEqualTo: key)
           .get();
       bool check = false;
       for (var docs in snapshotLike.docs) {
-        if (docs['uidUser'] == FirebaseAuth.instance.currentUser?.uid) {
+        if (docs['iddUser'] == FirebaseAuth.instance.currentUser?.uid) {
           check = true;
           break;
         }
@@ -125,14 +126,7 @@ class ReviewStateProvider extends ChangeNotifier {
       fetchedReviewByUser.add(review);
     }
     _review = fetchedReviewByUser;
-    //notifyListeners();
-    //print(_review.length.toString() + "hddddddddddddddddd");
-    //print(_review[0].description);
     return Future.value(_review);
-    // } catch (e) {
-    //   debugPrint(e as String?);
-    // }
-    // return null;
   }
 
   Future<void> delete(Review review) async {
@@ -145,7 +139,6 @@ class ReviewStateProvider extends ChangeNotifier {
 
       // Cập nhật danh sách công thức sau khi xóa
       _review.remove(review);
-
       notifyListeners();
     } catch (error) {
       debugPrint(error as String?);
@@ -207,13 +200,6 @@ class ReviewStateProvider extends ChangeNotifier {
 
   Future<void> update(Review review) async {
     try {
-      // // Cập nhật công thức trong cơ sở dữ liệu (ví dụ: Firestore)
-      // await FirebaseFirestore.instance
-      //     .collection('reviews')
-      //     .doc(review.key)
-      //     .update(review
-      //         .toJson()); // Giả sử có phương thức toJson() để chuyển đổi thành Map
-      // // // Cập nhật danh sách công thức sau khi cập nhật
       int index = _review.indexWhere((r) => r.key == review.key);
       if (index != -1) {
         _review[index] = review;
@@ -229,8 +215,6 @@ class ReviewStateProvider extends ChangeNotifier {
     final reviewIndex = _review.indexWhere((review) => review.key == reviewId);
     if (reviewIndex != -1) {
       _review[reviewIndex].setProperty(propertyName, propertyValue);
-      print("Cap nhat review" + _review[reviewIndex].description);
-      print(_review[reviewIndex].check.toString());
       notifyListeners();
     }
   }
