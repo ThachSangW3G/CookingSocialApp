@@ -256,6 +256,12 @@ class RouteGenerator {
   static const interfacesettingScreen = 'interfacesetting';
   static const notisettingScreen = 'nitificationssetting';
   static const languagesettingScreen = 'languagesetting';
+  static const aboutScreen = 'aboutSetting';
+  static const helpsupportScreen = 'helpsupportSetting';
+  static const sendfeedbackScreen = 'sendfeedbackSetting';
+  static const rateusScreen = 'rateusSetting';
+  static const checkforupdateScreen = 'checkforupdateSetting';
+
 
   // RECIPE DETAILS
   static const recipedetailScreen = '/recipedetail';
