@@ -1,3 +1,4 @@
+import 'package:cooking_social_app/localization/app_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/app_color.dart';
@@ -41,13 +42,13 @@ class _PageSplash1State extends State<PageSplash1> {
                       decoration: const BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
                           color: Colors.black),
-                      child: const Padding(
+                      child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                          const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                         child: Center(
                           child: Text(
-                            'Skip',
-                            style: TextStyle(
+                            context.localize('skip'),
+                            style: const TextStyle(
                                 color: Colors.white, fontFamily: "CeraPro"),
                           ),
                         ),
@@ -90,10 +91,10 @@ class _PageSplash1State extends State<PageSplash1> {
                 const SizedBox(
                   height: 50,
                 ),
-                const Text(
-                  'MAKE RECIPES YOUR OWN',
+                Text(
+                  context.localize('MAKERECIPESYOUROWN'),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'CeraPro',
                     fontWeight: FontWeight.w600,
                     fontSize: 25,
@@ -102,10 +103,10 @@ class _PageSplash1State extends State<PageSplash1> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  'With Mallika recipe editor, you can easily edit recipes, save adjustments to ingredients, and add additional steps or tips to your preparation.',
+                Text(
+                  context.localize('splashDes1'),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontFamily: 'CeraPro',
                       fontWeight: FontWeight.w400,
                       fontSize: 16),
