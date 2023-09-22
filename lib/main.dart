@@ -75,7 +75,6 @@ Future<void> main() async {
       ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ChangeNotifierProvider(create: (_) => FollowProvider()),
       ChangeNotifierProvider(create: (_) => LikeReviewProvider()),
-
       ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ChangeNotifierProvider(create: (_) => LanguageProvider()),
       ChangeNotifierProvider(create: (_) => StepsProvider()),
@@ -98,18 +97,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final AuthenticationStateProvider authenticationStateProvider =
         Provider.of<AuthenticationStateProvider>(context, listen: false);
-    // final ThemeProvider themeProvider = 
+    // final ThemeProvider themeProvider =
     //   Provider.of<ThemeProvider>(context, listen: true);
     return Consumer<ThemeProvider>(
-      builder: (BuildContext context, ThemeProvider themeProvider, _) { 
+      builder: (BuildContext context, ThemeProvider themeProvider, _) {
         return Consumer<LanguageProvider>(
-          builder: (BuildContext context, LanguageProvider languageProvider, _) {  
+          builder:
+              (BuildContext context, LanguageProvider languageProvider, _) {
             return MaterialApp(
               title: 'Cooking Social',
               debugShowCheckedModeBanner: false,
               // theme: ThemeData(
-                // colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
-                // useMaterial3: true,
+              // colorScheme: ColorScheme.fromSeed(seedColor: Colors.orangeAccent),
+              // useMaterial3: true,
               // ),
               theme: themeProvider.themeData,
               onGenerateRoute: RouteGenerator.generatorRoute,
@@ -120,13 +120,12 @@ class MyApp extends StatelessWidget {
                 GlobalCupertinoLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate,
               ],
-              supportedLocales:const [
+              supportedLocales: const [
                 Locale.fromSubtags(languageCode: "en"),
                 Locale.fromSubtags(languageCode: "vi"),
               ],
-              home: authenticationStateProvider.isLoggedIn
-                  ? const BottomNavigation()
-                  : const LoginScreen(),
+              // home: BottomNavigation(),
+              home: const LoginScreen(),
               //home: RecipeEditScreen(),
             );
           },
@@ -135,4 +134,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

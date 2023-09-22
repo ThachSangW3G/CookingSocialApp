@@ -41,13 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int pageCurrent = 1;
 
-
   late Future<UserModel> _userModelFuture;
   @override
   void initState() {
-
     super.initState();
-    _userModelFuture = Provider.of<UserProvider>(context, listen: false).getUser(FirebaseAuth.instance.currentUser!.uid);
+    _userModelFuture = Provider.of<UserProvider>(context, listen: false)
+        .getUser(FirebaseAuth.instance.currentUser!.uid);
   }
 
   @override
@@ -59,9 +58,10 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<CookbookProvider>(context);
 
     final LikeProvider likeProvider = Provider.of<LikeProvider>(context);
-    final NotificationProvider notificationProvider = Provider.of<NotificationProvider>(context);
-    final UserProvider userProvider = Provider.of<UserProvider>(context, listen: false);
-
+    final NotificationProvider notificationProvider =
+        Provider.of<NotificationProvider>(context);
+    final UserProvider userProvider =
+        Provider.of<UserProvider>(context, listen: false);
 
     //final UserProvider userProvider = Provider.of<UserProvider>(context);
 
@@ -83,12 +83,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 FutureBuilder<UserModel>(
                   future: _userModelFuture,
                   builder: (context, snapshot) {
-                    if(snapshot.connectionState == ConnectionState.waiting){
+                    if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
                         child: CircularProgressIndicator(),
                       );
-                    }
-                    else if (snapshot.hasError) {
+                    } else if (snapshot.hasError) {
                       // Hiển thị widget khi có lỗi xảy ra
                       return Text('Error: ${snapshot.error}');
                     } else {
@@ -125,11 +124,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 width: 20,
                               ),
                               Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    '${context.localize('hi')} ${userCurrent!.name}',
+                                    '${context.localize('hi')} ${userCurrent?.name ?? ''}',
                                     style: const TextStyle(
                                       fontFamily: 'CeraPro',
                                       fontSize: 20.0,
@@ -150,9 +148,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               Navigator.pushNamed(
-                                  context, RouteGenerator.notificationScreen);},
+                                  context, RouteGenerator.notificationScreen);
+                            },
                             child: Container(
                               margin: const EdgeInsets.only(right: 10),
                               child: const Icon(
@@ -198,7 +197,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          cookbookProvider.cookbooks.length > 3 ? 3.toString() : cookbookProvider.cookbooks.length.toString(),
+                          cookbookProvider.cookbooks.length > 3
+                              ? 3.toString()
+                              : cookbookProvider.cookbooks.length.toString(),
                           style: const TextStyle(
                             fontFamily: 'CeraPro',
                             fontSize: 20,
@@ -222,13 +223,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       });
                     },
                     controller: _pageController,
-                    itemCount: cookbookProvider.cookbooks.length > 3 ? 3 : cookbookProvider.cookbooks.length,
+                    itemCount: cookbookProvider.cookbooks.length > 3
+                        ? 3
+                        : cookbookProvider.cookbooks.length,
                     itemBuilder: (context, index) {
                       final cookbook = cookbookProvider.cookbooks[index];
                       //print(cookbook);
                       return InkWell(
                           onTap: () {
-
                             Navigator.of(context).pushNamed(
                                 RouteGenerator.detailCookbook,
                                 arguments: cookbook);
@@ -268,7 +270,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontWeight: FontWeight.w700),
                       ),
                       Text(
-                        context.localize('getLotsOfRecipeInspirationFromTheCommunity'),
+                        context.localize(
+                            'getLotsOfRecipeInspirationFromTheCommunity'),
                         style: const TextStyle(
                             fontFamily: 'CeraPro',
                             fontSize: 18,
@@ -303,51 +306,53 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                           child: FutureBuilder<LikeModel>(
-                              future: likeProvider.likeExist(featured.id, user.uid),
-                              builder: (context, snapshot){
+                              future:
+                                  likeProvider.likeExist(featured.id, user.uid),
+                              builder: (context, snapshot) {
                                 final LikeModel? liked = snapshot.data;
 
-                                return FeaturedCard(featured: featured, like: (){
+                                return FeaturedCard(
+                                  featured: featured,
+                                  like: () {
+                                    if (liked == null) {
+                                      LikeModel likeModel = LikeModel(
+                                          id: DateTime.now().toIso8601String(),
+                                          idRecipe: featured.id,
+                                          idUser: user.uid,
+                                          time: Timestamp.now());
+                                      likeProvider.addLike(likeModel);
 
-                                  if(liked == null){
-                                    LikeModel likeModel = LikeModel(
-                                        id: DateTime.now().toIso8601String(),
-                                        idRecipe: featured.id,
-                                        idUser: user.uid,
-                                        time: Timestamp.now()
-                                    );
-                                    likeProvider.addLike(likeModel);
+                                      recipeProvider
+                                          .updateAddLikeByFeature(featured.id);
 
-                                    recipeProvider.updateAddLikeByFeature(featured.id);
+                                      NotificationModel notification =
+                                          NotificationModel(
+                                              id: DateTime.now()
+                                                  .toIso8601String(),
+                                              idUserGuest: user.uid,
+                                              idUserOwner: featured.idUser,
+                                              time: Timestamp.now(),
+                                              type: 'liked',
+                                              read: false,
+                                              title: "",
+                                              idRecipe: featured.id);
 
-                                    NotificationModel notification = NotificationModel(
-                                        id: DateTime.now().toIso8601String(),
-                                        idUserGuest: user.uid,
-                                        idUserOwner: featured.idUser,
-                                        time: Timestamp.now(),
-                                        type: 'liked',
-                                        read: false,
-                                        title: "",
-                                        idRecipe: featured.id
-                                    );
-
-                                    notificationProvider.addNotification(notification);
-
-                                  }else {
-                                    likeProvider.deleteLike(liked);
-                                    recipeProvider.updateRemoveLikeByFeature(featured.id);
-                                  }
-
-                                }, liked: liked != null,
-                                  viewProfile: (){
+                                      notificationProvider
+                                          .addNotification(notification);
+                                    } else {
+                                      likeProvider.deleteLike(liked);
+                                      recipeProvider.updateRemoveLikeByFeature(
+                                          featured.id);
+                                    }
+                                  },
+                                  liked: liked != null,
+                                  viewProfile: () {
                                     Navigator.of(context).pushNamed(
                                         RouteGenerator.accountpersonScreen,
-                                        arguments: featured.idUser
-                                    );
+                                        arguments: featured.idUser);
                                   },
                                 );
-                              }
-                          ));
+                              }));
                     },
                   ),
                 ),
@@ -360,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     Navigator.pushNamed(context, RouteGenerator.community);
                   },
-                  child:  Text(                    
+                  child: Text(
                     context.localize('showAllRecipebyCommunity'),
                     style: const TextStyle(
                         fontFamily: 'CeraPro',
@@ -404,9 +409,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         final category = categoryProvider.categories[index];
                         return GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             recipeProvider.eventFilterKey(category.id);
-                            Navigator.pushNamed(context, RouteGenerator.community);
+                            Navigator.pushNamed(
+                                context, RouteGenerator.community);
                           },
                           child: CategoryCard(
                             category: category,
