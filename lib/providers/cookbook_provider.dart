@@ -1,10 +1,9 @@
 import 'dart:io';
-
 import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/repository/cookbook_repository.dart';
 import 'package:flutter/cupertino.dart';
 
-class CookbookProvider extends ChangeNotifier{
+class CookbookProvider extends ChangeNotifier {
   late CookbookRepository _cookbookRepository;
 
   List<CookBook> _cookbooks = <CookBook>[];
@@ -23,11 +22,10 @@ class CookbookProvider extends ChangeNotifier{
 
   List<CookBook> cookbookOptions = [];
 
-  CookbookProvider(){
+  CookbookProvider() {
     _cookbookRepository = CookbookRepositoryImpl();
     init();
   }
-
 
   init() async {
     _cookbooks = await _cookbookRepository.getAllCookbooks();
@@ -35,7 +33,7 @@ class CookbookProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  Future<List<CookBook>> getListCookbook(){
+  Future<List<CookBook>> getListCookbook() {
     return _cookbookRepository.getAllCookbooks();
   }
 
@@ -44,49 +42,46 @@ class CookbookProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  setTitle(String value){
+  setTitle(String value) {
     title = value;
     notifyListeners();
   }
-  setDescription(String value){
+
+  setDescription(String value) {
     description = value;
     notifyListeners();
   }
 
-  setImage(File fileImage){
+  setImage(File fileImage) {
     file = fileImage;
     notifyListeners();
-
   }
 
-  setPage(int index){
+  setPage(int index) {
     pageCurrent = index;
     notifyListeners();
   }
 
   Future<List<CookBook>> getSearchCookbookByIdUser(String idUser) async {
-
-    if (searchText == ""){
+    if (searchText == "") {
       return _cookbookRepository.getListCookbookbyIdUser(idUser);
+    } else {
+      final cookbooks =
+          await _cookbookRepository.getListCookbookbyIdUser(idUser);
+      return searchCookbook = cookbooks
+          .where((element) => element.title.toLowerCase().contains(searchText))
+          .toList();
     }
-    else {
-      final cookbooks = await _cookbookRepository.getListCookbookbyIdUser(idUser);
-      return searchCookbook = cookbooks.where((element) => element.title.toLowerCase().contains(searchText)).toList();
-    }
-
-
   }
 
-  Future<List<CookBook>> getListCookbookbyIdUser(String idUser){
+  Future<List<CookBook>> getListCookbookbyIdUser(String idUser) {
     return _cookbookRepository.getListCookbookbyIdUser(idUser);
   }
 
-
-  search(String value, String idUser){
+  search(String value, String idUser) {
     searchText = value;
 
     notifyListeners();
-
   }
 
   setListCookbookOption(String idUser) async {
@@ -94,7 +89,7 @@ class CookbookProvider extends ChangeNotifier{
     notifyListeners();
   }
 
-  bool isCookbookContantsRecipe(CookBook cookBook, String idRecipe){
+  bool isCookbookContantsRecipe(CookBook cookBook, String idRecipe) {
     return cookBook.recipes.contains(idRecipe);
   }
 
@@ -104,7 +99,6 @@ class CookbookProvider extends ChangeNotifier{
   }
 
   Future<CookBook> getCookbook(String idCookbook) async {
-    return await  _cookbookRepository.getCookbook(idCookbook);
+    return await _cookbookRepository.getCookbook(idCookbook);
   }
-
 }
