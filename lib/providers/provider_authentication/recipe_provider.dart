@@ -61,8 +61,8 @@ class RecipeProvider extends ChangeNotifier {
     return recipe;
   }
 
-  Future<List<Recipe>> getListRecipeByListID(List<dynamic> idRecipes) {
-    return _recipeRepository.getListRecipeByListID(idRecipes);
+  Future<List<Recipe>> getListRecipeByListID(List<dynamic> idRecipes, String idUserOwner) {
+    return _recipeRepository.getListRecipeByListID(idRecipes, idUserOwner);
   }
 
   updateSearch() async {
