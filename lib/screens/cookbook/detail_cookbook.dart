@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/constants/app_color.dart';
 import 'package:cooking_social_app/models/cookbook.dart';
 import 'package:cooking_social_app/models/like_cookbook.dart';
+import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/cookbook_provider.dart';
 import 'package:cooking_social_app/providers/like_cookbook_provider.dart';
 import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
+import 'package:cooking_social_app/providers/user_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/widgets/popular_recipe.dart';
 import 'package:cooking_social_app/widgets/recipe_item_unpublished_widget.dart';
@@ -13,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+
 
 import '../../models/recipe.dart';
 import '../../widgets/recipe_item_published_widget.dart';
@@ -30,30 +33,27 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isOwner =
-        widget.cookbook!.idUser == FirebaseAuth.instance.currentUser!.uid;
 
-    final LikeCookbookProvider likeCookbookProvider =
-        Provider.of<LikeCookbookProvider>(context);
+    final bool isOwner = widget.cookbook!.idUser == FirebaseAuth.instance.currentUser!.uid;
 
-    final CookbookProvider cookbookProvider =
-        Provider.of<CookbookProvider>(context);
+    final LikeCookbookProvider likeCookbookProvider = Provider.of<LikeCookbookProvider>(context);
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
+    final CookbookProvider cookbookProvider = Provider.of<CookbookProvider>(context);
     final idCookbook = widget.cookbook!.id;
-    DocumentReference documentRef =
-        FirebaseFirestore.instance.collection('cookbooks').doc(idCookbook);
     return Scaffold(
       body: SingleChildScrollView(
         child: FutureBuilder<CookBook>(
           future: cookbookProvider.getCookbook(idCookbook),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+          builder: (context, snapshot){
+            if(snapshot.connectionState == ConnectionState.waiting){
               return const SizedBox(
                 height: 800,
                 child: Center(
                   child: CircularProgressIndicator(),
                 ),
               );
-            } else {
+
+            }else {
               final cookbook = snapshot.data;
               return Stack(
                 children: [
@@ -66,8 +66,8 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                             fit: BoxFit.cover)),
                     alignment: Alignment.topCenter,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 40),
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 40),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -79,8 +79,7 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                               height: 48,
                               width: 48,
                               decoration: const BoxDecoration(
-                                  color: AppColors.white,
-                                  shape: BoxShape.circle),
+                                  color: AppColors.white, shape: BoxShape.circle),
                               child: const Center(
                                 child: Icon(
                                   Icons.arrow_back_ios_new,
@@ -91,32 +90,27 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                             ),
                           ),
                           FutureBuilder<LikeCookbook>(
-                              future: likeCookbookProvider.likeCookbookExists(
-                                  cookbook.id,
-                                  FirebaseAuth.instance.currentUser!.uid),
-                              builder: (context, snapshot) {
+                              future: likeCookbookProvider.likeCookbookExists(cookbook.id, FirebaseAuth.instance.currentUser!.uid),
+                              builder: (context, snapshot){
+
                                 final likeCookbook = snapshot.data;
 
                                 return GestureDetector(
-                                  onTap: () {
-                                    if (isOwner) {
-                                      Navigator.pushNamed(context,
-                                          RouteGenerator.addCookbookScreen);
-                                    } else {
-                                      if (likeCookbook == null) {
+                                  onTap: (){
+                                    if(isOwner){
+                                      Navigator.pushNamed(context, RouteGenerator.addCookbookScreen);
+                                    }else {
+                                      if (likeCookbook == null){
                                         LikeCookbook like = LikeCookbook(
                                           id: DateTime.now().toIso8601String(),
                                           idCookbook: cookbook.id,
-                                          idUser: FirebaseAuth
-                                              .instance.currentUser!.uid,
+                                          idUser: FirebaseAuth.instance.currentUser!.uid,
                                           time: Timestamp.now(),
                                         );
 
-                                        likeCookbookProvider
-                                            .addLikeCookbook(like);
-                                      } else {
-                                        likeCookbookProvider
-                                            .deleteLikeCookbook(likeCookbook);
+                                        likeCookbookProvider.addLikeCookbook(like);
+                                      }else {
+                                        likeCookbookProvider.deleteLikeCookbook(likeCookbook);
                                       }
                                     }
                                   },
@@ -124,28 +118,22 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                                     height: 48,
                                     width: 48,
                                     decoration: const BoxDecoration(
-                                        color: AppColors.white,
-                                        shape: BoxShape.circle),
+                                        color: AppColors.white, shape: BoxShape.circle),
                                     child: Center(
                                         child: Container(
-                                      height: 25,
-                                      width: 25,
-                                      child: SvgPicture.asset(
-                                        isOwner
-                                            ? 'assets/icon_svg/pencil.svg'
-                                            : likeCookbook == null
-                                                ? 'assets/icon_svg/heart.svg'
-                                                : 'assets/icon_svg/heart_orange.svg',
-                                        height: 25,
-                                        width: 25,
-                                        color: likeCookbook == null
-                                            ? AppColors.greyShuttle
-                                            : AppColors.orangeCrusta,
-                                      ),
-                                    )),
+                                          height: 25,
+                                          width: 25,
+                                          child: SvgPicture.asset(
+                                            isOwner ? 'assets/icon_svg/pencil.svg' : likeCookbook == null ? 'assets/icon_svg/heart.svg' : 'assets/icon_svg/heart_orange.svg',
+                                            height: 25,
+                                            width: 25,
+                                            color: likeCookbook == null ? AppColors.greyShuttle : AppColors.orangeCrusta,
+                                          ),
+                                        )),
                                   ),
                                 );
-                              })
+                              }
+                          )
                         ],
                       ),
                     ),
@@ -162,15 +150,15 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                               height: 190,
                               width: MediaQuery.of(context).size.width - 40,
                               decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(15)),
+                                  borderRadius:
+                                  const BorderRadius.all(Radius.circular(15)),
                                   color: Colors.white,
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(
                                           0.5), // Màu và độ mờ của đổ bóng
                                       spreadRadius:
-                                          0.1, // Bán kính mở rộng của đổ bóng
+                                      0.1, // Bán kính mở rộng của đổ bóng
                                       blurRadius: 0.1, // Độ mờ của đổ bóng
                                       offset: const Offset(0,
                                           1), // Vị trí của đổ bóng trong hệ tọa độ (x, y)
@@ -210,7 +198,7 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text(
                                           cookbook.likes.toString(),
@@ -262,12 +250,10 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                           height: 48,
                           margin: const EdgeInsets.symmetric(horizontal: 20.0),
                           decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16.0)),
+                              borderRadius: BorderRadius.all(Radius.circular(16.0)),
                               color: AppColors.greyIron),
                           child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
                             child: TextField(
                               decoration: InputDecoration(
                                 hintText: 'Recipe Title, Ingredient',
@@ -292,154 +278,287 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                         const SizedBox(
                           height: 20.0,
                         ),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Popular Recipe',
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontFamily: 'Recoleta',
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 20),
-                              ),
-                            ],
+                        Padding(
+                          padding:
+                          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                          // child: Row(
+                          //   mainAxisAlignment: MainAxisAlignment.start,
+                          //   children: [
+                          //     Text(
+                          //       'Popular Recipe',
+                          //       textAlign: TextAlign.start,
+                          //       style: TextStyle(
+                          //           fontFamily: 'Recoleta',
+                          //           fontWeight: FontWeight.w700,
+                          //           fontSize: 20),
+                          //     ),
+                          //   ],
+                          // ),
+                          child: FutureBuilder<UserModel>(
+                            future: userProvider.getUser(cookbook.idUser),
+                            builder: (context, snapshot){
+                              if(snapshot.connectionState == ConnectionState.waiting){
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }else {
+                                final user = snapshot.data;
+                                return  GestureDetector(
+                                  onTap: (){
+                                    Navigator.of(context).pushNamed(
+                                        RouteGenerator.accountpersonScreen,
+                                        arguments: user.uid
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                                image: CachedNetworkImageProvider(user!.avatar)
+                                            )
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10,),
+                                      Expanded(
+                                        child: Text(
+                                          user!.name,
+                                          overflow: TextOverflow.clip,
+                                          maxLines: 1,
+                                          style: const TextStyle(
+                                              fontFamily: 'CeraPro',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w500
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }
+                            }
                           ),
                         ),
+
+                        // Consumer<RecipeProvider>(
+                        //   builder: (context, recipeProvider, _) {
+                        //     return FutureBuilder(
+                        //       future: recipeProvider.getRecipe(cookbook
+                        //           .recipes[cookbook.popularRecipeIndex] as String),
+                        //       builder: (context, snapshot) {
+                        //         if (snapshot.connectionState ==
+                        //             ConnectionState.waiting) {
+                        //           return const SizedBox(
+                        //               height: 150,
+                        //               child:
+                        //               Center(child: CircularProgressIndicator()));
+                        //         } else if (snapshot.hasError) {
+                        //           return Text('Error: ${snapshot.error}');
+                        //         } else {
+                        //           final recipe = snapshot.data;
+                        //           return GestureDetector(
+                        //               onTap: () {
+                        //                 Navigator.of(context).pushNamed(
+                        //                   RouteGenerator.recipedetailScreen,
+                        //                   arguments: {
+                        //                     'key': recipe.key,
+                        //                     'uid': recipe.uidUser,
+                        //                   },
+                        //                 );
+                        //               },
+                        //               child: PopularRecipe(recipe: recipe!));
+                        //         }
+                        //       },
+                        //     );
+                        //   },
+                        // ),
                         const SizedBox(
-                          height: 10.0,
+                          height: 20.0,
                         ),
+
                         Consumer<RecipeProvider>(
-                          builder: (context, recipeProvider, _) {
-                            return FutureBuilder(
-                              future: recipeProvider.getRecipe(
-                                  cookbook.recipes[cookbook.popularRecipeIndex]
-                                      as String),
-                              builder: (context, snapshot) {
+                          builder: (context, recipeProvider, _){
+                            return FutureBuilder<List<Recipe>>(
+                              future: recipeProvider
+                                  .getListRecipeByListID(cookbook.recipes, cookbook.idUser),
+                              builder: (context, snapshot){
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return const SizedBox(
-                                      height: 150,
-                                      child: Center(
-                                          child: CircularProgressIndicator()));
-                                } else if (snapshot.hasError) {
+                                  return const Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      CircularProgressIndicator(),
+                                    ],
+                                  );
+                                }else if (snapshot.hasError){
                                   return Text('Error: ${snapshot.error}');
-                                } else {
-                                  final recipe = snapshot.data;
-                                  return GestureDetector(
-                                      onTap: () {
-                                        Navigator.of(context).pushNamed(
-                                          RouteGenerator.recipedetailScreen,
-                                          arguments: {
-                                            'key': recipe.key,
-                                            'uid': recipe.uidUser,
+                                }else {
+                                  final recipes = snapshot.data;
+                                  if (isAbs) {
+                                    recipes!
+                                        .sort((a, b) => a.name.compareTo(b.name));
+                                  } else {
+                                    recipes!
+                                        .sort((a, b) => b.name.compareTo(a.name));
+                                  }
+                                  return Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0, vertical: 10.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'All Recipe (${recipes.length.toString()})',
+                                              textAlign: TextAlign.start,
+                                              style: const TextStyle(
+                                                  fontFamily: 'Recoleta',
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 20),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  isAbs = !isAbs;
+                                                });
+                                              },
+                                              child: SvgPicture.asset(
+                                                isAbs
+                                                    ? 'assets/icon_svg/sort-alpha-down.svg'
+                                                    : 'assets/icon_svg/sort-alpha-up.svg',
+                                                height: 24,
+                                                width: 24,
+                                                color: AppColors.greyBombay,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 500,
+                                        child:  ListView.builder(
+                                          itemCount: recipes!.length,
+                                          itemBuilder: (context, index) {
+                                            final Recipe recipe = recipes![index];
+                                            return GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).pushNamed(
+                                                  RouteGenerator.recipedetailScreen,
+                                                  arguments: {
+                                                    'key': recipe.key,
+                                                    'uid': recipe.uidUser,
+                                                  },
+                                                );
+                                              },
+                                              child: recipe.isPublic ? RecipeItemPublishedWidget(recipe: recipe) : RecipeItemUnPublishedWidget(
+                                                  recipe: recipe),
+                                            );
                                           },
-                                        );
-                                      },
-                                      child: PopularRecipe(recipe: recipe!));
+                                        ),
+                                      )
+                                    ],
+                                  );
                                 }
                               },
                             );
                           },
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0, vertical: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'All Recipe (${cookbook.recipes.length.toString()})',
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                    fontFamily: 'Recoleta',
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 20),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isAbs = !isAbs;
-                                  });
-                                },
-                                child: SvgPicture.asset(
-                                  isAbs
-                                      ? 'assets/icon_svg/sort-alpha-down.svg'
-                                      : 'assets/icon_svg/sort-alpha-up.svg',
-                                  height: 24,
-                                  width: 24,
-                                  color: AppColors.greyBombay,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 500,
-                          child: Consumer<RecipeProvider>(
-                            builder: (context, recipeProvider, _) {
-                              return FutureBuilder<List<Recipe>>(
-                                future: recipeProvider
-                                    .getListRecipeByListID(cookbook.recipes),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        CircularProgressIndicator(),
-                                      ],
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else {
-                                    final recipes = snapshot.data;
-                                    if (isAbs) {
-                                      recipes!.sort(
-                                          (a, b) => a.name.compareTo(b.name));
-                                    } else {
-                                      recipes!.sort(
-                                          (a, b) => b.name.compareTo(a.name));
-                                    }
-                                    return ListView.builder(
-                                      itemCount: recipes!.length,
-                                      itemBuilder: (context, index) {
-                                        final Recipe recipe = recipes![index];
-                                        return GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).pushNamed(
-                                              RouteGenerator.recipedetailScreen,
-                                              arguments: {
-                                                'key': recipe.key,
-                                                'uid': recipe.uidUser,
-                                              },
-                                            );
-                                          },
-                                          child: RecipeItemUnPublishedWidget(
-                                              recipe: recipe),
-                                        );
-                                      },
-                                    );
-                                  }
-                                },
-                              );
-                            },
-                            // child: ListView.builder(
-                            //   itemCount: cookbook.recipes.length,
-                            //   shrinkWrap: true,
-                            //   scrollDirection: Axis.vertical,
-                            //   itemBuilder: (context, index){
-                            //
-                            //   },
-                          ),
-                        ),
+                        )
+
+                        // Padding(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: 20.0, vertical: 10.0),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Text(
+                        //         'All Recipe (${cookbook.recipes.length.toString()})',
+                        //         textAlign: TextAlign.start,
+                        //         style: const TextStyle(
+                        //             fontFamily: 'Recoleta',
+                        //             fontWeight: FontWeight.w700,
+                        //             fontSize: 20),
+                        //       ),
+                        //       GestureDetector(
+                        //         onTap: () {
+                        //           setState(() {
+                        //             isAbs = !isAbs;
+                        //           });
+                        //         },
+                        //         child: SvgPicture.asset(
+                        //           isAbs
+                        //               ? 'assets/icon_svg/sort-alpha-down.svg'
+                        //               : 'assets/icon_svg/sort-alpha-up.svg',
+                        //           height: 24,
+                        //           width: 24,
+                        //           color: AppColors.greyBombay,
+                        //         ),
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: 500,
+                        //   child: Consumer<RecipeProvider>(
+                        //     builder: (context, recipeProvider, _) {
+                        //       return FutureBuilder<List<Recipe>>(
+                        //         future: recipeProvider
+                        //             .getListRecipeByListID(cookbook.recipes, cookbook.idUser),
+                        //         builder: (context, snapshot) {
+                        //           if (snapshot.connectionState ==
+                        //               ConnectionState.waiting) {
+                        //             return const Column(
+                        //               mainAxisAlignment: MainAxisAlignment.start,
+                        //               children: [
+                        //                 CircularProgressIndicator(),
+                        //               ],
+                        //             );
+                        //           } else if (snapshot.hasError) {
+                        //             return Text('Error: ${snapshot.error}');
+                        //           } else {
+                        //             final recipes = snapshot.data;
+                        //             if (isAbs) {
+                        //               recipes!
+                        //                   .sort((a, b) => a.name.compareTo(b.name));
+                        //             } else {
+                        //               recipes!
+                        //                   .sort((a, b) => b.name.compareTo(a.name));
+                        //             }
+                        //             return ListView.builder(
+                        //               itemCount: recipes!.length,
+                        //               itemBuilder: (context, index) {
+                        //                 final Recipe recipe = recipes![index];
+                        //                 return GestureDetector(
+                        //                   onTap: () {
+                        //                     Navigator.of(context).pushNamed(
+                        //                       RouteGenerator.recipedetailScreen,
+                        //                       arguments: {
+                        //                         'key': recipe.key,
+                        //                         'uid': recipe.uidUser,
+                        //                       },
+                        //                     );
+                        //                   },
+                        //                   child: recipe.isPublic ? RecipeItemPublishedWidget(recipe: recipe) : RecipeItemUnPublishedWidget(
+                        //                       recipe: recipe),
+                        //                 );
+                        //               },
+                        //             );
+                        //           }
+                        //         },
+                        //       );
+                        //     },
+                        //     // child: ListView.builder(
+                        //     //   itemCount: cookbook.recipes.length,
+                        //     //   shrinkWrap: true,
+                        //     //   scrollDirection: Axis.vertical,
+                        //     //   itemBuilder: (context, index){
+                        //     //
+                        //     //   },
+                        //   ),
+                        // ),
                       ],
                     ),
                   )
