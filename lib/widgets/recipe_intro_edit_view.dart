@@ -97,7 +97,9 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
       builder: (context, introProvider, _) {
         final intro = introProvider.intro;
         return intro.name == null
-            ? const Center()
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
             : SingleChildScrollView(
                 child: Container(
                 padding: const EdgeInsets.only(
@@ -150,7 +152,6 @@ class RecipeIntroEditState extends State<RecipeIntroEdit> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            textAlign: TextAlign.right,
                             // controller: TextEditingController(
                             //     text: introProvider.intro.cookTime == null
                             //         ? ''
