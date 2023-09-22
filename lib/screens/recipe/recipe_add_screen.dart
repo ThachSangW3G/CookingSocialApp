@@ -10,6 +10,7 @@ import 'package:cooking_social_app/providers/adddata_provider/material_provider.
 import 'package:cooking_social_app/providers/adddata_provider/spice_provder.dart';
 import 'package:cooking_social_app/providers/adddata_provider/steps_provider.dart';
 import 'package:cooking_social_app/providers/category_provider.dart';
+import 'package:cooking_social_app/providers/provider_authentication/recipe_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:cooking_social_app/services/change_url.dart';
 import 'package:cooking_social_app/widgets/recipe_ingredients_edit_view.dart';
@@ -43,6 +44,7 @@ class _RecipeAddScreenState extends State<RecipeAddScreen>
       GlobalKey<RecipeIngredientsEditState>();
   final GlobalKey<RecipeStepsEditState> tab3Key =
       GlobalKey<RecipeStepsEditState>();
+  bool isLoading = false;
   String? _name;
   String? _url;
   int? _cookTime;
@@ -87,11 +89,17 @@ class _RecipeAddScreenState extends State<RecipeAddScreen>
         server == null ||
         category == null ||
         getFile == null) {
+      setState(() {
+        isLoading = false;
+      });
       _showDetailDialog();
       return;
     }
     if (!isURL(source)) {
       showValidationError(context);
+      setState(() {
+        isLoading = false;
+      });
       return;
     }
     String? url = await upLoadFileToFirebase(getFile);
@@ -150,6 +158,11 @@ class _RecipeAddScreenState extends State<RecipeAddScreen>
               actions: [
                 TextButton(
                   onPressed: () async {
+                    setState(() {
+                      isLoading = false;
+                    });
+                    Provider.of<RecipeProvider>(context, listen: false)
+                        .addRecipe();
                     Provider.of<IntroProvider>(context, listen: false)
                         .clearData();
                     Provider.of<StepsProvider>(context, listen: false)
@@ -159,6 +172,10 @@ class _RecipeAddScreenState extends State<RecipeAddScreen>
                     Provider.of<MaterialProvider>(context, listen: false)
                         .cleardata();
                     Navigator.of(context).pop();
+                    Navigator.pushNamed(
+                      context,
+                      RouteGenerator.bottom_navigation,
+                    );
                   },
                   child: const Text(
                     'Đóng',
@@ -244,6 +261,9 @@ class _RecipeAddScreenState extends State<RecipeAddScreen>
         actions: [
           TextButton(
             onPressed: () {
+              setState(() {
+                isLoading = true;
+              });
               List<Item> steps =
                   Provider.of<StepsProvider>(context, listen: false).items;
               List<Item> spices =
@@ -261,14 +281,16 @@ class _RecipeAddScreenState extends State<RecipeAddScreen>
               getDataFromTabs();
               // Xử lý sự kiện khi người dùng nhấn vào nút
             },
-            child: const Text(
-              'Save',
-              style: TextStyle(
-                color: AppColors.orangeCrusta,
-                fontFamily: "CeraPro",
-                fontSize: 18.0,
-              ),
-            ),
+            child: isLoading == true
+                ? const CircularProgressIndicator()
+                : const Text(
+                    'Save',
+                    style: TextStyle(
+                      color: AppColors.orangeCrusta,
+                      fontFamily: "CeraPro",
+                      fontSize: 18.0,
+                    ),
+                  ),
           )
         ],
         bottom: TabBar(

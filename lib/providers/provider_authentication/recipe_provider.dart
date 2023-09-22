@@ -179,7 +179,6 @@ class RecipeProvider extends ChangeNotifier {
     return recipes.indexWhere((element) => element.key == idRecipe);
   }
 
-
   updateAddLike(Recipe recipe) async {
     _recipeRepository.updateAddRecipe(recipe);
 
@@ -216,13 +215,17 @@ class RecipeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<Recipe>> getListRecipesByIdUser(String idUser){
+  Future<List<Recipe>> getListRecipesByIdUser(String idUser) {
     return _recipeRepository.getListRecipesByIdUser(idUser);
   }
 
-  Future<List<Featured>> getListFeatureByIdUser(String idUser){
+  Future<List<Featured>> getListFeatureByIdUser(String idUser) {
     return _featureRepository.getListFeatureByIdUser(idUser);
   }
 
-
+  addRecipe() {
+    reloadData();
+    filterListFeatured();
+    notifyListeners();
+  }
 }

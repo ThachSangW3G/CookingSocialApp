@@ -43,6 +43,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
       GlobalKey<RecipeIngredientsEditState>();
   final GlobalKey<RecipeStepsEditState> tab3Key =
       GlobalKey<RecipeStepsEditState>();
+  bool isLoading = false;
   String? _name;
   String? _url;
   int? _cookTime;
@@ -88,10 +89,16 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         category == null ||
         getFile == null) {
       _showDetailDialog();
+      setState(() {
+        isLoading = false;
+      });
       return;
     }
     if (!isURL(source)) {
       showValidationError(context);
+      setState(() {
+        isLoading = false;
+      });
       return;
     }
     String? url = await upLoadFileToFirebase(getFile);
@@ -161,11 +168,14 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
                           .cleardata();
                       Navigator.of(context).pop();
                     },
-                    child: const Text(
-                      'Đóng',
-                      style: TextStyle(
-                          fontFamily: "CeraPro", color: AppColors.orangeCrusta),
-                    ),
+                    child: isLoading == true
+                        ? const CircularProgressIndicator()
+                        : const Text(
+                            'Đóng',
+                            style: TextStyle(
+                                fontFamily: "CeraPro",
+                                color: AppColors.orangeCrusta),
+                          ),
                   ),
                 ],
               );
@@ -206,6 +216,9 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
                 actions: [
                   TextButton(
                     onPressed: () {
+                      setState(() {
+                        isLoading = false;
+                      });
                       Provider.of<IntroProvider>(context, listen: false)
                           .clearData();
                       Provider.of<StepsProvider>(context, listen: false)
@@ -215,6 +228,10 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
                       Provider.of<MaterialProvider>(context, listen: false)
                           .cleardata();
                       Navigator.of(context).pop();
+                      Navigator.pushNamed(
+                        context,
+                        RouteGenerator.bottom_navigation,
+                      );
                     },
                     child: const Text(
                       'Đóng',
@@ -354,6 +371,9 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
         actions: [
           TextButton(
             onPressed: () {
+              setState(() {
+                isLoading = true;
+              });
               List<Item> steps =
                   Provider.of<StepsProvider>(context, listen: false).items;
               List<Item> spices =
@@ -371,14 +391,16 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
               getDataFromTabs();
               // Xử lý sự kiện khi người dùng nhấn vào nút
             },
-            child: const Text(
-              'Save',
-              style: TextStyle(
-                color: AppColors.orangeCrusta,
-                fontFamily: "CeraPro",
-                fontSize: 18.0,
-              ),
-            ),
+            child: isLoading == true
+                ? const CircularProgressIndicator()
+                : const Text(
+                    'Save',
+                    style: TextStyle(
+                      color: AppColors.orangeCrusta,
+                      fontFamily: "CeraPro",
+                      fontSize: 18.0,
+                    ),
+                  ),
           )
         ],
         bottom: TabBar(
@@ -441,7 +463,7 @@ class _RecipeEditScreenState extends State<RecipeEditScreen>
               const Padding(
                 padding: EdgeInsets.only(left: 35),
                 child: Text(
-                  'Cách Nấu Ăn',
+                  'How to cook',
                   style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'CeraPro',

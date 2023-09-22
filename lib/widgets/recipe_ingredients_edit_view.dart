@@ -27,7 +27,7 @@ class RecipeIngredientsEditState extends State<RecipeIngredientsEdit> {
       const Padding(
         padding: EdgeInsets.only(left: 35),
         child: Text(
-          'Nguyên liệu',
+          'Material',
           style: TextStyle(
               fontSize: 18,
               fontFamily: 'CeraPro',
@@ -65,7 +65,7 @@ class RecipeIngredientsEditState extends State<RecipeIngredientsEdit> {
       const Padding(
         padding: EdgeInsets.only(left: 35),
         child: Text(
-          'Gia vị',
+          'Spice',
           style: TextStyle(
               fontSize: 18,
               fontFamily: 'CeraPro',

@@ -253,7 +253,7 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
                                           'Intro',
                                           style: TextStyle(
                                               fontFamily: 'CeraPro',
-                                              fontSize: 17),
+                                              fontSize: 15),
                                         ),
                                       ),
                                     ),
@@ -266,7 +266,7 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
                                           'Ingredients',
                                           style: TextStyle(
                                               fontFamily: 'CeraPro',
-                                              fontSize: 17),
+                                              fontSize: 15),
                                         ),
                                       ),
                                     ),
@@ -278,7 +278,7 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
                                           'Steps',
                                           style: TextStyle(
                                               fontFamily: 'CeraPro',
-                                              fontSize: 17),
+                                              fontSize: 15),
                                         ),
                                       ),
                                     ),
@@ -354,7 +354,9 @@ class _MyWidgetState extends State<RecipeDetailsScreen>
                     ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, RouteGenerator.recipeaddgroceryScreen, arguments: recipeSet);
+                  Navigator.pushNamed(
+                      context, RouteGenerator.recipeaddgroceryScreen,
+                      arguments: recipeSet);
                   //CART NE---------------------------------------------------------------------------------------
                 },
                 child: SizedBox(

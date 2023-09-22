@@ -6,7 +6,6 @@ import '../../constants/app_color.dart';
 
 class PageSplash3 extends StatefulWidget {
   const PageSplash3({super.key});
-
   @override
   State<PageSplash3> createState() => _PageSplash3State();
 }
@@ -43,8 +42,8 @@ class _PageSplash3State extends State<PageSplash3> {
                           borderRadius: BorderRadius.all(Radius.circular(12)),
                           color: Colors.black),
                       child: Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 3),
                         child: Center(
                           child: Text(
                             context.localize('skip'),

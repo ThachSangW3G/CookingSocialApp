@@ -51,7 +51,7 @@ class RecipeIntroAddState extends State<RecipeIntroAdd> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
-                //initialValue: intro.name,
+                initialValue: introProvider.intro.name,
                 validator: (value) =>
                     (value?.isEmpty ?? true) ? 'Title is required' : null,
                 onChanged: (value) {
@@ -134,10 +134,9 @@ class RecipeIntroAddState extends State<RecipeIntroAdd> {
                       //       ? ''
                       //       : introProvider.intro.cookTimeHour.toString(),
                       // ),
-                      // initialValue: introProvider.intro.cookTimeHour ==
-                      //         null
-                      //     ? ''
-                      //     : introProvider.intro.cookTimeHour.toString(),
+                      initialValue: introProvider.intro.cookTimeHour == null
+                          ? ''
+                          : introProvider.intro.cookTimeHour.toString(),
                       onChanged: (value) {
                         introProvider.updateIntro(
                             cookTimeHour: int.parse(value));
@@ -229,7 +228,7 @@ class RecipeIntroAddState extends State<RecipeIntroAdd> {
               TextFormField(
                 // controller: TextEditingController(
                 //     text: introProvider.intro.description),
-                // initialValue: introProvider.intro.description,
+                initialValue: introProvider.intro.description,
                 onChanged: (value) {
                   introProvider.updateIntro(description: value);
                 },
@@ -348,9 +347,9 @@ class RecipeIntroAddState extends State<RecipeIntroAdd> {
                       //       ? ''
                       //       : introProvider.intro.server.toString(),
                       // ),
-                      // initialValue: introProvider.intro.server == null
-                      //     ? ''
-                      //     : introProvider.intro.server.toString(),
+                      initialValue: introProvider.intro.server == null
+                          ? ''
+                          : introProvider.intro.server.toString(),
                       onChanged: (value) {
                         introProvider.updateIntro(server: int.parse(value));
                       },
@@ -466,7 +465,7 @@ class RecipeIntroAddState extends State<RecipeIntroAdd> {
               TextFormField(
                 // controller: TextEditingController(
                 //     text: introProvider.intro.source),
-                //initialValue: introProvider.intro.source,
+                initialValue: introProvider.intro.source,
                 onChanged: (value) {
                   introProvider.updateIntro(source: value);
                 },
@@ -493,7 +492,7 @@ class RecipeIntroAddState extends State<RecipeIntroAdd> {
                 height: 24,
               ),
               TextFormField(
-                //initialValue: introProvider.intro.url,
+                initialValue: introProvider.intro.url,
                 // controller:
                 //     TextEditingController(text: introProvider.intro.url),
                 onChanged: (value) {
