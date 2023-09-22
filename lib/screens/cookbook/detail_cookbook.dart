@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-
 import '../../models/recipe.dart';
 import '../../widgets/recipe_item_published_widget.dart';
 
@@ -31,27 +30,30 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isOwner =
+        widget.cookbook!.idUser == FirebaseAuth.instance.currentUser!.uid;
 
-    final bool isOwner = widget.cookbook!.idUser == FirebaseAuth.instance.currentUser!.uid;
+    final LikeCookbookProvider likeCookbookProvider =
+        Provider.of<LikeCookbookProvider>(context);
 
-    final LikeCookbookProvider likeCookbookProvider = Provider.of<LikeCookbookProvider>(context);
-
-    final CookbookProvider cookbookProvider = Provider.of<CookbookProvider>(context);
+    final CookbookProvider cookbookProvider =
+        Provider.of<CookbookProvider>(context);
     final idCookbook = widget.cookbook!.id;
+    DocumentReference documentRef =
+        FirebaseFirestore.instance.collection('cookbooks').doc(idCookbook);
     return Scaffold(
       body: SingleChildScrollView(
         child: FutureBuilder<CookBook>(
           future: cookbookProvider.getCookbook(idCookbook),
-          builder: (context, snapshot){
-            if(snapshot.connectionState == ConnectionState.waiting){
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return const SizedBox(
                 height: 800,
                 child: Center(
                   child: CircularProgressIndicator(),
                 ),
               );
-
-            }else {
+            } else {
               final cookbook = snapshot.data;
               return Stack(
                 children: [
@@ -64,8 +66,8 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                             fit: BoxFit.cover)),
                     alignment: Alignment.topCenter,
                     child: Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 10.0, vertical: 40),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 40),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -77,7 +79,8 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                               height: 48,
                               width: 48,
                               decoration: const BoxDecoration(
-                                  color: AppColors.white, shape: BoxShape.circle),
+                                  color: AppColors.white,
+                                  shape: BoxShape.circle),
                               child: const Center(
                                 child: Icon(
                                   Icons.arrow_back_ios_new,
@@ -88,27 +91,32 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                             ),
                           ),
                           FutureBuilder<LikeCookbook>(
-                              future: likeCookbookProvider.likeCookbookExists(cookbook.id, FirebaseAuth.instance.currentUser!.uid),
-                              builder: (context, snapshot){
-
+                              future: likeCookbookProvider.likeCookbookExists(
+                                  cookbook.id,
+                                  FirebaseAuth.instance.currentUser!.uid),
+                              builder: (context, snapshot) {
                                 final likeCookbook = snapshot.data;
 
                                 return GestureDetector(
-                                  onTap: (){
-                                    if(isOwner){
-                                      Navigator.pushNamed(context, RouteGenerator.addCookbookScreen);
-                                    }else {
-                                      if (likeCookbook == null){
+                                  onTap: () {
+                                    if (isOwner) {
+                                      Navigator.pushNamed(context,
+                                          RouteGenerator.addCookbookScreen);
+                                    } else {
+                                      if (likeCookbook == null) {
                                         LikeCookbook like = LikeCookbook(
                                           id: DateTime.now().toIso8601String(),
                                           idCookbook: cookbook.id,
-                                          idUser: FirebaseAuth.instance.currentUser!.uid,
+                                          idUser: FirebaseAuth
+                                              .instance.currentUser!.uid,
                                           time: Timestamp.now(),
                                         );
 
-                                        likeCookbookProvider.addLikeCookbook(like);
-                                      }else {
-                                        likeCookbookProvider.deleteLikeCookbook(likeCookbook);
+                                        likeCookbookProvider
+                                            .addLikeCookbook(like);
+                                      } else {
+                                        likeCookbookProvider
+                                            .deleteLikeCookbook(likeCookbook);
                                       }
                                     }
                                   },
@@ -116,22 +124,28 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                                     height: 48,
                                     width: 48,
                                     decoration: const BoxDecoration(
-                                        color: AppColors.white, shape: BoxShape.circle),
+                                        color: AppColors.white,
+                                        shape: BoxShape.circle),
                                     child: Center(
                                         child: Container(
-                                          height: 25,
-                                          width: 25,
-                                          child: SvgPicture.asset(
-                                            isOwner ? 'assets/icon_svg/pencil.svg' : likeCookbook == null ? 'assets/icon_svg/heart.svg' : 'assets/icon_svg/heart_orange.svg',
-                                            height: 25,
-                                            width: 25,
-                                            color: likeCookbook == null ? AppColors.greyShuttle : AppColors.orangeCrusta,
-                                          ),
-                                        )),
+                                      height: 25,
+                                      width: 25,
+                                      child: SvgPicture.asset(
+                                        isOwner
+                                            ? 'assets/icon_svg/pencil.svg'
+                                            : likeCookbook == null
+                                                ? 'assets/icon_svg/heart.svg'
+                                                : 'assets/icon_svg/heart_orange.svg',
+                                        height: 25,
+                                        width: 25,
+                                        color: likeCookbook == null
+                                            ? AppColors.greyShuttle
+                                            : AppColors.orangeCrusta,
+                                      ),
+                                    )),
                                   ),
                                 );
-                              }
-                          )
+                              })
                         ],
                       ),
                     ),
@@ -148,15 +162,15 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                               height: 190,
                               width: MediaQuery.of(context).size.width - 40,
                               decoration: BoxDecoration(
-                                  borderRadius:
-                                  const BorderRadius.all(Radius.circular(15)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(15)),
                                   color: Colors.white,
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(
                                           0.5), // Màu và độ mờ của đổ bóng
                                       spreadRadius:
-                                      0.1, // Bán kính mở rộng của đổ bóng
+                                          0.1, // Bán kính mở rộng của đổ bóng
                                       blurRadius: 0.1, // Độ mờ của đổ bóng
                                       offset: const Offset(0,
                                           1), // Vị trí của đổ bóng trong hệ tọa độ (x, y)
@@ -196,7 +210,7 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text(
                                           cookbook.likes.toString(),
@@ -248,10 +262,12 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                           height: 48,
                           margin: const EdgeInsets.symmetric(horizontal: 20.0),
                           decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16.0)),
                               color: AppColors.greyIron),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
                             child: TextField(
                               decoration: InputDecoration(
                                 hintText: 'Recipe Title, Ingredient',
@@ -277,8 +293,8 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                           height: 20.0,
                         ),
                         const Padding(
-                          padding:
-                          EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 10.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -299,15 +315,16 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                         Consumer<RecipeProvider>(
                           builder: (context, recipeProvider, _) {
                             return FutureBuilder(
-                              future: recipeProvider.getRecipe(cookbook
-                                  .recipes[cookbook.popularRecipeIndex] as String),
+                              future: recipeProvider.getRecipe(
+                                  cookbook.recipes[cookbook.popularRecipeIndex]
+                                      as String),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   return const SizedBox(
                                       height: 150,
-                                      child:
-                                      Center(child: CircularProgressIndicator()));
+                                      child: Center(
+                                          child: CircularProgressIndicator()));
                                 } else if (snapshot.hasError) {
                                   return Text('Error: ${snapshot.error}');
                                 } else {
@@ -374,7 +391,8 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
                                     return const Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         CircularProgressIndicator(),
                                       ],
@@ -384,11 +402,11 @@ class _DetailCookBookScreenState extends State<DetailCookBookScreen> {
                                   } else {
                                     final recipes = snapshot.data;
                                     if (isAbs) {
-                                      recipes!
-                                          .sort((a, b) => a.name.compareTo(b.name));
+                                      recipes!.sort(
+                                          (a, b) => a.name.compareTo(b.name));
                                     } else {
-                                      recipes!
-                                          .sort((a, b) => b.name.compareTo(a.name));
+                                      recipes!.sort(
+                                          (a, b) => b.name.compareTo(a.name));
                                     }
                                     return ListView.builder(
                                       itemCount: recipes!.length,
