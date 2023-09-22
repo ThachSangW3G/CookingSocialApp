@@ -22,7 +22,6 @@ class RecipeIntroAdd extends StatefulWidget {
 }
 
 class RecipeIntroAddState extends State<RecipeIntroAdd> {
-  //final TextEditingController _textEditingController = TextEditingController();
   //Data
   // String? _name;
   // String? _url;
@@ -32,58 +31,6 @@ class RecipeIntroAddState extends State<RecipeIntroAdd> {
   // int? _server;
   // //String? _source;
   // Difficulty selectedDifficulty = Difficulty.Difficult;
-
-  // File? _file;
-  //Get data
-  // String? getName() {
-  //   return _name;
-  // }
-
-  // String? getUrl() {
-  //   return _url;
-  // }
-
-  // int? getCookTime() {
-  //   return _cookTime;
-  // }
-
-  // String? getDescription() {
-  //   return _description;
-  // }
-
-  // String? getDifficult() {
-  //   return selectedDifficulty.name;
-  // }
-
-  // bool? isPublic() {
-  //   return _isPublic;
-  // }
-
-  // int? getServes() {
-  //   return _server;
-  // }
-
-  // File? getFile() {
-  //   return _file;
-  // }
-
-  // Future<void> _pickImageFromGallery() async {
-  //   try {
-  //     XFile? pickedFile =
-  //         await ImagePicker().pickImage(source: ImageSource.gallery);
-  //     if (pickedFile != null) {
-  //       File file = File(pickedFile.path);
-
-  //       setState(() {
-  //         _file = file;
-  //         Provider.of<IntroProvider>(context).updateIntro(file: file);
-  //       });
-  //       // Thực hiện các thao tác tiếp theo với file...
-  //     }
-  //   } catch (e) {
-  //     print('Error picking image: $e');
-  //   }
-  // }
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
