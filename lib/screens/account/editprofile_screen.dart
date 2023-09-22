@@ -1,14 +1,18 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cooking_social_app/constants/app_styles.dart';
 import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/providers/user_provider.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/phone_number.dart';
 import 'package:provider/provider.dart';
-
+import 'package:path/path.dart' as path;
 import '../../components/line_row.dart';
 import '../../constants/app_color.dart';
 
@@ -114,7 +118,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         shape: BoxShape.circle,
                                         image: DecorationImage(
                                             image: CachedNetworkImageProvider(
-                                                userModel!.avatar),
+                                                _avatar ?? userModel!.avatar),
                                             fit: BoxFit.contain)),
                                   ),
                                   const SizedBox(
@@ -137,7 +141,52 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     width: 20,
                                   ),
                                   GestureDetector(
-                                      onTap: () {},
+                                      onTap: () async {
+                                        try {
+                                          XFile? pickedFile =
+                                              await ImagePicker().pickImage(
+                                                  source: ImageSource.gallery);
+                                          if (pickedFile != null) {
+                                            File file = File(pickedFile.path);
+                                            FirebaseStorage storage =
+                                                FirebaseStorage.instance;
+                                            // Tạo tham chiếu đến vị trí lưu trữ trên Firebase Storage
+                                            String fileName =
+                                                path.basename(file.path);
+                                            Reference ref = storage.ref().child(
+                                                'images/$fileName'); // Thay đổi 'images/image.jpg' thành đường dẫn bạn muốn lưu trữ tệp tin
+
+                                            // Tải lên tệp tin lên Firebase Storage
+                                            UploadTask uploadTask =
+                                                ref.putFile(file);
+
+                                            // Lắng nghe sự kiện tiến trình tải lên
+                                            uploadTask.snapshotEvents.listen(
+                                                (TaskSnapshot snapshot) {
+                                              print(
+                                                  'Progress: ${snapshot.bytesTransferred}/${snapshot.totalBytes}');
+                                            }, onError: (Object e) {
+                                              // Xử lý lỗi nếu có
+                                              //print('Upload error: $e');
+                                            });
+
+                                            // Đợi cho đến khi quá trình tải lên hoàn thành
+                                            await uploadTask.whenComplete(() {
+                                              //print('Upload complete');
+                                            });
+
+                                            // Lấy URL của tệp tin đã tải lên
+                                            String downloadURL =
+                                                await ref.getDownloadURL();
+                                            setState(() {
+                                              _avatar = downloadURL;
+                                            });
+                                            // Thực hiện các thao tác tiếp theo với file...
+                                          }
+                                        } catch (e) {
+                                          print('Error picking image: $e');
+                                        }
+                                      },
                                       child: const Text(
                                         'Edit Photo',
                                         style: TextStyle(
