@@ -14,6 +14,40 @@ class AuthenticationStateProvider extends ChangeNotifier{
 
   final AuthService _authService = AuthService();
 
+  Future<bool> createUserWithEmailAndPassword(String email, String password, String name) async {
+    bool success = false;
+    try{
+      UserCredential? userCredential = await _authService.createUserWithEmailAndPassword(email, password);
+      if(userCredential !=  null){
+          await _authService.addDataUserEmail(userCredential, email, name);
+          return success = true;
+      }
+
+    }catch(e){
+      return success;
+    }
+    return success;
+  }
+
+  Future<bool> signInWithEmailAndPassword(String email, String password) async {
+    bool success = false;
+    try {
+      final credential = await _authService.signInWithEmailAndPassword(email, password);
+      if(credential != null){
+        return success = true;
+      }
+
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+      return success;
+    }
+    return success;
+  }
+
   Future<bool> singInWithGoogle() async{
     bool success = false;
     try {

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cooking_social_app/models/user_model.dart';
 import 'package:cooking_social_app/routes/app_routes.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,43 @@ class AuthService {
 
     // finally, lets sign in
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<UserCredential?> createUserWithEmailAndPassword(String email, String password) async {
+    try {
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return credential;
+
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+    return null;
+  }
+
+  Future<UserCredential?> signInWithEmailAndPassword(String email, String password) async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password
+      );
+      return credential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+    return null;
   }
 
   Future<UserCredential> signInWithFacebook() async {
@@ -100,6 +138,23 @@ class AuthService {
         'name': userCredential.user?.displayName,
         'email': userCredential.additionalUserInfo!.profile!['email'],
         'avatar': userCredential.additionalUserInfo!.profile!['picture']['data']['url']
+        // Thêm các trường dữ liệu khác tùy ý
+      });
+    }
+  }
+
+  Future<void> addDataUserEmail(UserCredential userCredential, String email, String name,) async {
+    DocumentSnapshot userSnapshot = await _fireStore
+        .collection('users')
+        .doc(userCredential.user!.uid)
+        .get();
+    if (!userSnapshot.exists) {
+      // Thêm dữ liệu vào Firestore
+      await _fireStore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'name': name,
+        'email': email,
+        'avatar': 'https://facebookninja.vn/wp-content/uploads/2023/06/anh-dai-dien-mac-dinh-zalo.jpg',
         // Thêm các trường dữ liệu khác tùy ý
       });
     }

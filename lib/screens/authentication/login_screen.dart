@@ -32,6 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
   var numberPhone = "";
 
+  bool loading = false;
+  bool _obscureText = true;
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final AuthenticationStateProvider authenticationStateProvider =
@@ -49,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   fit: BoxFit.cover)),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 200),
+          margin: const EdgeInsets.only(top: 150),
           width: double.infinity,
           decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
@@ -76,44 +81,77 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontFamily: 'CeraPro'),
                 ),
                 const SizedBox(
-                  height: 30.0,
+                  height: 10.0,
                 ),
-                IntlPhoneField(
-                  decoration: const InputDecoration(
-                    labelText: 'Phone Number',
-                    focusColor: Colors.grey,
-                    labelStyle: TextStyle(
-                        fontSize: 18, color: Colors.grey, letterSpacing: 1.0),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(color: AppColors.orangeCrusta),
-                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+
+                Container(
+                  child: TextField(
+                    controller: _emailController,
+                    decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.email),
+                      labelText: 'Email',
+                      focusColor: Colors.grey,
+                      labelStyle: TextStyle(
+                          fontSize: 18, color: Colors.grey, letterSpacing: 1.0),
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.orangeCrusta),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      ),
                     ),
                   ),
-                  languageCode: "en",
-                  onChanged: (phone) {
-                    //print(phone.completeNumber);
-                    numberPhone = phone.completeNumber.toString();
-                  },
-                  // onCountryChanged: (country) {
-                  //   print('Country changed to: ' + country.name);
-                  // },
                 ),
+                const SizedBox(height: 10,),
+                Container(
+                  child: TextField(
+                    controller: _passwordController,
+                    obscureText: _obscureText,
+                    decoration:  InputDecoration(
+                      suffixIcon: GestureDetector(
+                          onTap: (){
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                          child: Icon(!_obscureText ? Icons.remove_red_eye : Icons.visibility_off)),
+                      prefixIcon: const Icon(Icons.lock),
+                      labelText: 'Password',
+                      focusColor: Colors.grey,
+                      labelStyle: const TextStyle(
+                          fontSize: 18, color: Colors.grey, letterSpacing: 1.0),
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide(color: AppColors.orangeCrusta),
+                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      ),
+                    ),
+                  ),
+                ),
+
+
                 const SizedBox(
                   height: 10.0,
                 ),
                 GestureDetector(
                   onTap: () async {
-                    //Navigator.pushNamed(context, RouteGenerator.splash);
+                    try{
+                      setState(() {
+                        loading = true;
+                      });
+                      if(await authenticationStateProvider.signInWithEmailAndPassword(_emailController.text, _passwordController.text)){
+                        setState(() {
+                          loading = false;
+                        });
+                        Navigator.pushNamed(
+                            context, RouteGenerator.splash);
+                      }else {
+                        setState(() {
+                          loading = false;
+                        });
+                      }
 
-                    await auth.verifyPhoneNumber(
-                      phoneNumber: numberPhone,
-                      verificationCompleted:
-                          (PhoneAuthCredential credential) {},
-                      verificationFailed: (FirebaseAuthException e) {},
-                      codeSent: (String verificationId, int? resendToken) {},
-                      codeAutoRetrievalTimeout: (String verificationId) {},
-                    );
-                    print(numberPhone);
+                    }catch(e){
+
+                    }
+
                   },
                   child: Container(
                     width: double.infinity,
@@ -122,9 +160,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: AppColors.orangeCrusta,
                       borderRadius: BorderRadius.all(Radius.circular(15.0)),
                     ),
-                    child: const Center(
-                        child: Text(
-                      'Send OTP',
+                    child: Center(
+                        child: loading ? const CircularProgressIndicator() : const Text(
+                      'Sign In',
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
@@ -135,7 +173,33 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(
-                  height: 20.0,
+                  height: 10.0,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    Navigator.pushNamed(context, RouteGenerator.sign_up_email);
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                      border: Border.all(color: AppColors.orangeCrusta,)
+                    ),
+                    child: const Center(
+                        child: Text(
+                          'Sign Up',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.orangeCrusta,
+                              letterSpacing: 1.2,
+                              fontFamily: 'CeraPro'),
+                        )),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
                 ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -170,50 +234,50 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                Container(
-                  width: double.infinity,
-                  height: 60,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(15.0)),
-                      border:
-                          Border.all(color: AppColors.greyBombay, width: 1)),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        height: 30,
-                        width: 30,
-                        decoration: const BoxDecoration(
-                            // image: DecorationImage(
-                            //   image: AssetImage('assets/icons/apple_icon.png'),
-                            //   fit: BoxFit.cover,
-                            // )
-                            ),
-                        child: const Image(
-                          image: AssetImage('assets/icons/apple_icon.png'),
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: const Text(
-                            'Continue with Apple',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                                fontFamily: 'CeraPro',
-                                letterSpacing: 1.0),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Container(
+                //   width: double.infinity,
+                //   height: 60,
+                //   decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       borderRadius:
+                //           const BorderRadius.all(Radius.circular(15.0)),
+                //       border:
+                //           Border.all(color: AppColors.greyBombay, width: 1)),
+                //   child: Row(
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: [
+                //       Container(
+                //         margin: const EdgeInsets.symmetric(horizontal: 20),
+                //         height: 30,
+                //         width: 30,
+                //         decoration: const BoxDecoration(
+                //             // image: DecorationImage(
+                //             //   image: AssetImage('assets/icons/apple_icon.png'),
+                //             //   fit: BoxFit.cover,
+                //             // )
+                //             ),
+                //         child: const Image(
+                //           image: AssetImage('assets/icons/apple_icon.png'),
+                //           fit: BoxFit.contain,
+                //         ),
+                //       ),
+                //       Expanded(
+                //         child: Container(
+                //           margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                //           child: const Text(
+                //             'Continue with Apple',
+                //             style: TextStyle(
+                //                 fontSize: 20,
+                //                 fontWeight: FontWeight.w500,
+                //                 color: Colors.black,
+                //                 fontFamily: 'CeraPro',
+                //                 letterSpacing: 1.0),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 const SizedBox(
                   height: 10.0,
                 ),

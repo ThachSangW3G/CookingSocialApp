@@ -7,6 +7,7 @@ import 'package:cooking_social_app/screens/account/setting/notification_setting_
 import 'package:cooking_social_app/screens/account/setting/setting_screen.dart';
 import 'package:cooking_social_app/screens/authentication/authentication_screen.dart';
 import 'package:cooking_social_app/screens/authentication/login_screen.dart';
+import 'package:cooking_social_app/screens/authentication/sign_up_emai_screen.dart';
 import 'package:cooking_social_app/screens/bottom_navigation/bottom_navigation.dart';
 import 'package:cooking_social_app/screens/calendar/calendar_screen.dart';
 import 'package:cooking_social_app/screens/community/community.dart';
@@ -83,6 +84,12 @@ class RouteGenerator {
       case login:
         return PageTransition(
           child: const SafeArea(child: SafeArea(child: LoginScreen())),
+          type: PageTransitionType.fade,
+          duration: const Duration(milliseconds: 400),
+        );
+      case sign_up_email:
+        return PageTransition(
+          child: const SafeArea(child: SafeArea(child: SignUpEmailScreen())),
           type: PageTransitionType.fade,
           duration: const Duration(milliseconds: 400),
         );
@@ -254,6 +261,7 @@ class RouteGenerator {
   static const community = '/community';
   static const bottom_navigation = '/bottom_navigation';
   static const login = '/login';
+  static const sign_up_email = '/sign_up_email';
   static const authentication = '/authentication';
 
   // ACCOUNT
